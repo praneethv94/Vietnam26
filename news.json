@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-02",
+ "updated": "2026-11-05",
  "items": [
   {
    "area": "Hanoi",
@@ -19,5 +19,14 @@
    "source": "Vietnamnet",
    "url": "https://vietnamnet.vn/en/weather-news-tag5747631355328406215.html"
   }
- ]
+ ],
+ "air": {
+  "checked": "2026-11-05",
+  "hanoi": {
+   "cat": "Fair",
+   "idx": 41,
+   "color": "#43D357"
+  },
+  "alerts": []
+ }
 }
