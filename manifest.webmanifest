@@ -1,3 +1,3 @@
 { "name": "Vietnam '26", "short_name": "Vietnam '26", "start_url": "./#today", "scope": "./", "display": "standalone",
-  "background_color": "#fff5d6", "theme_color": "#fff5d6",
-  "icons": [ { "src": "icon-180.png", "sizes": "180x180", "type": "image/png" }, { "src": "icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any maskable" } ] }
+  "background_color": "#f2c94c", "theme_color": "#f2c94c",
+  "icons": [ { "src": "icon-180.png", "sizes": "180x180", "type": "image/png" }, { "src": "icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" } ] }
