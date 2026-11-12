@@ -3946,6 +3946,19 @@ html[data-theme="dark"] .pd-bnav.stay .pd-bnb{background:color-mix(in srgb,var(-
 html[data-theme="dark"] .pd-bnav.left{background:#0a1226;box-shadow:inset 0 0 0 1px #2f4068}
 .pd-bnav .pd-bnb.off{background:none;cursor:default}
 html[data-theme="dark"] .pd-bnav .pd-bnb.off,.pd-bnav.left .pd-bnb.off{background:none}
+/* Airport rides by Grab */
+.pd-ride{margin-top:10px;padding:12px 12px 10px;border-radius:14px;background:#e9f6ee;box-shadow:inset 0 0 0 1px #bfe3cc;color:#123b22}
+.pd-rh{display:flex;align-items:center;gap:10px}
+.pd-rh>.ic2{flex:none;width:34px;height:34px;padding:7px;border-radius:50%;background:var(--pdgrab,#00873c);color:#fff;box-sizing:border-box}
+.pd-rh b{display:block;font:800 15px/1.2 "Be Vietnam Pro"}
+.pd-rh small{display:block;margin-top:1px;font:700 11px/1.3 var(--mono);letter-spacing:.06em;text-transform:uppercase;color:#1f6b3d}
+.pd-ride ul{margin:8px 0 0;padding:0 0 0 18px;font:500 13.5px/1.4 "Be Vietnam Pro"}
+.pd-ride li+li{margin-top:4px}
+.pd-rtip{color:#1f6b3d}
+html[data-theme="dark"] .pd-ride{background:rgb(0 135 60/.14);box-shadow:inset 0 0 0 1px rgb(143 216 171/.3);color:#e3f5ea}
+html[data-theme="dark"] .pd-rh small,html[data-theme="dark"] .pd-rtip,.pd-pg.pd-night .pd-rtip{color:#8fd8ab}
+/* Grab is green everywhere, in sheets and cards too */
+:is(.sheet,.pd-stop,.pd-sheet) .pd-grab,:is(.sheet,.pd-stop,.pd-sheet) .pd-grab:visited{background:var(--pdgrab,#00873c)!important;color:#fff!important;box-shadow:none!important}
 
 /* ===== Eat tab (Nov 12): places drawn as Vietnamese shop signboards. Code in eat.js. ===== */
 .eat{--sgb:#c8312a;--sgt:#ffd84a;--sgs:#fff1c2}
@@ -7011,7 +7024,7 @@ function bkRow(key){
   return `<div class="row bkrow" data-bk="${key}" style="--wk:${k[2]}"><div class="when"><span class="bkk">${icon(k[1])}${k[0]}</span>${esc(b.when)}</div><div class="what">${esc(b.kind === "flight" ? b.title : b.title.replace(/\s*\(~?\$[^)]*\)/, ""))}</div>${chip(b.status)}${sub ? `<div class="detail">${esc(sub)}</div>` : ""}${bkTag(key)}</div>`;
 }
 function bkByCity(){
-  const all = [["f", T.flights], ["t", T.transfers], ["r", T.reservations]].flatMap(([t, A]) => (A || []).map((x, i) => [t + ":" + i, x])).filter(([, x]) => !x.pb || PB());
+  const all = [["f", T.flights], ["t", T.transfers], ["r", T.reservations]].flatMap(([t, A]) => (A || []).map((x, i) => [t + ":" + i, x])).filter(([, x]) => (!x.pb || PB()) && !x.grab);
   const tm = w => { const m = (w || "").match(/(\d{1,2})(?::(\d\d))?\s*(AM|PM)/i); if (m) return (+m[1] % 12 + (/pm/i.test(m[3]) ? 12 : 0)) * 60 + +(m[2] || 0);
     return /morning/i.test(w) ? 540 : /lunch/i.test(w) ? 720 : /dinner/i.test(w) ? 1140 : /late/i.test(w) ? 1320 : 600; };
   const sk = k => { const b = bkItem(k); return (b.date || "2026-12-99") + String(tm(b.when)).padStart(5, "0"); };
@@ -7046,7 +7059,7 @@ document.addEventListener("click", e => {
 }, true);
 function dayTodoSheet(date){
   const d = T.days.find(x => x.date === date); if (!d) return;
-  const keys = [["f", T.flights], ["t", T.transfers], ["r", T.reservations]].flatMap(([t, A]) => (A || []).map((x, i) => t + ":" + i)).filter(k => { const b = bkItem(k); return b && b.date === date && b.status !== "booked" && (!b.x.pb || PB()); });
+  const keys = [["f", T.flights], ["t", T.transfers], ["r", T.reservations]].flatMap(([t, A]) => (A || []).map((x, i) => t + ":" + i)).filter(k => { const b = bkItem(k); return b && b.date === date && b.status !== "booked" && !b.x.grab && (!b.x.pb || PB()); });
   const items = d.items.filter(y => y[2] === "todo");
   openSheet(`<div class="sname">To book · ${DOW[parse(date).getDay()]} ${fmt(date)}</div>
     ${keys.length ? `<div class="card">${keys.map(bkRow).join("")}</div>` : ""}
@@ -7062,7 +7075,7 @@ async function fillDayWx(root){
 
 function cityTodoSheet(key){
   const area = { hcmc: "hcmc", hoian: "hoian", danang: "hoian", hanoi: "hanoi", ninhbinh: "hanoi" }[key] || key, A = BKAREA.find(a => a[0] === area);
-  const keys = [["f", T.flights], ["t", T.transfers], ["r", T.reservations]].flatMap(([t, L]) => (L || []).map((x, i) => [t + ":" + i, x])).filter(([, x]) => (x.area || "hanoi") === area && x.status !== "booked" && (!x.pb || PB())).map(([k]) => k);
+  const keys = [["f", T.flights], ["t", T.transfers], ["r", T.reservations]].flatMap(([t, L]) => (L || []).map((x, i) => [t + ":" + i, x])).filter(([, x]) => (x.area || "hanoi") === area && x.status !== "booked" && !x.grab && (!x.pb || PB())).map(([k]) => k);
   const days = T.days.filter(d => d.city === key || (area === "hanoi" && d.city === "ninhbinh")), st = days.map(d => d.stay && stayById(d.stay)).find(s => s && s.status === "todo");
   openSheet(`<div class="sname">To book · ${esc(A ? A[1] : key)}</div>
     ${st ? `<button type="button" class="ptn todo" data-stayopen="${esc(st.id)}">${icon("key")}<span><small>Stay</small>${esc(st.name)}</span><i>›</i></button>` : ""}
@@ -7799,7 +7812,7 @@ document.addEventListener("submit", e => {
 function resFor(d, w){
   const n = parse(d.date).getDate(), on = x => new RegExp(`Dec ${n}\\b`).test(x.when || ""), lw = (w || "").toLowerCase();
   const words = x => (x.what || "").toLowerCase().split(/[^a-z0-9à-ỹ]+/).filter(s => s.length > 3 && !/^(with|about|from|then|tour|menu|course|tasting|private|show|nang|hanoi|saigon|airport|minutes|dinner|lunch|night|morning|evening|late|optional|class|market|pickup|give|driver|flight|airlines|vietnam)$/.test(s));
-  return [...(T.reservations || []), ...(T.transfers || [])].filter(on).find(x => words(x).some(s => lw.includes(s))) || null;
+  return [...(T.reservations || []), ...(T.transfers || [])].filter(x => on(x) && !x.grab).find(x => words(x).some(s => lw.includes(s))) || null;
 }
 function nowBookHtml(d, x, upNext){
   if (!x || x.i < 0) return "";
@@ -9034,6 +9047,36 @@ function pdNowCard(d, iso, live){
   const k = "Now", t = pdHead(d.items[x.i][1]), s = pdRest(d.items[x.i][1]);
   return `<button type="button" class="pd-now" ${x && x.i >= 0 ? `data-pdgo="${x.i}"` : ""}><div class="ph" data-lead="${esc(ph)}"></div><span class="pd-nb${cur ? " on" : ""}">${k}</span><div class="pd-nt"><b>${esc(t)}</b>${s ? `<small>${esc(s)}</small>` : ""}</div></button>`;
 }
+// Airport rides go by Grab, not a booked transfer (Praneeth, Nov 12). Applied to the trip data when it loads, so the locked data needn't change.
+const PDRIDE = [
+  { d: "2026-12-06", re: /^Land on UA 7913/i, w: "Land on UA 7913. Grab to the Airbnb, check in around 2 AM", tr: /^Airport pickup in HCMC/i,
+    apt: "Tân Sơn Nhất · Terminal 2", short: "Grab pickup: the parking building beside arrivals", tip: "Grab cars wait in the parking building beside arrivals, not at the curb. Follow the pickup pin in the app." },
+  { d: "2026-12-07", re: /^Car to Hoi An/i, w: "Grab to Hoi An, about 45 min. Check into the Airbnb", tr: /^Car from Da Nang airport/i,
+    apt: "Đà Nẵng · Terminal 1", short: "Grab pickup: past the taxi line, follow the pin", tip: "Grab cars can't stop at the doors. Walk out past the taxi line and follow the pickup pin in the app." },
+  { d: "2026-12-09", re: /^Pickup from Noi Bai/i, w: "Grab from Noi Bai, about 45 min. Late check-in at the Hanoi stay", tr: /^Airport pickup at Noi Bai/i,
+    apt: "Nội Bài · Terminal 1", short: "Grab pickup: follow the pin outside arrivals", tip: "Follow the pickup pin in the app outside arrivals. The spot has moved before, so trust the app over old signs." },
+];
+const PDRIDED = new WeakSet();
+function pdRides(){
+  if (!T || !T.days || PDRIDED.has(T)) return; PDRIDED.add(T);
+  PDRIDE.forEach(r => { const d = T.days.find(x => x.date === r.d), it = d && d.items.find(y => r.re.test(y[1]) || y[1] === r.w);
+    if (it) { it[1] = r.w; it[2] = null; it.ride = r; }
+    const t = (T.transfers || []).find(x => r.tr.test(x.what || "")); if (t) t.grab = true; });
+}
+{ const _r = render; render = function(){ try { pdRides(); } catch (e) {} return _r.apply(this, arguments); }; }
+const pdRideOf = (d, i) => { const it = d && d.items[i]; return it && it.ride || null; };
+function pdRideStay(d){
+  const s = d && d.stay && stayById(d.stay); if (!s) return null; const pl = T.places.find(p => p.name === s.name), C = s.at || (pl && COORD(pl.name));
+  return { s, C, name: s.name.replace(/\s*\(to book\)/, ""), vi: s.address || (pl && pl.vi) || (typeof UXSTAYVI !== "undefined" && UXSTAYVI[s.id]) || "", sub: (pl && pl.addr) || "" };
+}
+function pdRideBtns(d, short){
+  const H = pdRideStay(d), todo = !H || H.s.status === "todo";
+  const href = H && H.C ? `grab://open?screenType=BOOKING&dropOffLatitude=${H.C[0]}&dropOffLongitude=${H.C[1]}&dropOffName=${encodeURIComponent(H.name)}` : "grab://open";
+  const lab = todo ? "Open Grab" : short ? "Grab" : /airbnb/i.test(H.name) ? "Grab to the Airbnb" : "Grab to the hotel";
+  const b = [`<a class="btn pd-grab" href="${href}">${icon("car")}${esc(lab)}</a>`];
+  if (H && !todo && H.vi) b.push(`<button type="button" class="btn" data-driver="${esc(H.vi)}" data-driver-sub="${esc(H.sub)}">Show driver</button>`);
+  return b;
+}
 // NEXT ticket: the next stop, its time, when to leave and the one or two buttons it needs.
 function pdNext(d, x, now, opt = {}){
   if (!x) { const i = T.days.indexOf(d), tm = T.days[i + 1], f = tm && timeline(tm).find(y => y.i >= 0);
@@ -9047,9 +9090,10 @@ function pdNext(d, x, now, opt = {}){
     else { btns.push(pdGrab(to)); btns.push(`<button type="button" class="btn" data-driver="${esc(to.vi || to.name)}" data-driver-sub="${esc(to.addr || "")}">Show driver</button>`); } }
   else if (to && !fk) { btns.push(pdGrab(to)); btns.push(`<button type="button" class="btn" data-driver="${esc(to.vi || to.name)}" data-driver-sub="${esc(to.addr || "")}">Show driver</button>`); }
   if (st === "todo" && !fk) btns.unshift(`<button type="button" class="btn pd-bk" data-pdbook="${d.date}|${x.i}">Not booked · see how</button>`);
+  const rd = pdRideOf(d, x.i); if (rd) { const g = pdRideBtns(d, true); btns.length = 0; btns.push(...g.slice(0, fk ? 1 : 2)); if (fk) btns.push(`<button type="button" class="btn" data-bkopen="${fk}" data-bkleg="${esc(legIn(w))}">${icon("plane")}Boarding pass</button>`); }
   const lbl = late ? `Leave now${lv && lv.leg ? ` · ${lv.leg.mode === "walk" ? `${lv.leg.walk} min walk` : `Grab ${lv.leg.grab} min`}` : ""}` : lv && lv.at != null && lv.leg ? `Leave by ${hm(lv.at / 60)} · ${lv.leg.mode === "walk" ? `${lv.leg.walk} min walk` : `Grab ${lv.leg.grab} min`}` : "";
   return `<div class="pd-tk${late ? " late" : ""}${st === "todo" ? " todo" : ""}"><div class="pd-tt${/\d/.test(big) ? "" : " w"}"><b>${esc(big)}</b><small>${esc(ap || "")}</small>${cd != null && cd > 0 ? `<em data-pdcd="${x.s}">${pdCd(cd)}</em>` : ""}</div>
-    <div class="pd-tx"><small>${late ? "Đi ngay · Leave now" : "Tiếp theo · Next"}${st === "booked" ? `<i class="ok">Booked</i>` : st === "todo" ? `<i class="no">To book</i>` : st === "maybe" ? `<i class="mb">Maybe</i>` : ""}</small><b>${esc(pdHead(w))}</b>${pdRest(w) ? `<em>${esc(pdRest(w))}</em>` : ""}${lbl ? `<span class="pd-lv">${icon(lv.leg && lv.leg.mode === "walk" ? "walk" : "car")}${esc(lbl)}</span>` : ""}
+    <div class="pd-tx"><small>${late ? "Đi ngay · Leave now" : "Tiếp theo · Next"}${st === "booked" ? `<i class="ok">Booked</i>` : st === "todo" ? `<i class="no">To book</i>` : st === "maybe" ? `<i class="mb">Maybe</i>` : ""}</small><b>${esc(pdHead(w))}</b>${pdRest(w) ? `<em>${esc(pdRest(w))}</em>` : ""}${lbl ? `<span class="pd-lv">${icon(lv.leg && lv.leg.mode === "walk" ? "walk" : "car")}${esc(lbl)}</span>` : ""}${rd ? `<span class="pd-lv pd-rtip">${icon("car")}${esc(rd.short)}</span>` : ""}
     </div>${btns.length ? `<div class="pd-tb">${btns.slice(0, 2).join("")}</div>` : ""}</div>`;
 }
 // A flight on the page is a paper ticket too: next, in the air, or just landed. Boarding pass and Bags on it.
@@ -9066,11 +9110,12 @@ function pdFlightTk(LL){
   const title = landed ? `Welcome to ${l.toName}` : `${l.no} to ${l.toName}`;
   const em = landed ? (nx ? `Next: ${nx.no} to ${nx.toName} at ${t12(nx.dep)}.` : "") : `Lands ${pdHmS(l.arr)}${nx ? `, then ${nx.no} to ${nx.toName} at ${pdHmS(nx.dep)}` : ""}.${air ? " Everything here works offline." : ""}`;
   const lv = air || landed ? "" : n < board ? `Boards about ${t12(new Date(board + off).toISOString())}` : "Boarding now";
-  const cd = landed ? "" : `<em data-pdcd="${nowMin() + left}">${air ? "lands " : ""}in ${pdDur(left)}</em>`;
-  const btns = [`<button type="button" class="btn pri" data-bkopen="${esc(key)}" data-bkleg="${esc(l.no)}">${icon("plane")}Boarding pass</button>`];
-  if (rec && rec.bags) btns.push(`<button type="button" class="btn" data-pdbags="${fi}">${icon("bag")}Bags</button>`);
+  const cd = landed ? "" : `<em data-pdcd="${nowMin() + left}">in ${pdDur(left)}</em>`;
+  const ad = landed && dayOf(String(l.arr || "").slice(0, 10)), ai = ad ? ad.items.findIndex(y => y.ride) : -1, rd = ai >= 0 ? ad.items[ai].ride : null;
+  const btns = rd ? pdRideBtns(ad, true) : [`<button type="button" class="btn pri" data-bkopen="${esc(key)}" data-bkleg="${esc(l.no)}">${icon("plane")}Boarding pass</button>`];
+  if (!rd && rec && rec.bags) btns.push(`<button type="button" class="btn" data-pdbags="${fi}">${icon("bag")}Bags</button>`);
   return `<div class="pd-tk pd-ftk${air ? " air" : ""}"><div class="pd-tt"><b>${esc(big)}</b><small>${esc(ap || "")}</small>${cd}</div>
-    <div class="pd-tx"><small>${lbl}<i class="ok">Booked</i></small><b>${esc(title)}</b>${em ? `<em>${esc(em)}</em>` : ""}${lv ? `<span class="pd-lv">${icon("clock")}${esc(lv)}</span>` : ""}</div><div class="pd-tb">${btns.join("")}</div></div>`;
+    <div class="pd-tx"><small>${lbl}<i class="ok">Booked</i></small><b>${esc(title)}</b>${em ? `<em>${esc(em)}</em>` : ""}${lv ? `<span class="pd-lv">${icon("clock")}${esc(lv)}</span>` : ""}${rd ? `<span class="pd-lv pd-rtip">${icon("car")}${esc(rd.short)}</span>` : ""}</div><div class="pd-tb">${btns.join("")}</div></div>`;
 }
 document.addEventListener("click", e => { const b = e.target.closest("[data-pdbags]"); if (!b) return; e.preventDefault(); const f = (T.flights || [])[+b.dataset.pdbags]; if (!f) return;
   openSheet(`<div class="pd-sheet"><small class="pd-k">${esc(f.when || "")} · ${esc(f.cabin || "")}</small><div class="sname">Bags</div><dl class="pd-fx">${[["Checked", f.bags], ["Carry-on", f.carry], ["Booking", f.ref]].filter(r => r[1]).map(([k, v]) => `<div><dt>${esc(k)}</dt><dd>${esc(v)}</dd></div>`).join("")}</dl></div>`); });
@@ -9115,7 +9160,13 @@ function pdPage(d, iso, mode){
   const k = pdKey(d), col = pdCol(k), x = parse(iso), LL = live && typeof liveLeg === "function" ? liveLeg() : null;
   const first = !live ? timeline(d).find(y => y.i >= 0) : null;
   let tk = "";
+  // An airport Grab ride from 90 min before its time (planes land early) until 75 min after; a ride listed at "~1 AM" belongs to that night.
+  const rideT = (y, sh) => { const r = startMin(y.t); return r != null && r < 300 && y.i > 0 ? r + sh : y.s; };
+  const rideAt = (dd, sh) => { const y = timeline(dd).find(y => y.i >= 0 && pdRideOf(dd, y.i) && (t => now >= t - 90 && now <= t + 75)(rideT(y, sh))); return y && { ...y, s: rideT(y, sh) % 1440 }; };
+  let rD = d, rI = live ? rideAt(d, 1440) : null;
+  if (live && !rI && now < 300 && typeof uxPrevIso === "function") { const pv = dayOf(uxPrevIso(iso)); if (pv) { rI = rideAt(pv, 0); if (rI) rD = pv; } }
   if (LL) tk = pdFlightTk(LL);
+  else if (rI) tk = pdNext(rD, rI, now).replace("Tiếp theo · Next", "Đến nơi · On arrival").replace(/<em data-pdcd[^<]*<\/em>/, "");
   else if (dark && (!nxt || now >= 1260)) tk = pdHome(d) || pdNext(d, nxt, now);
   else if (live) tk = pdNext(d, pdTarget(d, nxt, now), now) || pdHome(d);
   else if (first) tk = pdNext(d, first, -1e4).replace("Tiếp theo · Next", "Đầu tiên · First up").replace(/<em data-pdcd[^<]*<\/em>/, "");
@@ -9156,9 +9207,13 @@ function pdStop(d, i, o = {}){
   if (fk) b.push(`<button type="button" class="btn pri" data-bkopen="${fk}" data-bkleg="${esc(legIn(w))}">${icon("plane")}Boarding pass</button>`);
   if (st === "todo" && !fk) b.push(`<button type="button" class="btn pri" data-pdbook="${d.date}|${i}">How to book</button>`);
   if (p) { b.push(`<a class="btn" href="${pdWalkUrl(p)}" target="_blank" rel="noopener">${icon("walk")}Walk</a>`, pdGrab(p), `<a class="btn" href="${gmaps(p)}" target="_blank" rel="noopener">${icon("map")}Map</a>`); }
+  const rd = pdRideOf(d, i), rH = rd && pdRideStay(d);
+  if (rd) { b.splice(0, b.length, ...pdRideBtns(d), ...(fk ? [`<button type="button" class="btn" data-bkopen="${fk}" data-bkleg="${esc(legIn(w))}">${icon("plane")}Boarding pass</button>`] : [])); }
+  const ride = rd ? `<div class="pd-ride"><div class="pd-rh">${icon("car")}<span><b>Grab · no booking needed</b><small>${esc(rd.apt)}</small></span></div>
+    <ul><li>${esc(rd.tip)}</li><li>Grab needs data: turn on your eSIM before you land, or use the airport Wi-Fi.</li><li>With everyone and checked bags, pick GrabCar 7 (seven seats) or two cars.</li>${rH && rH.s.status === "todo" ? `<li>The ${esc(VIN(rH.s.city))} stay isn't booked yet. Once it is, this button takes you straight there.</li>` : ""}</ul></div>` : "";
   return `<div class="pd-stop">${p && p.photo ? `<div class="ph" data-lead="${esc(p.photo)}"></div>` : ""}
     <div class="pd-sb">${o.rest ? (lead && !dOnly ? `<p>${esc(lead)}</p>` : "") : `<p>${esc(pdTxt(w))}</p>`}${p && p.why ? `<p class="why">${esc(p.why)}</p>` : ""}${res && res.note ? `<p class="why">${esc(res.note)}</p>` : ""}</div>
-    <dl class="pd-fx">${fx.map(([a, v]) => `<div><dt>${esc(a)}</dt><dd>${esc(v)}</dd></div>`).join("")}</dl>${hr}
+    <dl class="pd-fx">${fx.map(([a, v]) => `<div><dt>${esc(a)}</dt><dd>${esc(v)}</dd></div>`).join("")}</dl>${hr}${ride}
     ${p && p.vi ? `<button type="button" class="pd-drv" data-driver="${esc(p.vi)}" data-driver-sub="${esc(p.addr || "")}"><small>Show the driver</small><b lang="vi">${esc(p.vi)}</b>${icon("car")}</button>` : ""}
     ${b.length ? `<div class="pd-sbt">${b.slice(0, 4).join("")}</div>` : ""}</div>`;
 }
@@ -9396,9 +9451,9 @@ function pdGrpOf(date, title){
   const k = pdKey(dayOf(date)); return k === "srq" || k === "tyo" ? "fly" : k || "fly";
 }
 function pdBookings(){
-  const out = [];
+  pdRides(); const out = [];
   [["f", T.flights], ["t", T.transfers], ["r", T.reservations]].forEach(([t, A]) => (A || []).forEach((x, i) => {
-    if (x.pb && !PB()) return; const b = bkItem(t + ":" + i); if (!b || !b.date || b.date < PD0 || b.date > PD1) return;
+    if ((x.pb && !PB()) || x.grab) return; const b = bkItem(t + ":" + i); if (!b || !b.date || b.date < PD0 || b.date > PD1) return;
     out.push({ key: b.key, kind: b.kind, title: b.kind === "flight" ? b.title : b.title.replace(/\s*\(~?\$[^)]*\)/, ""), when: b.when, date: b.date, status: b.status || "todo", x, g: pdGrpOf(b.date, b.title), min: pdWhenMin(b.when) }); }));
   if (!PB()) { const b = typeof personalLegs === "function" && personalLegs().some(l => l.dir === "in") ? bkItem("m:in") : null;
     if (b) out.push({ key: b.key, kind: "flight", title: b.title, when: b.when, date: b.date, status: "booked", x: b.x, g: "fly", min: pdWhenMin(b.when) }); }
@@ -9495,8 +9550,8 @@ const PDSLOT = ["m", "a", "e", "n"];
 // Short labels for the grid, written by hand (the plan's own lines are too long for a cell). A slot without items keeps its own label.
 const PDGL = {
   "2026-12-04": { m: "UA 1525 to Newark, then Tokyo" }, "2026-12-05": { a: "Land in Tokyo", e: "UA 7913 to Sài Gòn" },
-  "2026-12-06": { m: "Pickup, Post Office", a: "Bến Thành, cafés", e: "Sunset tower, CoCo", n: "Rooftop or Bùi Viện" },
-  "2026-12-07": { m: "Last café, airport", a: "Fly, car, Ancient Town", e: "Lantern sampan", n: "7 Bridges" },
+  "2026-12-06": { m: "Grab, Post Office", a: "Bến Thành, cafés", e: "Sunset tower, CoCo", n: "Rooftop or Bùi Viện" },
+  "2026-12-07": { m: "Last café, airport", a: "Fly, Grab, Ancient Town", e: "Lantern sampan", n: "7 Bridges" },
   "2026-12-08": { m: "Boats, Marble Mtns", a: "Resort, spa", e: "Citron" }, "2026-12-09": { m: "Resort, gallery", a: "Lady Buddha", e: "Dragon Bridge, airport", n: "Fly to Hà Nội" },
   "2026-12-10": { m: "Egg coffee, tailors", a: "Lake, water puppets", e: "Street food", n: "Late bar" }, "2026-12-11": { m: "Tràng An boats", a: "Hoa Lư, Múa Cave", e: "Drive back" },
   "2026-12-12": { m: "Temple, coffee", a: "Train Street", e: "Gia, night market", n: "One last bar" }, "2026-12-13": { m: "Pottery or cooking", a: "Bún chả, Nội Bài", e: "VN983 to Bangalore" } };
