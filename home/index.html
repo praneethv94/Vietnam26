@@ -50,8 +50,9 @@ button{font:inherit;color:inherit;background:none;border:0;padding:0;cursor:poin
 .av.none{border:1.5px dashed var(--faint);color:var(--faint)}
 .me .av{width:34px;height:34px;box-shadow:0 0 0 2px rgba(255,255,255,.55)}
 .me .av.none{border-color:rgba(0,0,0,.35);color:rgba(0,0,0,.5);box-shadow:none}
-.score{font-family:Mono;font-size:10.5px;text-align:right;line-height:1.2}
+.score{font-family:Mono;font-size:10.5px;text-align:right;line-height:1.25;white-space:nowrap}
 .score b{display:block;font-family:BC;font-size:22px;line-height:1}
+.score b i{font-style:normal;font-size:15px;opacity:.6}
 .meter{display:flex;height:4px;border-radius:9px;background:var(--line);overflow:hidden;margin:8px 4px 0}
 .meter i{display:block;height:100%;transition:width .6s var(--ease)}
 .meter .mp{background:var(--p)}.meter .mb{background:var(--b)}
@@ -319,10 +320,13 @@ function ring(p, label, full){
   return `<div class="ring ${full?"full":""}"><svg viewBox="0 0 38 38"><circle class="bg" cx="19" cy="19" r="15"/><circle class="fg" cx="19" cy="19" r="15" stroke-dasharray="${c}" stroke-dashoffset="${off}"/></svg><span>${label}</span></div>`;
 }
 function render(){
-  const all = allTasks(), tot = all.length; let P = 0, B = 0;
-  all.forEach(t => { const v = doneOf(t); if (v){ if (v.by === "P") P++; else if (v.by === "B") B++; } });
+  // Header counts only today's list (not the whole weekend), plus what's yours.
+  const all = allTasks(), td = tasksFor(todayKey()), tot = td.length || 1; let P = 0, B = 0;
+  td.forEach(t => { const v = doneOf(t); if (v){ if (v.by === "P") P++; else if (v.by === "B") B++; } });
   const m = $("#meter").children; m[0].style.width = (P/tot*100)+"%"; m[1].style.width = (B/tot*100)+"%";
-  $("#score").innerHTML = `<b>${Math.round((P+B)/tot*100)}%</b>${tot-P-B} left`;
+  const mine = td.filter(t => !doneOf(t) && who && (ownerOf(t) === who || ownerOf(t) === "both")).length;
+  const leftToday = td.length - P - B;
+  $("#score").innerHTML = leftToday ? `<b>${P+B}<i>/${td.length}</i></b>done today${who ? `<br>${mine} for you` : ""}` : `<b>✓</b>today done`;
   const wb = $("#whoBtn"); wb.className = "av " + (who || "none"); wb.textContent = who || "?";
 
   const tk = todayKey();
