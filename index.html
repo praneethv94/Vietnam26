@@ -3728,6 +3728,38 @@ html[data-theme="dark"] .pd-pg.pd-cov .pd-tt b{color:#8fbfe8}
 html[data-theme="dark"] .pd-pg.pd-cov .pd-ct b{color:#f0a070}
 html[data-theme="dark"] .pd-pg.pd-cov .pd-num b{color:#ff5a45}
 .pd-gc{word-break:normal;overflow-wrap:break-word;-webkit-hyphens:auto;hyphens:auto}
+/* Ticket buttons run the full width under the time and title, side by side */
+.pd-tk>.pd-tb{grid-column:1/-1;display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:8px;margin-top:2px}
+.pd-tk>.pd-tb .btn{min-width:0;justify-content:center}
+.pd-pg:has(> .pd-tk + .pd-corner) .pd-tk>.pd-tb{padding-right:48px}
+/* Bookings: postcards stacked in trip order under a sticky city index */
+.pd-route{position:sticky;top:var(--hdr,56px);z-index:6;margin:0 -16px 10px;padding:8px 16px 6px;background:var(--bg)}
+.pd-route::before{top:29px}
+.pd-rg.vw .pd-rgr{box-shadow:0 0 0 3px var(--bg),0 0 0 5px var(--c)}
+.pd-rg.vw small{color:var(--c);font-weight:800}
+.pd-pcs{display:grid;gap:14px;overflow:visible;margin:0;padding:0 0 6px;height:auto!important;scroll-snap-type:none}
+.pd-pc{flex:none;min-height:0;scroll-margin-top:calc(var(--hdr,56px) + 80px)}
+.pd-pch{height:118px}
+.pd-dots{display:none}
+.pd-pcf{display:flex;align-items:center;gap:12px;width:100%;padding:8px 14px 8px 8px;border:0;text-align:left;cursor:pointer;opacity:.86}
+
+.pd-pcf>span:nth-child(2){flex:1;min-width:0}
+.pd-pcf small{display:block;font:700 11px/1.1 var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--pdm)}
+.pd-pcf b{display:block;font:700 18px/1.2 var(--serif);margin-top:3px;color:var(--c)}
+.pd-pcf em{font:700 12.5px/1 "Be Vietnam Pro";font-style:normal;color:var(--pdm)}
+.pd-pcf .ic2{width:13px;height:13px;color:var(--pdm)}
+html[data-theme="dark"] .pd-pcf b{color:color-mix(in srgb,var(--c) 50%,#fff)}
+/* Big date takes only the room it needs; the photo gets the rest */
+.pd-mid{grid-template-columns:max-content minmax(0,1fr)}
+.pd-num b{padding:0 2px;min-width:.62em}
+@media (max-width:374px){.pd-mid{grid-template-columns:max-content minmax(0,1fr)}}
+/* Corner sits beside the buttons, not under them */
+.pd-pg:has(> .pd-tk + .pd-corner){padding-bottom:16px}
+.pd-pcfs{display:flex;flex:none}
+.pd-pcfs .ph{width:40px;height:40px;border-radius:50%;box-shadow:0 0 0 2.5px var(--pdp),0 0 0 4px var(--c);margin-left:-12px}
+.pd-pcfs .ph:first-child{margin-left:0}
+.pd-pcf b{font-size:16px;color:var(--pdi)}
+html[data-theme="dark"] .pd-pcf b{color:var(--pdi)}
 
 </style>
 
@@ -8653,7 +8685,7 @@ function pdNext(d, x, now, opt = {}){
   const lbl = late ? `Leave now${lv && lv.leg ? ` · ${lv.leg.mode === "walk" ? `${lv.leg.walk} min walk` : `Grab ${lv.leg.grab} min`}` : ""}` : lv && lv.at != null && lv.leg ? `Leave by ${hm(lv.at / 60)} · ${lv.leg.mode === "walk" ? `${lv.leg.walk} min walk` : `Grab ${lv.leg.grab} min`}` : "";
   return `<div class="pd-tk${late ? " late" : ""}${st === "todo" ? " todo" : ""}"><div class="pd-tt${/\d/.test(big) ? "" : " w"}"><b>${esc(big)}</b><small>${esc(ap || "")}</small>${cd != null && cd > 0 ? `<em data-pdcd="${x.s}">${pdCd(cd)}</em>` : ""}</div>
     <div class="pd-tx"><small>${late ? "Đi thôi · Go now" : "Tiếp theo · Next"}${st === "booked" ? `<i class="ok">Booked</i>` : st === "todo" ? `<i class="no">To book</i>` : st === "maybe" ? `<i class="mb">Maybe</i>` : ""}</small><b>${esc(pdHead(w))}</b>${pdRest(w) ? `<em>${esc(pdRest(w))}</em>` : ""}${lbl ? `<span class="pd-lv">${icon(lv.leg && lv.leg.mode === "walk" ? "walk" : "car")}${esc(lbl)}</span>` : ""}
-    ${btns.length ? `<div class="pd-tb">${btns.slice(0, 2).join("")}</div>` : ""}</div></div>`;
+    </div>${btns.length ? `<div class="pd-tb">${btns.slice(0, 2).join("")}</div>` : ""}</div>`;
 }
 // The ticket shows the next thing with a real time when the very next line is loose ("Morning", "Lunch").
 function pdTarget(d, nxt, now){ if (!nxt || nxt.exact) return nxt; const e = timeline(d).find(y => y.i >= 0 && y.exact && y.s > now); return e && e.s - now <= 240 ? e : nxt; }
@@ -8662,14 +8694,14 @@ function pdHome(d){
   const st = d.stay && stayById(d.stay); if (!st || !VNStay(st)) return "";
   const pl = T.places.find(p => p.name === st.name), name = st.name.replace(/\s*\(to book\)/, "");
   return `<div class="pd-tk home"><div class="pd-tt"><b>Home</b></div><div class="pd-tx"><small>Về nhà · Home</small><b>${esc(st.status === "todo" ? `${VIN(st.city)} stay, not booked yet` : name)}</b>${st.host && !/^(Hotel|Family)$/.test(st.host) ? `<em>Host ${esc(st.host)}</em>` : ""}
-    <div class="pd-tb"><button type="button" class="btn pri" data-pdhome>${icon("home")}Take me home</button>${pdGrab(pl)}</div></div></div>`;
+    </div><div class="pd-tb"><button type="button" class="btn pri" data-pdhome>${icon("home")}Take me home</button>${pdGrab(pl)}</div></div>`;
 }
 document.addEventListener("click", e => { if (e.target.closest("[data-pdhome]")) { e.preventDefault(); typeof uxHomeView === "function" && uxHomeView(); } });
 // Morning strip: the day's checklist, one line. Night strip: tomorrow's first thing.
 function pdStrip(d, now, dark){
   if (dark) { const i = T.days.indexOf(d), tm = T.days[i + 1]; if (!tm || tm.date > PD1) return "";
     const f = timeline(tm).find(y => y.i >= 0 && y.exact), L = checklistFor(tm), dn = local.get("check-" + tm.date, {}), n = L.filter(c => dn[c[0]]).length;
-    return `<button type="button" class="pd-strip" data-pdcheck="${tm.date}"><span class="pd-ring" style="--p:${L.length ? n / L.length : 0}">${n}/${L.length}</span><span><small>Trước khi ngủ · Before bed · for ${esc(DOW[parse(tm.date).getDay()])} ${parse(tm.date).getDate()}</small><b>${f ? `${esc(pdHead(tm.items[f.i][1]))} at ${esc(hm(f.s / 60))}` : esc(tm.title)}</b><em>${esc(L.filter(c => !dn[c[0]]).slice(0, 2).map(c => c[0]).join(", "))}</em></span>${icon("play")}</button>`; }
+    return `<button type="button" class="pd-strip" data-pdcheck="${tm.date}"><span class="pd-ring" style="--p:${L.length ? n / L.length : 0}">${n}/${L.length}</span><span><small>Trước khi ngủ · Before bed</small><b>${esc(DOW[parse(tm.date).getDay()])} ${parse(tm.date).getDate()}: ${f ? `${esc(pdHead(tm.items[f.i][1]))} at ${esc(hm(f.s / 60))}` : esc(tm.title)}</b><em>${esc(L.filter(c => !dn[c[0]]).slice(0, 2).map(c => c[0]).join(", "))}</em></span>${icon("play")}</button>`; }
   if (now > 720) return "";
   const L = checklistFor(d), dn = local.get("check-" + d.date, {}), n = L.filter(c => dn[c[0]]).length, nx = L.find(c => !dn[c[0]]);
   if (!L.length || !nx) return "";
@@ -8752,6 +8784,9 @@ function pdPartsHtml(d, mode){
   return `<div class="pd-parts" style="--c:${pdCol(pdKey(d))}">${P.map((g, i) => {
     const [vi, en] = PDPART[g.p], when = pdPartWhen(d, g, i, P), title = pdPartTitle(d, g), ph = pdPartPh(d, g);
     const key = d.date + ":" + g.p, open = PD.open[key];
+    const dn = live ? P.map((h, j) => j).filter(j => j < ci && !PD.open[d.date + ":" + P[j].p]) : [];
+    if (dn.length > 1 && i < ci && !open) { if (i !== dn[0]) return ""; const n = dn.reduce((a, j) => a + P[j].items.length, 0);
+      return `<button type="button" class="pd-done" data-pdpart="${dn.map(j => d.date + ":" + P[j].p).join(",")}"><span class="pd-ck">${icon("check")}</span><span><small>${dn.map(j => esc(PDPART[P[j].p][0])).join(" · ")}</small><b>${dn.map(j => esc(PDPART[P[j].p][1])).join(" and ")}</b></span><em>${n} done</em>${icon("play")}</button>`; }
     if (live && i < ci && !open) return `<button type="button" class="pd-done" data-pdpart="${key}"><span class="pd-ck">${icon("check")}</span><span><small>${esc(vi)} · ${esc(en)}</small><b>${esc(title)}</b></span><em>${g.items.length} done</em>${icon("play")}</button>`;
     if (live && i > ci && !open) return `<button type="button" class="pd-later" data-pdpart="${key}"><span class="ph" data-lead="${esc(ph)}"></span><span><small>${esc(vi)} · ${esc(en)}${when ? ` · ${esc(when)}` : ""}</small><b>${esc(title)}</b><em>${esc(g.items.slice(0, 3).map(x => pdHead(d.items[x.i][1])).join(" · "))}</em></span>${icon("play")}</button>`;
     const w = VN(d.city) ? pdWx(d.city, d.date) : null, ss = VN(d.city) && (g.p === "a" || g.p === "e") ? pdSun(d.city, d.date) : "";
@@ -8761,7 +8796,7 @@ function pdPartsHtml(d, mode){
       <div class="pd-rows">${g.items.map(x => pdRow(d, x, { now: live && cur && x.i === cur.i, next: live && nxt && x.i === nxt.i && !(cur && x.i === cur.i), done: live && cur && x.i < cur.i })).join("")}</div></section>`;
   }).join("")}</div>`;
 }
-document.addEventListener("click", e => { const b = e.target.closest("[data-pdpart]"); if (!b) return; e.preventDefault(); const k = b.dataset.pdpart; PD.open[k] = !PD.open[k]; const y = scrollY; pdRe(); scrollTo(0, y); haptic && haptic(); });
+document.addEventListener("click", e => { const b = e.target.closest("[data-pdpart]"); if (!b) return; e.preventDefault(); const ks = b.dataset.pdpart.split(","), v = !PD.open[ks[0]]; ks.forEach(k => PD.open[k] = v); const y = scrollY; pdRe(); scrollTo(0, y); haptic && haptic(); });
 
 // Booking help for a stop that isn't booked: the ticket, blank, with what we know and how to book it.
 document.addEventListener("click", e => { const b = e.target.closest("[data-pdbook]"); if (!b) return; e.preventDefault(); e.stopPropagation();
@@ -8778,8 +8813,8 @@ function pdCover(iso){
   const d1 = dayOf("2026-12-06"), f0 = myLegs().find(l => l.dep && l.dep.slice(0, 10) >= PD0);
   const L = (MOg().todo || []).filter(t => t[4] === "all" || PB()), done = local.get("todo-done", {}), open = L.filter(t => !done[t[0]]).sort((a, b) => a[2] < b[2] ? -1 : 1);
   const left = pdLeft().length;
-  const fl = f0 ? `<div class="pd-tk"><div class="pd-tt"><b>${esc(DOW[parse(f0.dep.slice(0, 10)).getDay()]).toUpperCase()} ${parse(f0.dep.slice(0, 10)).getDate()}</b></div><div class="pd-tx"><small>Chuyến đầu · First flight<i class="ok">Booked</i></small><b>${esc(f0.fromName || f0.from)} → ${esc(f0.toName || f0.to)}, ${esc(t12(f0.dep))}</b><em>${esc(f0.no)}${PB() ? ". Then Tokyo and Sài Gòn, landing 12:15 AM Sunday." : ""}</em>
-    <div class="pd-tb"><button type="button" class="btn pri" data-bkopen="${f0.mine ? "m:in" : bkFlightKey(f0.dep.slice(0, 10), "", f0.no)}">${icon("plane")}Boarding pass</button></div></div></div>` : "";
+  const fl = f0 ? `<div class="pd-tk"><div class="pd-tt"><b>${esc(DOW[parse(f0.dep.slice(0, 10)).getDay()]).toUpperCase()} ${parse(f0.dep.slice(0, 10)).getDate()}</b><small>${esc(t12(f0.dep))}</small></div><div class="pd-tx"><small>Chuyến đầu · First flight<i class="ok">Booked</i></small><b>${esc(f0.fromName || f0.from)} → ${esc(f0.toName || f0.to)}</b><em>${esc(f0.no)}${PB() ? ". Then Tokyo and Sài Gòn, landing 12:15 AM Sunday." : ""}</em>
+    </div><div class="pd-tb"><button type="button" class="btn pri" data-bkopen="${f0.mine ? "m:in" : bkFlightKey(f0.dep.slice(0, 10), "", f0.no)}">${icon("plane")}Boarding pass</button><button type="button" class="btn" data-pdseg="bookings">${icon("tag")}All bookings</button></div></div>` : "";
   return `<section class="pd-pg pd-cov" style="--c:#c8312a" data-iso="${iso}">
     ${pdHd(null, iso, `<small>First stop</small><b>Sài Gòn</b>`)}
     <div class="pd-mid"><div class="pd-num" aria-label="${n} days to go"><b>${n}</b><small>${n === 1 ? "Day to go" : "Days to go"}</small></div>
@@ -8888,7 +8923,9 @@ setInterval(() => {
 const _pdTodayTabs = todayTabs;
 todayTabs = function(){ if (!PDON() || todayIso() > PD1) { document.documentElement.classList.remove("pd-pre"); return _pdTodayTabs(); } return pdToday(); };
 const _pdRender = render;
-render = function(h){ const r = _pdRender.apply(this, arguments); try { pdAfter(h); } catch (e) { console.log("pad", e); } return r; };
+render = function(h, target, sub){
+  if (sub === "stays" && PDON()) { const id = (target || "").replace(/^stay-/, ""); PD.seg = "bookings"; store.set("pd-seg", "bookings"); history.replaceState(null, "", "#plan"); const r = render("plan"); if (id && stayById(id)) setTimeout(() => pdStaySheet(id), 60); return r; }
+  const r = _pdRender.apply(this, arguments); try { pdAfter(h); } catch (e) { console.log("pad", e); } return r; };
 function pdAfter(h){
   if (!PDON()) return;
   if (h !== "today") document.documentElement.classList.remove("pd-pre");
@@ -9038,19 +9075,26 @@ function pdBookingsTab(){
   const B = pdBookings(), iso = todayIso(), during = iso >= PD0 && iso <= PD1, G = PDGRP.map(([g, name, col, short]) => ({ g, name, col, short: short || name, B: B.filter(b => b.g === g) })).filter(x => x.B.length);
   const curG = during ? pdGrpOf(iso, "") : null;
   const route = `<div class="pd-route" role="tablist" aria-label="Cities">${G.map((x, i) => { const ok = x.B.filter(b => b.status === "booked").length, p = ok / x.B.length;
-    return `<button type="button" class="pd-rg${x.g === curG ? " on" : ""}${p === 1 ? " dn" : ""}" data-pdcard="${i}" style="--c:${x.col};--p:${p}" aria-label="${esc(x.name)}: ${ok} of ${x.B.length} booked"><span class="pd-rgr">${p === 1 ? icon("check") : `<b>${x.B.length - ok}</b>`}</span><small>${esc(x.short)}</small></button>`; }).join("")}</div>`;
+    return `<button type="button" class="pd-rg${x.g === curG ? " on" : ""}${p === 1 ? " dn" : ""}" data-pdcard="${i}" data-g="${x.g}" style="--c:${x.col};--p:${p}" aria-label="${esc(x.name)}: ${ok} of ${x.B.length} booked"><span class="pd-rgr">${p === 1 ? icon("check") : `<b>${x.B.length - ok}</b>`}</span><small>${esc(x.short)}</small></button>`; }).join("")}</div>`;
   const dl = T.stays.filter(VNStay).map(s => [s, stayCancel(s)]).filter(([s, c]) => c && c.left >= 0 && s.status === "booked").sort((a, b) => a[1].iso < b[1].iso ? -1 : 1)[0];
   const dlh = dl ? `<button type="button" class="pd-dln" data-pdb="s:${dl[0].id}">${icon("alarm") || icon("clock")}<span><b>${esc(VIN(dl[0].city))} stay: free to cancel until ${esc(DOW[parse(dl[1].iso).getDay()])} ${esc(fmt(dl[1].iso))}, ${esc(dl[1].time)}</b><small>${dl[1].left === 0 ? "Today" : dl[1].left === 1 ? "Tomorrow" : `${dl[1].left} days left`}</small></span>${icon("play")}</button>` : "";
-  const order = curG ? [...G.filter(x => x.g === curG), ...G.filter(x => x.g !== curG)] : G;
-  return `${route}${dlh}<div class="pd-pcs" id="pd-pcs">${order.map(x => pdPostcard(x, during && x.g === curG)).join("")}</div><div class="pd-dots" aria-hidden="true">${order.map((x, i) => `<i style="--c:${x.col}"${i ? "" : ' class="on"'}></i>`).join("")}</div>`;
+  // One postcard per city, top to bottom in trip order. Cities you've left fold into a strip (tap to open).
+  const gone = x => during && x.B.every(b => b.kind === "stay" ? b.s.end <= iso : b.date < iso);
+  const F = PD.open["pc:done"] ? [] : G.filter(gone);
+  return `${route}${dlh}<div class="pd-pcs" id="pd-pcs">${F.length ? pdPcFold(F) : ""}${G.filter(x => !F.includes(x)).map(x => pdPostcard(x, during && x.g === curG)).join("")}</div>`;
 }
+function pdPcFold(F){
+  const n = F.reduce((a, x) => a + x.B.length, 0);
+  return `<button type="button" class="pd-pc pd-pcf" data-pdpc="done" data-cards="${F.map(x => x.g).join(",")}"><span class="pd-pcfs">${F.slice(0, 4).map(x => `<span class="ph" style="--c:${x.col}" data-lead="${esc(PDGPH[x.g] || x.name)}"></span>`).join("")}</span><span><small>Đã qua · Done</small><b>${F.map(x => esc(x.short)).join(" · ")}</b></span><em>${n} used</em>${icon("play")}</button>`;
+}
+document.addEventListener("click", e => { const b = e.target.closest("[data-pdpc]"); if (!b) return; e.preventDefault(); PD.open["pc:" + b.dataset.pdpc] = !PD.open["pc:" + b.dataset.pdpc]; pdRe(); });
 function pdPostcard(G, live){
   const S = G.B.filter(b => b.kind === "stay"), K = G.B.filter(b => b.kind !== "stay"), ok = G.B.filter(b => b.status === "booked").length, iso = todayIso();
   const days = pdDays().filter(d => pdGrpOf(d.date, "") === G.g).map(d => d.date), all = [...days, ...S.flatMap(b => [b.s.start, b.s.end])].sort(), a = all[0], z = all[all.length - 1];
   const dd = iso => `${DOW[parse(iso).getDay()]} ${parse(iso).getDate()}`, dates = a ? (a === z ? dd(a) : `${dd(a)} – ${dd(z)}`) : "";
   const used = K.filter(b => b.date < iso || (b.date === iso && b.min >= 0 && b.min < nowMin() - 30));
   const tk = K.filter(b => !used.includes(b));
-  return `<article class="pd-pc" style="--c:${G.col}" aria-label="${esc(G.name)}, ${ok} of ${G.B.length} booked">
+  return `<article class="pd-pc" data-g="${G.g}" style="--c:${G.col}" aria-label="${esc(G.name)}, ${ok} of ${G.B.length} booked">
     <div class="pd-pch"><div class="ph" data-lead="${esc(PDGPH[G.g] || G.name)}"></div><span class="pd-pm" aria-hidden="true"><b>${esc(G.short.toUpperCase())}</b><small>${esc(dates.toUpperCase())}</small><small>XII · 26</small></span><svg class="pd-pw" viewBox="0 0 90 30" aria-hidden="true"><path d="M0 6q7.5-5 15 0t15 0 15 0 15 0 15 0 15 0M0 15q7.5-5 15 0t15 0 15 0 15 0 15 0 15 0M0 24q7.5-5 15 0t15 0 15 0 15 0 15 0 15 0"/></svg>
       <span class="pd-ps${ok === G.B.length ? " ok" : ""}"><b>${ok}/${G.B.length}</b><small>Booked</small></span><span class="pd-pt"><small>${esc(dates)}${S.length ? ` · ${nightsOf(S[0].s) + (S[1] && S[1].s.end > S[0].s.end ? nightsOf(S[1].s) - Math.max(0, pdDiff(S[1].s.start, S[0].s.end)) : 0)} nights` : ""}</small><b>${esc(G.name)}</b></span></div>
     ${S.map(b => pdKey2(b, live)).join("")}
@@ -9076,12 +9120,13 @@ function pdStub(b){
 }
 // Swiping postcards: the dots and the route rings follow, and the row's height follows the card you're on.
 function pdPcsWire(){
-  const box = document.getElementById("pd-pcs"); if (!box) return; const dots = [...document.querySelectorAll(".pd-dots i")], rings = [...document.querySelectorAll(".pd-rg")];
-  const fit = () => { const w = box.clientWidth, i = Math.round(box.scrollLeft / (w * .92 || 1)), c = box.children[Math.min(i, box.children.length - 1)]; if (!c) return;
-    box.style.height = c.offsetHeight + 4 + "px"; dots.forEach((d, j) => d.classList.toggle("on", j === i)); };
-  let t; box.addEventListener("scroll", () => { clearTimeout(t); t = setTimeout(fit, 90); }, { passive: true });
-  rings.forEach((r, i) => r.addEventListener("click", () => { const c = box.children[i]; if (c) box.scrollTo({ left: c.offsetLeft - box.offsetLeft - 0, behavior: "smooth" }); }));
-  setTimeout(fit, 50); setTimeout(fit, 600);
+  const box = document.getElementById("pd-pcs"); if (!box) return; const cards = [...box.children], rings = [...document.querySelectorAll(".pd-rg")];
+  const off = () => (parseFloat(getComputedStyle(document.documentElement).getPropertyValue("--hdr")) || 56) + (document.querySelector(".pd-route") || {}).offsetHeight + 10;
+  const cardOf = g => cards.find(c => c.dataset.g === g || (c.dataset.cards || "").split(",").includes(g));
+  rings.forEach(r => r.addEventListener("click", () => { const c = cardOf(r.dataset.g); if (c) scrollTo({ top: c.getBoundingClientRect().top + scrollY - off(), behavior: "smooth" }); }));
+  if (!("IntersectionObserver" in window)) return;
+  const io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) rings.forEach(r => r.classList.toggle("vw", cardOf(r.dataset.g) === e.target)); }), { rootMargin: "-35% 0px -60% 0px" });
+  cards.forEach(c => io.observe(c));
 }
 
 // Days: the pad page for any day, with a date strip on top. Swipe the page left or right for the next or previous day.
@@ -9107,6 +9152,30 @@ planStreet = function(){ if (!PDON()) return _pdPlanStreet(); return pdPlan(); }
 const _pdPlanInit = planInit;
 const pdDsCenter = () => { const s = document.querySelector(".pd-ds"), a = s && s.querySelector('[aria-selected="true"]'); if (a) s.scrollLeft += a.getBoundingClientRect().left - s.getBoundingClientRect().left - (s.clientWidth - a.offsetWidth) / 2; };
 planInit = function(){ if (!PDON()) return _pdPlanInit(); scrollTo(0, 0); pdPcsWire(); pdDsCenter(); };
+// ---------- Tab bar: Stays folds into Plan > Bookings; Eat takes its slot (Plan, Eat, Today, Explore, Info) ----------
+(function(){
+  if (/[?&]pad=0\b/.test(location.search)) return;
+  const a = document.querySelector('#tabs a[data-tab="stays"]'); if (!a) return;
+  a.href = "#eat"; a.dataset.tab = "eat";
+  a.innerHTML = `<svg viewBox="0 0 24 24"><path d="M3 12.5h18a9 9 0 0 1-18 0z"/><path d="M8.5 9c-.8-1.2.8-2.3 0-3.6M12 9c-.8-1.2.8-2.3 0-3.6M15.5 9c-.8-1.2.8-2.3 0-3.6"/></svg>Eat`;
+  const was = { ...TABS }; Object.keys(TABS).forEach(k => delete TABS[k]);
+  Object.assign(TABS, { plan: was.plan, eat: "Eat", today: was.today, explore: was.explore, info: was.info });
+  ORDER.splice(0, ORDER.length, ...Object.keys(TABS));
+  delete PARENT.eat; PARENT.food = "eat"; PARENT.stays = "plan";
+})();
+// Eat's own header and sections; Explore loses its Eat section.
+const _pdSeg0 = seg0;
+seg0 = function(active){
+  const r = _pdSeg0(active); if (!PDON()) return r;
+  if (active === "eat" || active === "food") return `<div class="pd-ptop"><h2>Eat</h2></div><nav class="seg seg-c" aria-label="Eat"><a href="#eat"${active === "eat" ? ' aria-current="page"' : ""}>Places</a><a href="#food"${active === "food" ? ' aria-current="page"' : ""}>Street food</a></nav>`;
+  return r.replace(/<a href="#eat"[^>]*>Eat<\/a>/, "");
+};
+// Stay links open the key-card sheet (or Plan > Bookings) instead of the old Stays page.
+document.addEventListener("click", e => { const l = e.target.closest('a[href^="#stay"]'); if (!l || !PDON()) return;
+  const id = l.getAttribute("href").slice(1).replace(/^stay-?/, ""); e.preventDefault(); e.stopPropagation();
+  if (id && stayById(id)) return pdStaySheet(id);
+  PD.seg = "bookings"; store.set("pd-seg", "bookings"); if (current === "plan") pdRe(); else location.hash = "#plan"; }, true);
+
 // Test hook for screenshots and checks (?pddbg).
 if (/[?&]pddbg\b/.test(location.search)) window.PDX = { pdDays, pdCells, pdBookings, pdParts, pdLeft, PD, dayOf, nowNext };
 
