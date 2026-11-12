@@ -3919,6 +3919,33 @@ html[data-theme="dark"] .pd-fact .pd-fsay small{color:#e0cf98}
 .pd-fact .pd-fsay small span,.pd-fact .pd-fsay small i{white-space:normal;overflow:visible;text-overflow:clip;display:block;max-width:none}
 .pd-gse .btn{align-self:stretch;justify-self:stretch;margin-top:4px}
 .pd-gse .btn:first-of-type{margin-top:10px}
+/* Step through stays / what's left to book, from Glance */
+.pd-gb.sel{outline:3px solid var(--c);outline-offset:1px;position:relative;z-index:1}
+.pd-br.sel{box-shadow:inset 3px 0 0 var(--c),0 0 0 2px #ffd84a}
+.pd-sheet .btn.pd-wide,.sheet a.btn.pd-wide{box-sizing:border-box;max-width:100%}
+.pd-bnav{display:grid;grid-template-columns:44px minmax(0,1fr) 44px;align-items:center;gap:6px;margin:-6px 0 12px;padding:6px;border-radius:16px;--c:#13213d}
+.pd-bnav.stay{background:color-mix(in srgb,var(--c) 10%,var(--surface,#fff));box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--c) 22%,transparent)}
+.pd-bnav.left{background:#0d1730;color:#f1f4fa}
+.pd-bnt{display:grid;justify-items:center;gap:2px;text-align:center;min-width:0}
+.pd-bnt small{font:700 10.5px/1.2 var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--c);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
+.pd-bnav.left .pd-bnt small{color:#ffd84a}
+.pd-bnt b{font:800 17px/1.15 var(--serif);color:var(--ink)}
+.pd-bnt em{font:600 12.5px/1.2 "Be Vietnam Pro";font-style:normal;color:var(--muted)}
+.pd-bnav.left .pd-bnt em{color:#aab5cb}
+.pd-bnf{display:flex;align-items:center;gap:2px;margin:2px 0}
+.pd-bnf i{display:grid;place-items:center;width:20px;height:26px;border-radius:4px;background:#1d2a4a;color:#ffd84a;font:700 16px/1 var(--mono);font-style:normal;box-shadow:inset 0 -13px 0 rgb(0 0 0/.18)}
+.pd-bnf em{margin:0 4px;color:#aab5cb;font:700 15px/1 var(--mono);font-style:normal}
+.pd-bnb{display:grid;place-items:center;width:44px;height:44px;border:0;border-radius:50%;cursor:pointer;background:color-mix(in srgb,var(--c) 14%,transparent);color:var(--c)}
+.pd-bnav.left .pd-bnb{background:#1d2a4a;color:#ffd84a}
+.pd-bnb .ic2{width:18px;height:18px}
+.pd-bnb.prev .ic2{transform:rotate(180deg)}
+.pd-bnb.off{background:none}
+html[data-theme="dark"] .pd-bnav.stay{background:color-mix(in srgb,var(--c) 22%,#16233f);box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--c) 40%,transparent)}
+html[data-theme="dark"] .pd-bnav.stay :is(.pd-bnt small,.pd-bnb){color:color-mix(in srgb,var(--c) 40%,#fff)}
+html[data-theme="dark"] .pd-bnav.stay .pd-bnb{background:color-mix(in srgb,var(--c) 35%,transparent)}
+html[data-theme="dark"] .pd-bnav.left{background:#0a1226;box-shadow:inset 0 0 0 1px #2f4068}
+.pd-bnav .pd-bnb.off{background:none;cursor:default}
+html[data-theme="dark"] .pd-bnav .pd-bnb.off,.pd-bnav.left .pd-bnb.off{background:none}
 
 /* ===== Eat tab (Nov 12): places drawn as Vietnamese shop signboards. Code in eat.js. ===== */
 .eat{--sgb:#c8312a;--sgt:#ffd84a;--sgs:#fff1c2}
@@ -9383,7 +9410,40 @@ const PDK = { flight: ["Flight", "plane", "#1f5f99", "Boarding pass"], car: ["Ri
 const pdKindOf = b => b.kind === "food" && /bar|rooms|workshop/i.test(b.title) ? ["Bar", "cocktail", "#8a5a00", "Reservation card"] : PDK[b.kind] || PDK.ticket;
 const pdSt = s => s === "booked" ? "Booked" : s === "maybe" ? "Maybe" : "To book";
 function pdOpenB(key){ if (key.startsWith("s:")) return pdStaySheet(key.slice(2)); const b = pdBookings().find(x => x.key === key); if (b && b.status !== "booked") return pdTicketSheet(key); bkSheet(key); }
-document.addEventListener("click", e => { const b = e.target.closest("[data-pdb]"); if (!b) return; e.preventDefault(); e.stopPropagation(); pdOpenB(b.dataset.pdb); }, true);
+document.addEventListener("click", e => { const b = e.target.closest("[data-pdb]"); if (!b) return; e.preventDefault(); e.stopPropagation();
+  PDBN = b.matches(".pd-gl .pd-gb, .pd-brd .pd-br") ? pdBNavList(b) : null; pdOpenB(b.dataset.pdb); if (PDBN) pdBNavAdd(b.dataset.pdb); }, true);
+// Opened from Glance (a night's stay, or a row of what's left to book): step through the rest without closing the card.
+let PDBN = null;
+function pdBNavList(b){
+  if (b.classList.contains("pd-br")) return { k: "left", keys: [...document.querySelectorAll(".pd-brd .pd-br[data-pdb]")].map(x => x.dataset.pdb) };
+  return { k: "stay", keys: [...new Set([...document.querySelectorAll(".pd-gl .pd-gb[data-pdb]")].map(x => x.dataset.pdb))] };
+}
+function pdBNavAdd(key){
+  const sc = document.querySelector(".sheet:not([data-out])"), L = PDBN; if (!sc || !L) return; const i = L.keys.indexOf(key); if (i < 0) return;
+  const pv = L.keys[i - 1], nx = L.keys[i + 1], n = L.keys.length, left = L.k === "left";
+  const st = !left && stayById(key.slice(2));
+  const btn = (k, d) => k ? `<button type="button" class="pd-bnb${d < 0 ? " prev" : ""}" data-pdbn="${esc(k)}" data-dir="${d}" aria-label="${d < 0 ? "Previous" : "Next"}">${icon("chev")}</button>` : `<span class="pd-bnb off"></span>`;
+  const num = left ? `<span class="pd-bnf" aria-label="${i + 1} of ${n}">${String(i + 1).padStart(2, "0").split("").map(c => `<i>${c}</i>`).join("")}<em>/</em>${String(n).padStart(2, "0").split("").map(c => `<i>${c}</i>`).join("")}</span>` : `<b>${i + 1} of ${n}</b>`;
+  sc.querySelector(".pd-bnav")?.remove();
+  sc.querySelector(".shead").insertAdjacentHTML("afterend", `<div class="pd-bnav ${left ? "left" : "stay"}"${st ? ` style="--c:${pdCol(STAYCITY(st))}"` : ""}>${btn(pv, -1)}<span class="pd-bnt"><small lang="vi">${left ? "Còn phải đặt · Left to book" : "Where you sleep"}</small>${num}</span>${btn(nx, 1)}</div>`);
+  document.querySelectorAll(".pd-gl .sel, .pd-brd .sel").forEach(x => x.classList.remove("sel"));
+  const on = left ? [...document.querySelectorAll(".pd-brd .pd-br")].filter(x => x.dataset.pdb === key) : [...document.querySelectorAll(".pd-gl .pd-gb")].filter(x => x.dataset.pdb === key);
+  on.forEach(x => x.classList.add("sel"));
+}
+// Render a sheet's HTML without opening it, then swap it into the open sheet with a sideways slide.
+function pdSheetHtml(fn){ const o = openSheet; let h = null; openSheet = x => { h = x; }; try { fn(); } finally { openSheet = o; } return h; }
+function pdSheetSwap(fn, dir, after){
+  const sc = document.querySelector(".sheet:not([data-out])"), h = pdSheetHtml(fn); if (h == null) return;
+  if (!sc) { openSheet(h); after && after(); return; }
+  const body = [...sc.children].filter(c => !c.classList.contains("shead") && !c.classList.contains("pd-bnav")), still = !sc.animate || matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const put = () => { body.forEach(c => c.remove()); sc.insertAdjacentHTML("beforeend", h); hydrate(sc); typeof vndTag === "function" && vndTag(sc); sc.scrollTop = 0; after && after();
+    if (!still) [...sc.children].filter(c => !c.classList.contains("shead") && !c.classList.contains("pd-bnav")).forEach(c => c.animate([{ transform: `translateX(${dir * 40}px)`, opacity: 0 }, { transform: "none", opacity: 1 }], { duration: 240, easing: "cubic-bezier(.2,1,.4,1)" })); };
+  haptic && haptic();
+  if (still || !body.length) return put();
+  let left = body.length; body.forEach(c => { c.animate([{ transform: "none", opacity: 1 }, { transform: `translateX(${-dir * 40}px)`, opacity: 0 }], { duration: 140, easing: "ease-in", fill: "forwards" }).onfinish = () => { if (!--left) put(); }; });
+}
+document.addEventListener("click", e => { const b = e.target.closest("[data-pdbn]"); if (!b) return; e.preventDefault(); const k = b.dataset.pdbn; pdSheetSwap(() => pdOpenB(k), +b.dataset.dir, () => pdBNavAdd(k)); });
+{ const _c = closeSheet; closeSheet = function(){ document.querySelectorAll(".pd-gl .sel, .pd-brd .sel").forEach(x => x.classList.remove("sel")); return _c.apply(this, arguments); }; }
 
 // A blank ticket for something not booked yet: what we know, where it goes in the plan, and how to book it.
 function pdTicketSheet(key){
@@ -9391,7 +9451,7 @@ function pdTicketSheet(key){
   const price = txt.match(/~?\$[\d,]+(?:[–-]\$?[\d,]+)?(?:\s*pp)?/), takes = txt.match(/about (\d+(?:[.,]\d+)?(?:–\d+)? (?:hrs?|min))/i) || txt.match(/(\d+(?:–\d+)? hrs?)\b/), tel = txt.match(/\+\d[\d ]{7,}\d/);
   const bk = (txt.match(/Backups?:\s*([^.]+)/i) || [])[1], title = b.kind === "flight" ? b.title : b.title.replace(/\s*\(~?\$[^)]*\)/, "");
   const name = pdHead(title).replace(/,.*$/, ""), F = [["When", b.when]]; if (takes) F.push(["Takes", takes[1]]); if (price) F.push(["Price", price[0].replace(/^~/, "about ")]);
-  openSheet(`<div class="pd-sheet"><div class="pd-big tb" style="--k:${k[2]}"><small>${icon(k[1])} ${esc(k[0])} · ${esc(pdSt(b.status))}</small><b>${esc(pdHead(title))}</b>${pdRest(title) ? `<p>${esc(pdRest(title))}</p>` : ""}<span class="pd-stamp">${b.status === "maybe" ? "Maybe" : "Not booked"}</span>
+  openSheet(`<div class="pd-sheet"><div class="pd-big tb" style="--k:${k[2]}"><small>${icon(k[1])} ${esc(k[0])} · ${esc(pdSt(b.status))}</small><b>${esc(pdHead(title))}</b>${pdRest(title) && !(takes && /^about [\d.,–-]+ (?:hrs?|min)\.?$/i.test(pdRest(title))) ? `<p>${esc(pdRest(title))}</p>` : ""}<span class="pd-stamp">${b.status === "maybe" ? "Maybe" : "Not booked"}</span>
       <dl class="pd-fx">${F.map(([a, v]) => `<div><dt>${esc(a)}</dt><dd>${esc(v)}</dd></div>`).join("")}</dl>${x.note ? `<p class="pd-tn">${esc(x.note.replace(/Backups?:[^.]+\.?/i, "").trim())}</p>` : ""}</div>
     ${tel ? `<a class="btn pri pd-wide" href="tel:${tel[0].replace(/\s/g, "")}">${icon("phone")}Call ${esc(tel[0])}</a>` : `<a class="btn pri pd-wide" href="https://www.google.com/search?q=${encodeURIComponent(name + " " + (b.kind === "flight" ? "flights" : "book") + (b.kind === "flight" ? "" : " " + (PDV[pdGrpOf(b.date, b.title)] || "")))}" target="_blank" rel="noopener">Find where to book ↗</a>`}
     ${bk ? `<h4 class="pd-h4">If it's full</h4><div class="pd-chips">${bk.split(/,\s*|\s+or\s+/).map(n => `<a class="pd-chip" href="https://www.google.com/search?q=${encodeURIComponent(n.trim() + " " + (PDV[pdGrpOf(b.date, b.title)] || ""))}" target="_blank" rel="noopener">${esc(n.trim())}</a>`).join("")}</div>` : ""}
@@ -9522,11 +9582,12 @@ document.addEventListener("click", e => {
 });
 // Swipe sideways on the card for the slot before or after.
 { let S = null;
-  addEventListener("touchstart", e => { const w = e.target.closest(".pd-gsheet"); S = w && e.touches.length === 1 ? { x: e.touches[0].clientX, y: e.touches[0].clientY, t: Date.now() } : null; }, { passive: true });
+  const hs = (el, top) => { for (; el && el !== top; el = el.parentElement) if (el.scrollWidth > el.clientWidth + 2 && /auto|scroll/.test(getComputedStyle(el).overflowX)) return true; return false; };
+  addEventListener("touchstart", e => { const sc = e.target.closest(".sheet"), w = sc && sc.querySelector(".pd-gsheet, .pd-bnav"); S = w && e.touches.length === 1 && !hs(e.target, sc) ? { x: e.touches[0].clientX, y: e.touches[0].clientY, t: Date.now() } : null; }, { passive: true });
   addEventListener("touchend", e => { if (!S) return; const t = e.changedTouches[0], dx = t.clientX - S.x, dy = t.clientY - S.y; const s0 = S; S = null;
     if (Math.abs(dx) < 60 || Math.abs(dy) > Math.abs(dx) * .6 || Date.now() - s0.t > 700) return;
-    const b = document.querySelector(`.pd-gsheet .pd-gsn${dx > 0 ? ".prev" : ":not(.prev)"}[data-pdgs]`); if (b) b.click(); }, { passive: true }); }
-addEventListener("keydown", e => { if (!document.querySelector(".pd-gsheet") || !/^Arrow(Left|Right)$/.test(e.key)) return; const b = document.querySelector(`.pd-gsheet .pd-gsn${e.key === "ArrowLeft" ? ".prev" : ":not(.prev)"}[data-pdgs]`); if (b) { e.preventDefault(); b.click(); } });
+    const b = document.querySelector(`.sheet:not([data-out]) :is(.pd-gsn[data-pdgs], .pd-bnb[data-pdbn])${dx > 0 ? ".prev" : ":not(.prev)"}`); if (b) b.click(); }, { passive: true }); }
+addEventListener("keydown", e => { if (!document.querySelector(".sheet:not([data-out]) :is(.pd-gsheet, .pd-bnav)") || !/^Arrow(Left|Right)$/.test(e.key)) return; const b = document.querySelector(`.sheet:not([data-out]) :is(.pd-gsn[data-pdgs], .pd-bnb[data-pdbn])${e.key === "ArrowLeft" ? ".prev" : ":not(.prev)"}`); if (b) { e.preventDefault(); b.click(); } });
 // What's left to book, as a departures board: the flaps are red for to book, yellow for maybe.
 function pdBoard(L){
   const n = new Date(), hh = String(n.getHours()).padStart(2, "0"), mm = String(n.getMinutes()).padStart(2, "0");
