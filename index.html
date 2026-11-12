@@ -3850,6 +3850,76 @@ html.street.bl.pd-pk body{background:linear-gradient(var(--pdpk) 0 60px,var(--bg
 .pd-pg .pd-tk:has(+ .pd-corner) .pd-tx>em{padding-right:0}
 .pd-pg .pd-tk:not(:has(.pd-tb)):has(+ .pd-corner) .pd-tx{padding-right:44px}
 
+/* Page turn, flat: only one face is in the page at a time, swapped while edge-on (iOS-safe, no back faces) */
+.pd-fact{perspective:none}
+.pd-fi{display:block;transform:none;transition:none;transform-style:flat}
+.pd-fact.flip .pd-fi{transform:none}
+.pd-ff,.pd-fb{position:static;inset:auto;transform:none;backface-visibility:visible;-webkit-backface-visibility:visible;overflow:visible}
+.pd-fb{display:none}
+.pd-fact.flip .pd-ff{display:none}
+.pd-fact.flip .pd-fb{display:block}
+.pd-fb>small{display:flex;flex-wrap:nowrap;gap:8px;align-items:center;font:700 11px/1 var(--mono);letter-spacing:.1em;text-transform:uppercase;color:#6b5a24}
+.pd-fb>small b{background:#13213d;color:#fff;padding:4px 6px 3px;border-radius:5px;letter-spacing:.08em}
+.pd-fbr{margin-top:11px;padding-top:10px;border-top:1px dashed #e0d6bd}
+.pd-fbr:first-of-type{border-top:0;padding-top:0}
+.pd-fbr p{font:600 14.5px/1.38 var(--serif)}
+.pd-fsay{display:flex;align-items:center;gap:12px;margin-top:12px;padding:10px 10px 10px 12px;border-radius:12px;background:rgb(255 255 255/.7);box-shadow:inset 0 0 0 1px #e3dac4}
+.pd-fsay>span{flex:1;min-width:0}
+.pd-fsay em{display:block;font:700 11px/1.2 var(--mono);letter-spacing:.08em;text-transform:uppercase;color:#6b5a24;font-style:normal}
+.pd-fsay b{display:block;font:700 18px/1.2 var(--serif);color:#2d2410;margin-top:3px}
+.pd-fsay small{display:block;font:500 13px/1.3 "Be Vietnam Pro";color:#5d5030;margin-top:2px}
+.pd-fsay .say{flex:none;width:36px;height:36px}
+.pd-fb .pd-turn{margin-top:6px}
+html[data-theme="dark"] .pd-fsay{background:rgb(255 255 255/.06);box-shadow:inset 0 0 0 1px #34456b}
+html[data-theme="dark"] .pd-fsay b{color:#f5ecd0}
+html[data-theme="dark"] .pd-fsay small,html[data-theme="dark"] .pd-fsay em,html[data-theme="dark"] .pd-fb>small{color:#e0cf98}
+html[data-theme="dark"] .pd-fbr{border-top-color:#34456b}
+
+/* Glance: a slot's card opens on top of Glance; ‹ › or a sideways swipe moves to the next slot */
+.pd-gc.sel{outline:3px solid var(--c);outline-offset:1px;z-index:1}
+.pd-gsw{--c:#13213d}
+.pd-gst{display:grid;grid-template-columns:44px minmax(0,1fr) 44px;align-items:center;gap:6px;margin:-4px -6px 12px}
+.pd-gsl{text-align:center;min-width:0}
+.pd-gsl small{display:block;font:700 11px/1.2 var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--c)}
+.pd-gsl .sname{font:800 21px/1.15 var(--serif);margin:4px 0 6px;color:var(--ink)}
+.pd-gss{display:inline-block;font:700 11px/1 var(--mono);letter-spacing:.06em;text-transform:uppercase;font-style:normal;padding:5px 7px 4px;border-radius:6px;background:var(--pdp2);color:var(--pdm)}
+.pd-gss.bk{background:#e3f2e8;color:#1f6b3d}.pd-gss.tb{background:#fbe2df;color:#a3281f}.pd-gss.mb{background:#fff1cc;color:#6e4e00}
+.pd-gsn{display:grid;place-items:center;width:44px;height:44px;border:0;border-radius:50%;background:color-mix(in srgb,var(--c) 12%,transparent);color:var(--c);cursor:pointer}
+.pd-gsn .ic2{width:18px;height:18px}
+.pd-gsn.prev .ic2{transform:rotate(180deg)}
+.pd-gsn.off{background:none}
+.pd-gsi{margin-top:10px;border-radius:16px;background:var(--surface);box-shadow:inset 0 0 0 1px var(--line);overflow:hidden}
+.pd-gsh{display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:10px;align-items:start;padding:12px 12px 10px}
+.pd-gsh .pd-rt{font:700 12px/1.3 var(--mono);color:var(--c);white-space:nowrap;padding-top:2px}
+.pd-gsh b{font:700 17px/1.25 var(--serif);color:var(--ink)}
+.pd-gsi .pd-stop{margin:0 10px 10px}
+.pd-gse{display:grid;justify-items:center;gap:6px;text-align:center;padding:16px 12px 6px;color:var(--ink)}
+.pd-gse>.ic2{width:28px;height:28px;color:var(--c)}
+.pd-gse b{font:800 20px/1.2 var(--serif)}
+.pd-gse p{margin:0;font:500 14px/1.4 "Be Vietnam Pro";color:var(--muted)}
+.pd-gse .btn{margin-top:8px}
+.pd-gsf{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin-top:10px}
+.pd-gsfe{display:block;min-height:64px;padding:10px 12px;border:0;border-radius:12px;text-align:left;cursor:pointer;background:var(--sgb,#c8312a);color:var(--sgt,#ffd84a)}
+.pd-gsfe b{display:block;font:400 18px/1.1 var(--anton);letter-spacing:.01em;text-transform:uppercase}
+.pd-gsfe small{display:block;margin-top:4px;font:500 12.5px/1.3 "Be Vietnam Pro";color:var(--sgs,#fff);opacity:.95;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.pd-gsd{margin-top:14px;gap:6px}
+.pd-gsd .ic2{width:14px;height:14px}
+.pd-gsf.odd .pd-gsfe:last-child{grid-column:1/-1}
+.pd-gse-eat{display:flex;align-items:center;justify-content:center;gap:8px;min-height:44px;margin-top:6px;font:700 15px/1.2 "Be Vietnam Pro";color:var(--c);text-decoration:none}
+.pd-gse-eat .ic2{width:18px;height:18px;flex:none}
+.pd-gse-eat .ic2:last-child{width:14px;height:14px}
+html[data-theme="dark"] :is(.pd-gse-eat,.pd-gsl small,.pd-gsn,.pd-gsh .pd-rt,.pd-gse>.ic2){color:color-mix(in srgb,var(--c) 40%,#fff)}
+html[data-theme="dark"] .pd-gsn{background:color-mix(in srgb,var(--c) 35%,transparent)}
+html[data-theme="dark"] .pd-gss.bk{background:rgb(143 216 171/.16);color:#8fd8ab}html[data-theme="dark"] .pd-gss.tb{background:rgb(255 180 171/.16);color:#ffb4ab}html[data-theme="dark"] .pd-gss.mb{background:rgb(245 207 107/.16);color:#f5cf6b}
+.pd-gsi .pd-sb:not(:has(p)){display:none}
+.pd-fact .pd-fsay small{display:block;white-space:normal;text-transform:none;letter-spacing:0;font:500 13px/1.35 "Be Vietnam Pro";color:#5d5030;margin-top:2px}
+.pd-fact .pd-fsay small i{font-style:italic}
+.pd-fact .pd-fsay small span{display:block;margin-top:1px}
+html[data-theme="dark"] .pd-fact .pd-fsay small{color:#e0cf98}
+.pd-fact .pd-fsay small span,.pd-fact .pd-fsay small i{white-space:normal;overflow:visible;text-overflow:clip;display:block;max-width:none}
+.pd-gse .btn{align-self:stretch;justify-self:stretch;margin-top:4px}
+.pd-gse .btn:first-of-type{margin-top:10px}
+
 /* ===== Eat tab (Nov 12): places drawn as Vietnamese shop signboards. Code in eat.js. ===== */
 .eat{--sgb:#c8312a;--sgt:#ffd84a;--sgs:#fff1c2}
 .k-street{--sgb:#c8312a;--sgt:#ffd84a;--sgs:#fff1c2}
@@ -8838,19 +8908,34 @@ if (!ICP2.turn) ICP2.turn = '<path d="M3 12a9 9 0 1 0 2.6-6.4L3 8"/><path d="M3 
 function pdFact(d, iso, back, opt = {}){
   const F = factsForDay(d, 3), pin = opt.pin || PDFACT[iso], x = pin ? { f: [pin[0], "", pin[1]] } : F[0]; if (!x) return "";
   const topic = pin ? pin[0] : x.f[1] === "all" ? x.f[0] : factWhere(x.f[1]);
-  const dec = FX().december[iso], x2 = pin ? F[0] : F[1], sayK = Object.keys(T.say || {}), sk = sayK.length ? sayK[hashStr(iso) % sayK.length] : null, sv = sk ? T.say[sk] : null;
+  const all = FX().facts.filter(f => f[1] === "all" && f[2] !== x.f[2]), more = n => all.length ? { f: all[(hashStr(iso + n) % all.length)] } : null;
+  const dec = FX().december[iso], x2 = (pin ? F[0] : F[1]) || more("a"), x3 = !dec ? (F[2] && F[2] !== x2 ? F[2] : more("b")) : null, sayA = Object.keys(T.say || {}), nrm = v => String(v || "").normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().replace(/[^a-z]/g, ""),
+    fg = d && (T.food || []).find(g => nrm(g.city) === nrm(d.place) || (d.city === "hcmc" && /saigon/i.test(g.city))), sayC = fg ? fg.items.map(i => i[0]).filter(k => T.say[k]) : [], sayK = sayC.length ? sayC : sayA,
+    sk = sayK.length ? sayK[hashStr(iso) % sayK.length] : null, sv = sk ? T.say[sk] : null, sm = sk ? (((T.food || []).flatMap(g => g.items).find(i => i[0] === sk) || [])[1] || "").split(/\.\s|,\s(?=[A-Z])/)[0] : "";
   return `<div class="pd-fact${opt.mini ? " mini" : ""}" data-pdflip><div class="pd-fi">
     <div class="pd-ff"><small><b>Bạn có biết?</b><span>${esc(topic)}</span></small><p>${esc(x.f[2])}</p>${opt.mini ? `<button type="button" class="pd-fmore" aria-label="Show the whole fact">${icon("chev")}</button>` : ""}<button type="button" class="pd-turn" aria-label="Turn the page over for more">${icon("turn")}Turn the page over</button></div>
     <div class="pd-fb" aria-hidden="true"><small><b>Mặt sau</b><span>The back of the page</span></small>
       ${dec ? `<div class="pd-fbr"><em>This month in history · ${esc(dec[0])}</em><p>${esc(dec[1])}</p></div>` : ""}
-      ${x2 ? `<div class="pd-fbr"><em>One more · ${esc(factWhere(x2.f[1]))}</em><p>${esc(x2.f[2])}</p></div>` : ""}
-      ${sv ? `<div class="pd-fbr say"><em>Say it today</em><p><b lang="vi">${esc(sv[0])}</b> <span>${esc(sk)} · “${esc(sv[1])}”</span>${typeof sayBtn === "function" ? sayBtn(sv[0], 1) : ""}</p></div>` : ""}
+      ${x2 ? `<div class="pd-fbr"><em>One more · ${esc(x2.f[1] === "all" ? x2.f[0] : factWhere(x2.f[1]))}</em><p>${esc(x2.f[2])}</p></div>` : ""}
+      ${x3 && x3.f[2] !== (x2 && x2.f[2]) ? `<div class="pd-fbr"><em>And another · ${esc(x3.f[1] === "all" ? x3.f[0] : factWhere(x3.f[1]))}</em><p>${esc(x3.f[2])}</p></div>` : ""}
+      ${sv ? `<div class="pd-fsay"><span><em>Say it today</em><b lang="vi">${esc(sv[0])}</b><small><i>“${esc(sv[1])}”</i>${sm ? `<span>${esc(sm)}</span>` : ""}</small></span>${typeof sayBtn === "function" ? sayBtn(sv[0]) : ""}</div>` : ""}
       <button type="button" class="pd-turn">${icon("turn")}Turn it back</button></div></div></div>`;
 }
 document.addEventListener("click", e => { const m = e.target.closest(".pd-fact.mini"); if (m && !e.target.closest(".pd-turn")) { m.classList.remove("mini"); const b = m.querySelector(".pd-fmore"); b && b.remove(); haptic && haptic(); return; } });
-document.addEventListener("click", e => { const t = e.target.closest(".pd-fact .pd-turn"); if (!t) return; const f = t.closest(".pd-fact"); f.classList.toggle("flip");
-  const fi = f.querySelector(".pd-fi"); fi.style.minHeight = f.classList.contains("flip") ? f.querySelector(".pd-fb").scrollHeight + "px" : "";
-  f.querySelector(".pd-ff").setAttribute("aria-hidden", f.classList.contains("flip")); f.querySelector(".pd-fb").setAttribute("aria-hidden", !f.classList.contains("flip")); haptic && haptic(); });
+document.addEventListener("click", e => { const t = e.target.closest(".pd-fact .pd-turn"); if (!t) return; e.preventDefault();
+  const f = t.closest(".pd-fact"), fi = f.querySelector(".pd-fi"), to = !f.classList.contains("flip"); if (fi._turn) return;
+  const swap = () => { f.classList.toggle("flip", to); f.querySelector(".pd-ff").setAttribute("aria-hidden", to); f.querySelector(".pd-fb").setAttribute("aria-hidden", !to); };
+  haptic && haptic();
+  if (!fi.animate || matchMedia("(prefers-reduced-motion: reduce)").matches) return swap();
+  const h0 = fi.offsetHeight, P = "perspective(1100px) ";
+  fi._turn = 1; fi.style.overflow = "hidden";
+  fi.animate([{ transform: P + "rotateY(0deg)" }, { transform: P + `rotateY(${to ? 90 : -90}deg)` }], { duration: 170, easing: "cubic-bezier(.5,0,1,1)", fill: "forwards" }).onfinish = () => {
+    swap(); const h1 = fi.offsetHeight;
+    const a = fi.animate([{ transform: P + `rotateY(${to ? -90 : 90}deg)`, height: h0 + "px" }, { transform: P + "rotateY(0deg)", height: h1 + "px" }], { duration: 300, easing: "cubic-bezier(.2,1.15,.4,1)" });
+    fi.getAnimations().forEach(x => x !== a && x.cancel());
+    a.onfinish = a.oncancel = () => { fi.style.overflow = ""; fi._turn = 0; };
+  };
+});
 
 // Parts of the day: morning, afternoon, evening, night, from the plan's own times.
 function pdParts(d){
@@ -9027,11 +9112,17 @@ function pdRow(d, x, opt = {}){
     <span class="pd-rt">${esc(pdT(x))}</span><span class="pd-rx"><b>${esc(h)}</b>${r ? `<small>${esc(r)}</small>` : ""}${lb}</span>${tag}</div>${open ? pdStop(d, x.i) : ""}`;
 }
 // Tap a stop: photo, the full note, opening hours, and the buttons for getting there.
-function pdStop(d, i){
+function pdStop(d, i, o = {}){
   const [t, w, st] = d.items[i], ps = placesFor(w, d.city), p = ps.find(q => q.photo) || ps[0], fk = bkFlightKey(d.date, w), res = fk ? null : resFor(d, w);
   const txt = [w, res && res.note].filter(Boolean).join(" · "), price = txt.match(/~?\$[\d,]+(?:[–-]\$?[\d,]+)?(?:\s*pp)?/), takes = txt.match(/about (\d+(?:[.,]\d+)?(?:–\d+)? (?:hrs?|min))/i);
+  // In a card that already shows the title, keep only what the title leaves out (and not the time it takes, shown below).
+  let lead = o.rest ? pdCap((takes ? pdRest(w).replace(new RegExp("(^|,\\s*)" + takes[0].replace(/[.*+?^${}()|[\]\\]/g, "\\$&") + "[.,]?\\s*", "i"), "$1") : pdRest(w)).replace(/^[\s,.:;]+|[\s,;]+$/g, "")) : "";
+  if (o.rest && lead && !/\s/.test(lead.trim()) && takes) lead = pdRest(w);
+  if (/^[A-Z]{3}$/.test(lead)) lead = "";
+  if (lead.includes(")") && !lead.includes("(")) lead = pdCap(lead.replace(")", ","));
+  const dOnly = lead.match(/^(?:about )?(\d+(?:[.,]\d+)?(?:[–-]\d+)? (?:hrs?|min))$/i);
   const fx = [["When", pdCap(pdTxt(t))]];
-  if (takes) fx.push(["Takes", takes[1]]); if (price) fx.push(["Price", price[0].replace(/^~/, "about ")]);
+  if (takes) fx.push(["Takes", takes[1]]); else if (dOnly) fx.push(["Takes", dOnly[1]]); if (price) fx.push(["Price", price[0].replace(/^~/, "about ")]);
   if (st) fx.push(["Status", st === "booked" ? "Booked" : st === "todo" ? "Not booked yet" : "Maybe"]);
   const hr = typeof hoursHtml === "function" ? hoursHtml(ps, d.date) : "";
   const b = [];
@@ -9039,7 +9130,7 @@ function pdStop(d, i){
   if (st === "todo" && !fk) b.push(`<button type="button" class="btn pri" data-pdbook="${d.date}|${i}">How to book</button>`);
   if (p) { b.push(`<a class="btn" href="${pdWalkUrl(p)}" target="_blank" rel="noopener">${icon("walk")}Walk</a>`, pdGrab(p), `<a class="btn" href="${gmaps(p)}" target="_blank" rel="noopener">${icon("map")}Map</a>`); }
   return `<div class="pd-stop">${p && p.photo ? `<div class="ph" data-lead="${esc(p.photo)}"></div>` : ""}
-    <div class="pd-sb"><p>${esc(pdTxt(w))}</p>${p && p.why ? `<p class="why">${esc(p.why)}</p>` : ""}${res && res.note ? `<p class="why">${esc(res.note)}</p>` : ""}</div>
+    <div class="pd-sb">${o.rest ? (lead && !dOnly ? `<p>${esc(lead)}</p>` : "") : `<p>${esc(pdTxt(w))}</p>`}${p && p.why ? `<p class="why">${esc(p.why)}</p>` : ""}${res && res.note ? `<p class="why">${esc(res.note)}</p>` : ""}</div>
     <dl class="pd-fx">${fx.map(([a, v]) => `<div><dt>${esc(a)}</dt><dd>${esc(v)}</dd></div>`).join("")}</dl>${hr}
     ${p && p.vi ? `<button type="button" class="pd-drv" data-driver="${esc(p.vi)}" data-driver-sub="${esc(p.addr || "")}"><small>Show the driver</small><b lang="vi">${esc(p.vi)}</b>${icon("car")}</button>` : ""}
     ${b.length ? `<div class="pd-sbt">${b.slice(0, 4).join("")}</div>` : ""}</div>`;
@@ -9333,7 +9424,7 @@ function pdPlan(){
   return `<div class="pd pd-plan"><div class="pd-ptop"><h2>Plan</h2>${left ? `<button type="button" class="pd-cnt" data-pdseg="glance" data-pdto="board">${left} to book</button>` : `<span class="pd-cnt ok">All booked</span>`}</div>
     <div class="pd-seg" role="tablist" aria-label="Plan">${tab("glance", "Glance")}${tab("bookings", "Bookings", left)}${tab("days", "Days")}</div>${body}</div>`;
 }
-document.addEventListener("click", e => { const b = e.target.closest("[data-pdseg]"); if (!b) return; e.preventDefault(); e.stopPropagation();
+document.addEventListener("click", e => { const b = e.target.closest("[data-pdseg]"); if (!b) return; e.preventDefault(); e.stopPropagation(); if (b.closest(".sheet")) closeSheet(true);
   PD.seg = b.dataset.pdseg; store.set("pd-seg", PD.seg); if (b.dataset.pdday) PD.day = b.dataset.pdday; const to = b.dataset.pdto;
   if (current !== "plan") { location.hash = "#plan"; setTimeout(() => to && pdScrollTo(to), 350); return; }
   render("plan"); scrollTo(0, 0); if (to) setTimeout(() => pdScrollTo(to), 60); haptic && haptic(); }, true);
@@ -9372,7 +9463,7 @@ function pdGlance(){
     const nightAir = !st || !VNStay(st) || /air/i.test(d.night || "");
     const { cur } = today ? nowNext(d) : {};
     let col = 0; const cells = r.cells.map(c => { const idx = col; col += c.span; const isNow = today && cur && c.items.some(y => y.i === cur.i);
-      return `<button type="button" class="pd-gc ${c.s}${c.span > 1 ? " s" + c.span : ""}${isNow ? " now" : ""}" style="grid-column:${idx + 2} / span ${c.span}" data-pdseg="days" data-pdday="${d.date}" aria-label="${esc(DOW[x.getDay()])} ${x.getDate()}, ${esc(PDPART[c.p][1])}: ${esc(c.l)}, ${c.s === "bk" ? "booked" : c.s === "tb" ? "to book" : c.s === "mb" ? "maybe" : c.s === "fr" ? "free" : "planned"}">${isNow ? `<i class="pd-gn">Now</i>` : ""}${c.ic ? icon(c.ic) : ""}<span>${esc(c.l)}</span></button>`; }).join("");
+      return `<button type="button" class="pd-gc ${c.s}${c.span > 1 ? " s" + c.span : ""}${isNow ? " now" : ""}" style="grid-column:${idx + 2} / span ${c.span}" data-pdgc="${d.date}|${c.p}" aria-label="${esc(DOW[x.getDay()])} ${x.getDate()}, ${esc(PDPART[c.p][1])}: ${esc(c.l)}, ${c.s === "bk" ? "booked" : c.s === "tb" ? "to book" : c.s === "mb" ? "maybe" : c.s === "fr" ? "free" : "planned"}">${isNow ? `<i class="pd-gn">Now</i>` : ""}${c.ic ? icon(c.ic) : ""}<span>${esc(c.l)}</span></button>`; }).join("");
     const bed = nightAir ? `<span class="pd-gb air">${icon("plane")}</span>` : `<button type="button" class="pd-gb ${st.status === "booked" ? "bk" : st.status === "maybe" ? "mb" : "tb"}" data-pdb="s:${st.id}" aria-label="Night of ${x.getDate()}: ${esc(st.name)}, ${esc(pdSt(st.status))}">${icon("home")}</button>`;
     return `<div class="pd-gr${today ? " today" : ""}${past ? " past" : ""}" style="--c:${pdCol(k)}"><div class="pd-gd"><small>${DOW[x.getDay()]}</small><b>${x.getDate()}</b></div>${cells}${bed}</div>`; }).join("");
   const L = pdLeft();
@@ -9380,6 +9471,62 @@ function pdGlance(){
     <div class="pd-gk"><span><i class="bk"></i>Booked</span><span><i class="tb"></i>To book</span><span><i class="mb"></i>Maybe</span><span><i class="p"></i>Planned</span><span><i class="fr"></i>Free</span></div></div>
     ${L.length ? pdBoard(L) : ""}`;
 }
+// Tap a Glance cell: its stops open as a card on top of Glance. Swipe sideways (or ‹ ›) for the next slot; drag down or ✕ to go back.
+function pdAllCells(){ let air = false; return pdDays().flatMap(d => { const r = pdCells(d, air); air = r.air; return r.cells.map(c => ({ d, c })); }); }
+// Free slot → up to four Eat places in that city that are open in that part of the day (by their real hours when known).
+const PDWIN = { m: [7, 11.5], a: [11.5, 17], e: [17, 21.5], n: [21, 26] };
+function pdFreeEats(d, c){
+  if (typeof eatAll !== "function") return [];
+  const [w0, w1] = PDWIN[c.p] || PDWIN.a, dow = parse(d.date).getDay(), fit = { m: ["morn", "cafe"], a: ["day", "cafe"], e: ["eve", "day", "bar"], n: ["bar", "eve"] }[c.p] || ["day"];
+  const open = e => { const r = eatRanges(e, dow); if (r) return r.some(([a, b]) => a < w1 && (b > w0 || b + 24 > w0 && b < a)); return fit.includes(eatWhen(e)); };
+  const L = eatAll().filter(e => e.c === d.city && e.k !== "fine" && open(e));
+  const rank = e => (e.t.includes("ours") ? 0 : e.t.some(t => /bib|famous/.test(t)) ? 1 : 2);
+  return L.map((e, i) => [rank(e), i, e]).sort((a, b) => a[0] - b[0] || a[1] - b[1]).slice(0, 4).map(x => x[2]);
+}
+document.addEventListener("click", e => { const a = e.target.closest("[data-pdeat]"); if (!a) return;
+  if (typeof EAT !== "undefined"){ EAT.city = a.dataset.pdeat; EAT.near = false; EAT.f = "all"; store.set("eat-city", EAT.city); }
+  closeSheet && closeSheet(true); });
+function pdCellHtml(date, p){
+  const L = pdAllCells(), k = L.findIndex(x => x.d.date === date && x.c.p === p); if (k < 0) return "";
+  const { d, c } = L[k], x = parse(d.date), col = pdCol(pdKey(d)), pv = L[k - 1], nx = L[k + 1];
+  const part = PDPART[c.p], lastP = PDSLOT[PDSLOT.indexOf(c.p) + c.span - 1], when = c.span > 1 ? `${part[1]} to ${PDPART[lastP][1].toLowerCase()}` : part[1];
+  const st = c.s === "bk" ? "Booked" : c.s === "tb" ? "To book" : c.s === "mb" ? "Maybe" : c.s === "fr" ? "Free" : "Planned";
+  let body = "";
+  if (c.items.length) body = c.items.map(y => { const w = d.items[y.i][1], tag = y.st === "booked" ? `<i class="pd-tag ok">Booked</i>` : y.st === "todo" ? `<i class="pd-tag no">To book</i>` : y.st === "maybe" ? `<i class="pd-tag mb">Maybe</i>` : "";
+    return `<section class="pd-gsi"><div class="pd-gsh"><span class="pd-rt">${esc(pdT(y))}</span><b>${esc(pdHead(w))}</b>${tag}</div>${pdStop(d, y.i, { rest: 1 })}</section>`; }).join("");
+  else if (c.air) { const fl = myLegs().filter(l => l.dep && (l.dep.slice(0, 10) === d.date || (l.arr || "").slice(0, 10) === d.date));
+    body = `<div class="pd-gse">${icon("plane")}<b>In the air</b><p>Everything in the app works offline, so flight mode is fine.</p>${fl.map(l => `<button type="button" class="btn pri" data-bkopen="${esc(l.mine ? "m:" + l.dir : bkFlightKey(l.dep.slice(0, 10), "", l.no))}" data-bkleg="${esc(l.no)}">${icon("plane")}${esc(l.no)} boarding pass</button>`).join("")}</div>`; }
+  else { const EC = typeof EATCITY !== "undefined" ? EATCITY : [], ck = (c.p === "n" || /drive back|back to/i.test((d.items[d.items.length - 1] || [])[1] || "") && c.p === "e") && EC.includes(d.stay) ? d.stay : d.city;
+    const E = pdFreeEats({ ...d, city: ck }, c), city = ck === d.city ? PDV[pdKey(d)] || d.place : PDV[ck] || ck, cy = EC.includes(ck) ? ck : "";
+    body = `<div class="pd-gse">${icon("clock")}<b>Free time</b><p>Nothing planned in ${esc(city)} this ${esc(part[1].toLowerCase())}.${E.length ? " A few from Eat that are open then:" : ""}</p></div>${E.length ? `<div class="pd-gsf${E.length % 2 ? " odd" : ""}">${E.map(e => `<button type="button" class="pd-gsfe k-${e.k}" data-eat="${esc(e.id)}"><b lang="vi">${esc(e.s)}</b><small>${esc((e.o && e.o[0] && (e.o[0][1] || e.o[0][0])) || e.sub || "")}</small></button>`).join("")}</div>` : ""}${cy ? `<a class="pd-gse-eat" href="#eat" data-pdeat="${cy}">${icon("bowl")}<span>All of Eat in ${esc(city)}</span>${icon("chev")}</a>` : ""}`; }
+  const nav = (o, dir) => o ? `<button type="button" class="pd-gsn${dir < 0 ? " prev" : ""}" data-pdgs="${o.d.date}|${o.c.p}" aria-label="${dir < 0 ? "Before" : "After"}: ${esc(DOW[parse(o.d.date).getDay()])} ${parse(o.d.date).getDate()}, ${esc(PDPART[o.c.p][1])}">${icon("chev")}</button>` : `<span class="pd-gsn off"></span>`;
+  return `<div class="pd-gsw" data-at="${d.date}|${c.p}" style="--c:${col}">
+    <div class="pd-gst">${nav(pv, -1)}<div class="pd-gsl"><small>${esc(DOW[x.getDay()])} ${x.getDate()} ${MON[x.getMonth()]} · ${esc(PDV[pdKey(d)] || d.place)}</small><div class="sname">${esc(part[0])} · ${esc(when)}</div><i class="pd-gss ${c.s}">${st}</i></div>${nav(nx, 1)}</div>
+    ${body}
+    <button type="button" class="btn pd-wide pd-gsd" data-pdseg="days" data-pdday="${d.date}">See the whole day ${icon("chev")}</button></div>`;
+}
+function pdCellSheet(date, p){ const h = pdCellHtml(date, p); if (!h) return; openSheet(`<div class="pd-sheet pd-gsheet">${h}</div>`); pdCellSel(date, p); }
+function pdCellGo(date, p, dir){
+  const sh = document.querySelector(".sheet:not([data-out]) .pd-gsheet"); if (!sh) return pdCellSheet(date, p);
+  const h = pdCellHtml(date, p); if (!h) return; const old = sh.querySelector(".pd-gsw");
+  const done = () => { sh.innerHTML = h; hydrate(sh); typeof vndTag === "function" && vndTag(sh); const sc = sh.closest(".sheet"); if (sc) sc.scrollTop = 0; pdCellSel(date, p);
+    if (sh.animate && !matchMedia("(prefers-reduced-motion: reduce)").matches) sh.firstElementChild.animate([{ transform: `translateX(${dir * 40}px)`, opacity: 0 }, { transform: "none", opacity: 1 }], { duration: 240, easing: "cubic-bezier(.2,1,.4,1)" }); };
+  haptic && haptic();
+  if (!old || !old.animate || matchMedia("(prefers-reduced-motion: reduce)").matches) return done();
+  old.animate([{ transform: "none", opacity: 1 }, { transform: `translateX(${-dir * 40}px)`, opacity: 0 }], { duration: 140, easing: "ease-in" }).onfinish = done;
+}
+function pdCellSel(date, p){ document.querySelectorAll(".pd-gc.sel").forEach(b => b.classList.remove("sel")); const b = document.querySelector(`.pd-gc[data-pdgc="${date}|${p}"]`); if (b) { b.classList.add("sel"); const r = b.getBoundingClientRect(); if (r.top < 90 || r.bottom > innerHeight * .45) scrollTo({ top: scrollY + r.top - 120, behavior: "smooth" }); } }
+document.addEventListener("click", e => {
+  const g = e.target.closest("[data-pdgc]"); if (g) { e.preventDefault(); const [d, p] = g.dataset.pdgc.split("|"); haptic && haptic(); return pdCellSheet(d, p); }
+  const n = e.target.closest("[data-pdgs]"); if (n) { e.preventDefault(); const [d, p] = n.dataset.pdgs.split("|"); return pdCellGo(d, p, n.classList.contains("prev") ? -1 : 1); }
+});
+// Swipe sideways on the card for the slot before or after.
+{ let S = null;
+  addEventListener("touchstart", e => { const w = e.target.closest(".pd-gsheet"); S = w && e.touches.length === 1 ? { x: e.touches[0].clientX, y: e.touches[0].clientY, t: Date.now() } : null; }, { passive: true });
+  addEventListener("touchend", e => { if (!S) return; const t = e.changedTouches[0], dx = t.clientX - S.x, dy = t.clientY - S.y; const s0 = S; S = null;
+    if (Math.abs(dx) < 60 || Math.abs(dy) > Math.abs(dx) * .6 || Date.now() - s0.t > 700) return;
+    const b = document.querySelector(`.pd-gsheet .pd-gsn${dx > 0 ? ".prev" : ":not(.prev)"}[data-pdgs]`); if (b) b.click(); }, { passive: true }); }
+addEventListener("keydown", e => { if (!document.querySelector(".pd-gsheet") || !/^Arrow(Left|Right)$/.test(e.key)) return; const b = document.querySelector(`.pd-gsheet .pd-gsn${e.key === "ArrowLeft" ? ".prev" : ":not(.prev)"}[data-pdgs]`); if (b) { e.preventDefault(); b.click(); } });
 // What's left to book, as a departures board: the flaps are red for to book, yellow for maybe.
 function pdBoard(L){
   const n = new Date(), hh = String(n.getHours()).padStart(2, "0"), mm = String(n.getMinutes()).padStart(2, "0");
