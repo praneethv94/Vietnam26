@@ -102,16 +102,30 @@ button{font:inherit;color:inherit;background:none;border:0;padding:0;cursor:poin
 .t.has .txt::after{content:" ⓘ";color:var(--faint);font-weight:400;font-size:12px}
 .note{display:none;font-size:12.5px;color:var(--soft);margin-top:4px;line-height:1.35}
 .t.open .note{display:block}.t.open .txt{-webkit-line-clamp:unset}
-.t.done .txt{color:var(--soft);font-weight:400;text-decoration:line-through;text-decoration-color:var(--faint)}
-.by{font-size:11px;font-weight:700;color:var(--ok);margin-top:2px}
+.t.done{min-height:0;padding-top:0;padding-bottom:0;grid-template-columns:40px 1fr auto;position:relative;
+  background:linear-gradient(180deg,color-mix(in srgb,var(--ok) 9%,var(--card)),color-mix(in srgb,var(--ok) 4%,var(--card)));
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.35),inset 0 -1px 0 color-mix(in srgb,var(--ok) 14%,transparent)}
+.t.done::before{content:"";position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--ok);opacity:.7}
+.t.done::after{content:"";position:absolute;right:0;top:0;width:12px;height:12px;background:linear-gradient(225deg,var(--paper) 50%,color-mix(in srgb,var(--ok) 22%,var(--card)) 50%);border-bottom-left-radius:3px}
+.t.done .chk{height:32px}.t.done .chk span{width:18px;height:18px;border-radius:6px}
+.t.done .body{padding:6px 4px 6px 0}
+.t.done .txt{font-size:13px;color:var(--soft);font-weight:400;-webkit-line-clamp:1;text-decoration:line-through;text-decoration-color:color-mix(in srgb,var(--ok) 55%,transparent);text-decoration-thickness:1.5px}
+.t.done.has .txt::after{content:none}
+.t.done.open .txt{-webkit-line-clamp:unset}
+.t.done .ownb{display:none}
+.stampby{font-family:Mono;font-size:10.5px;font-weight:600;padding:2px 7px;border-radius:99px;margin-right:6px;white-space:nowrap;align-self:center}
+.stampby.P{background:var(--p-bg);color:var(--p)}.stampby.B{background:var(--b-bg);color:var(--b)}
+.t.fold{animation:fold .5s cubic-bezier(.3,.9,.3,1)}
+@keyframes fold{0%{transform:perspective(500px) rotateX(0);max-height:90px}40%{transform:perspective(500px) rotateX(-38deg);opacity:.75}100%{transform:perspective(500px) rotateX(0);opacity:1}}
+.t.unfold{animation:unfold .35s var(--ease)}
+@keyframes unfold{0%{opacity:.5;transform:scaleY(.8)}100%{opacity:1;transform:none}}
+.by{display:none}
 .ownb{width:34px;height:44px;display:grid;place-items:center}
 .ownb .av{width:28px;height:28px;font-size:11px;transition:transform .2s cubic-bezier(.3,1.6,.5,1)}
 .ownb:active .av{transform:scale(.85)}
 .x{display:inline-block;font-size:12px;font-weight:700;color:var(--b);margin-top:4px}
 .t.flash{animation:flash 1.2s}
 @keyframes flash{0%,30%{background:color-mix(in srgb,var(--tag) 40%,transparent)}100%{background:transparent}}
-.donebar{display:flex;justify-content:center;margin:2px 0 8px}
-.donebar button{font-size:12.5px;font-weight:700;color:var(--soft);padding:8px 12px;border-radius:99px;background:var(--card);box-shadow:var(--shadow)}
 .empty{padding:26px 16px;text-align:center;color:var(--soft);font-size:14px}
 .empty b{display:block;font-family:BC;font-size:26px;color:var(--ok);text-transform:uppercase}
 
@@ -200,7 +214,7 @@ let day = ls("day") || todayKey();
 let filt = ls("filt") || "all";
 let packWho = ls("packWho") || who || "P";
 let closed = {}; try { closed = JSON.parse(ls("closed") || "{}"); } catch(e) {}
-let showDone = false, connected = false, openNote = null;
+let connected = false, openNote = null, folding = new Set(), unfolding = new Set();
 let q = []; try { q = JSON.parse(ls("queue") || "[]"); } catch(e) {}
 try { const c = JSON.parse(ls("cache") || "null"); if (c) S = Object.assign(S, c); } catch(e) {}
 
@@ -273,6 +287,7 @@ function notice(before){ try { const b = JSON.parse(before); for (const [id,v] o
 function toggle(id){
   if (!who) return askWho();
   const cur = (S.done||{})[id];
+  (cur ? unfolding : folding).add(id); setTimeout(() => { folding.delete(id); unfolding.delete(id); }, 600);
   write("done/"+id, cur ? null : {by: who, t: Date.now()});
   if (!cur) setTimeout(() => celebrate(id), 260);
 }
@@ -292,7 +307,7 @@ function removeAdded(id){ write("add/"+id, null); if ((S.done||{})[id]) write("d
 function go(k, dir){
   if (k === day) return;
   const pg = $("#main"); const d = dir || (DAYS.findIndex(x=>x.k===k) > DAYS.findIndex(x=>x.k===day) ? 1 : -1);
-  day = k; ls("day", day); showDone = false; openNote = null;
+  day = k; ls("day", day); openNote = null;
   pg.style.transition = "none"; pg.style.transform = `translateX(${d*40}px)`; pg.style.opacity = "0";
   render(); scrollTo({top:0});
   requestAnimationFrame(() => requestAnimationFrame(() => { pg.style.transition = ""; pg.style.transform = ""; pg.style.opacity = ""; }));
@@ -329,16 +344,13 @@ function render(){
     let ts = tasksFor(day);
     if (filt === "mine") ts = ts.filter(t => { const o = ownerOf(t); return o === who || o === "both"; });
     if (filt === "grabs") ts = ts.filter(t => ownerOf(t) === "");
-    const open = ts.filter(t => !doneOf(t)), done = ts.filter(doneOf);
-    if (!open.length) h += `<div class="sec"><div class="empty">${ts.length ? `<b>All clear</b>Nothing left here.` : filt === "grabs" ? "Nothing unclaimed." : "Nothing here."}</div></div>`;
-    groupBy(open).forEach(([sec, items]) => {
+    const allDone = ts.length && ts.every(doneOf);
+    if (!ts.length) h += `<div class="sec"><div class="empty">${filt === "grabs" ? "Nothing unclaimed." : "Nothing here."}</div></div>`;
+    else if (allDone) h += `<div class="sec"><div class="empty"><b>All clear</b>Everything here is done.</div></div>`;
+    groupBy(ts).forEach(([sec, items]) => {
       const allIn = tasksFor(day).filter(t => t.sec === sec), dn = allIn.filter(doneOf).length, key = day+sec;
-      h += `<section class="sec ${closed[key]?"closed":""}">${secHead(key, sec, dn, allIn.length)}<div class="rows">${items.map(row).join("")}</div></section>`;
+      h += `<section class="sec ${closed[key]?"closed":""} ${dn===allIn.length?"alldone":""}">${secHead(key, sec, dn, allIn.length)}<div class="rows">${items.map(row).join("")}</div></section>`;
     });
-    if (done.length){
-      h += `<div class="donebar"><button id="doneBtn">${showDone ? "Hide" : "Show"} ${done.length} done ✓</button></div>`;
-      if (showDone) h += `<section class="sec"><div class="rows">${done.sort((a,b)=>doneOf(b).t-doneOf(a).t).map(row).join("")}</div></section>`;
-    }
   }
   h += `<form class="add" id="addForm"><input id="addIn" maxlength="140" placeholder="+ Add to ${day==="pack" ? NAME[packWho]+"'s bag" : D.title}" autocomplete="off" enterkeyhint="done"><button>Add</button></form>`;
   const keep = document.activeElement && document.activeElement.id === "addIn" ? $("#addIn").value : null;
@@ -355,12 +367,15 @@ function renderFeed(){
 }
 function row(t){
   const v = doneOf(t), o = ownerOf(t);
-  return `<div class="t ${v?"done":""} ${t.note?"has":""} ${openNote===t.id?"open":""}" data-id="${t.id}">
+  const anim = folding.has(t.id) ? "fold" : unfolding.has(t.id) ? "unfold" : "";
+  return `<div class="t ${v?"done":""} ${t.note?"has":""} ${openNote===t.id?"open":""} ${anim}" data-id="${t.id}">
     <button class="chk" data-chk="${t.id}" aria-label="Done"><span>${CHECK}</span></button>
     <button class="body" data-note="${t.id}"><div class="txt">${esc(t.text)}</div>${t.note?`<div class="note">${esc(t.note)}</div>`:""}${v?`<div class="by">✓ ${v.by===who?"You":NAME[v.by]||""} · ${clock(v.t)}</div>`:""}${t.added && openNote===t.id?`<span class="x" data-del="${t.id}">Remove</span>`:""}</button>
-    <button class="ownb" data-own="${t.id}" aria-label="Who: ${NAME[o]}"><span class="av ${o||"none"}">${o==="both"?"":INIT[o]}</span></button></div>`;
+    <button class="ownb" data-own="${t.id}" aria-label="Who: ${NAME[o]}"><span class="av ${o||"none"}">${o==="both"?"":INIT[o]}</span></button>${v?`<span class="stampby ${v.by}">${v.by||""} ${shortClock(v.t)}</span>`:""}</div>`;
 }
 function tile(t){ const v = doneOf(t); return `<button class="tile ${v?"done":""} ${t.text.length>38?"wide":""}" data-chk="${t.id}" data-id="${t.id}"><i>${CHECK}</i><span>${esc(t.text)}</span></button>`; }
+function shortClock(t){ const o = {timeZone:"America/New_York"}, same = new Date(t).toLocaleDateString("en-CA",o) === new Date().toLocaleDateString("en-CA",o);
+  return new Date(t).toLocaleString("en-US",{...o,weekday:same?undefined:"short",hour:"numeric",minute:"2-digit"}).replace(",","").replace(" AM","a").replace(" PM","p"); }
 function ago(t){ const s = (Date.now()-t)/1000; if (s<60) return "just now"; if (s<3600) return Math.floor(s/60)+"m ago"; if (s<86400) return Math.floor(s/3600)+"h ago"; return clock(t); }
 function clock(t){ return new Date(t).toLocaleString("en-US",{timeZone:"America/New_York",weekday:"short",hour:"numeric",minute:"2-digit"}).replace(",",""); }
 function celebrate(id){
@@ -390,7 +405,6 @@ document.addEventListener("click", e => {
   if (b.dataset.f){ filt = b.dataset.f; ls("filt", filt); return render(); }
   if (b.dataset.pw){ packWho = b.dataset.pw; ls("packWho", packWho); return render(); }
   if (b.dataset.who){ who = b.dataset.who; ls("who", who); if (!ls("packWho")) packWho = who; $("#whoSheet").classList.remove("show"); toast(`Hi ${NAME[who]}`); return render(); }
-  if (b.id === "doneBtn"){ showDone = !showDone; return render(); }
   if (b.id === "whoBtn") return askWho();
 });
 document.addEventListener("submit", e => { if (e.target.id === "addForm"){ e.preventDefault(); const i = $("#addIn"); addTask(i.value); i.value = ""; i.focus(); } });
