@@ -50,7 +50,7 @@ button{font:inherit;color:inherit;background:none;border:0;padding:0;cursor:poin
 .av.none{border:1.5px dashed var(--faint);color:var(--faint)}
 .me .av{width:34px;height:34px;box-shadow:0 0 0 2px rgba(255,255,255,.55)}
 .me .av.none{border-color:rgba(0,0,0,.35);color:rgba(0,0,0,.5);box-shadow:none}
-.score{font-family:Mono;font-size:10.5px;text-align:right;line-height:1.2}
+.score{font-family:Mono;font-size:10.5px;text-align:right;line-height:1.25;white-space:nowrap}
 .score b{display:block;font-family:BC;font-size:22px;line-height:1}
 .score b i{font-style:normal;font-size:15px;opacity:.6}
 .meter{display:flex;height:4px;border-radius:9px;background:var(--line);overflow:hidden;margin:8px 4px 0}
@@ -326,7 +326,7 @@ function render(){
   const m = $("#meter").children; m[0].style.width = (P/tot*100)+"%"; m[1].style.width = (B/tot*100)+"%";
   const mine = td.filter(t => !doneOf(t) && who && (ownerOf(t) === who || ownerOf(t) === "both")).length;
   const leftToday = td.length - P - B;
-  $("#score").innerHTML = leftToday ? `<b>${P+B}<i>/${td.length}</i></b>done today${who ? `<br>${mine} left for you` : ""}` : `<b>✓</b>today done`;
+  $("#score").innerHTML = leftToday ? `<b>${P+B}<i>/${td.length}</i></b>done today${who ? `<br>${mine} for you` : ""}` : `<b>✓</b>today done`;
   const wb = $("#whoBtn"); wb.className = "av " + (who || "none"); wb.textContent = who || "?";
 
   const tk = todayKey();
