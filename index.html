@@ -3761,6 +3761,158 @@ html[data-theme="dark"] .pd-pcf b{color:color-mix(in srgb,var(--c) 50%,#fff)}
 .pd-pcf b{font-size:16px;color:var(--pdi)}
 html[data-theme="dark"] .pd-pcf b{color:var(--pdi)}
 
+/* ===== Eat tab (Nov 12): places drawn as Vietnamese shop signboards. Code in eat.js. ===== */
+.eat{--sgb:#c8312a;--sgt:#ffd84a;--sgs:#fff1c2}
+.k-street{--sgb:#c8312a;--sgt:#ffd84a;--sgs:#fff1c2}
+.k-eat{--sgb:#1d4e89;--sgt:#ffffff;--sgs:#d6e4f5}
+.k-cafe{--sgb:#24503a;--sgt:#f5e7c3;--sgs:#cfe0d2}
+.k-sweet{--sgb:#f2c94c;--sgt:#b3202a;--sgs:#6b3a12}
+.k-bar{--sgb:#13213d;--sgt:#ff86c8;--sgs:#b9c6e6}
+.k-fine{--sgb:#1c1a17;--sgt:#e6c67e;--sgs:#cfc3a6}
+.eat .pd-ptop .eat-tally{display:inline-flex;align-items:center;gap:8px}
+.eat .pd-ptop .eat-tally .ic2{width:14px;height:14px;color:#c8312a;fill:#c8312a;margin-right:2px}
+.eat .pd-ptop .eat-tally span{font-weight:700}
+
+/* City row: Near me + the five cities, each in its own colour */
+.eat-cities{display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;margin:2px -16px 10px;padding:2px 16px 4px;scroll-snap-type:x proximity}
+.eat-cities::-webkit-scrollbar{display:none}
+.eat-cy{flex:none;display:flex;align-items:baseline;gap:6px;min-height:40px;padding:0 13px;border-radius:999px;border:1.5px solid color-mix(in srgb,var(--c,var(--pdi)) 45%,transparent);background:var(--pdp);color:var(--pdi);font:700 14px/1 var(--serif);scroll-snap-align:start;align-items:center}
+.eat-cy small{font:700 11px/1 var(--mono);color:var(--pdm)}
+.eat-cy[aria-selected="true"]{background:var(--c,var(--pdi));border-color:var(--c,var(--pdi));color:#fff}
+.eat-cy[aria-selected="true"] small{color:rgb(255 255 255/.8)}
+.eat-cy.near{--c:#0f6d5f;gap:5px;font:700 13px/1 var(--sans,inherit)}
+.eat-cy.near .ic2{width:15px;height:15px}
+.eat-cy.busy{opacity:.7}
+
+/* Your tables for this city: little reservation stubs, status-coloured */
+.eat-tb{display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;margin:0 -16px 12px;padding:2px 16px}
+.eat-tb::-webkit-scrollbar{display:none}
+.eat-tk{flex:none;display:grid;gap:2px;text-align:left;min-width:150px;max-width:220px;padding:9px 12px 10px;border-radius:8px;background:var(--pdp);color:var(--pdi);border:1.5px solid var(--pdok);position:relative}
+.eat-tk::after{content:"";position:absolute;right:-1.5px;top:50%;width:9px;height:18px;margin-top:-9px;border-radius:9px 0 0 9px;background:var(--bg);border:1.5px solid var(--pdok);border-right:0}
+.eat-tk small{font:800 10px/1 var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--pdok)}
+.eat-tk b{font:800 16px/1.15 var(--serif)}
+.eat-tk em{font:600 12px/1.25 var(--sans,inherit);font-style:normal;color:var(--pdm)}
+.eat-tk.st-todo{border:1.5px dashed var(--pdno)}
+.eat-tk.st-todo::after{border-color:var(--pdno);border-style:dashed}
+.eat-tk.st-todo small{color:var(--pdno)}
+.eat-tk.st-maybe{border-color:var(--pdmb);background:repeating-linear-gradient(135deg,color-mix(in srgb,#f2c94c 22%,var(--pdp)) 0 8px,var(--pdp) 8px 16px)}
+.eat-tk.st-maybe::after{border-color:var(--pdmb)}
+.eat-tk.st-maybe small{color:var(--pdmb)}
+
+/* Open right now (during the trip) */
+.eat-now{margin:0 0 12px}
+.eat-now h3,.eat-h{display:flex;align-items:baseline;gap:8px;margin:14px 0 8px;font:700 12px/1 var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--pdm)}
+.eat-now h3 span,.eat-h span{font:800 19px/1 var(--serif);letter-spacing:0;text-transform:none;color:var(--c)}
+.eat-h small{margin-left:auto;font:700 11px/1 var(--mono);color:var(--pdm)}
+.eat-nowr{display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;margin:0 -16px;padding:2px 16px 4px}
+.eat-nowr::-webkit-scrollbar{display:none}
+.eat-nc{flex:none;width:152px;display:grid;gap:3px;text-align:left;padding:10px 11px;border-radius:10px;background:var(--sgb);color:var(--sgt);box-shadow:inset 0 0 0 3px var(--sgb),inset 0 0 0 4px color-mix(in srgb,var(--sgt) 40%,transparent)}
+.eat-nc b{font:400 19px/1.05 var(--anton);text-transform:uppercase;letter-spacing:.01em;overflow-wrap:anywhere}
+.eat-nc small{font:600 12px/1.25 var(--sans,inherit);color:var(--sgs);display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.eat-nc{align-content:start}
+.eat-nc .eat-st{align-self:end}
+.eat-nc .eat-st,.eat-nc .eat-st.open,.eat-nc .eat-st.soon{color:var(--sgt);font:700 12px/1.2 var(--sans,inherit)}
+.eat-nc .eat-st::before{background:currentColor}
+
+/* Filters */
+.eat-fs{display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;margin:0 -16px 2px;padding:2px 16px 4px}
+.eat-fs::-webkit-scrollbar{display:none}
+.eat-f{flex:none;display:inline-flex;align-items:center;gap:5px;min-height:36px;padding:0 12px;border-radius:999px;border:1px solid var(--pdl);background:var(--pdp);color:var(--pdi);font:600 13px/1 var(--sans,inherit)}
+.eat-f small{font:700 10.5px/1 var(--mono);color:var(--pdm)}
+.eat-f[aria-pressed="true"]{background:var(--pdi);border-color:var(--pdi);color:var(--pdp)}
+.eat-f[aria-pressed="true"] small{color:color-mix(in srgb,var(--pdp) 75%,transparent)}
+
+/* The tiles: a shop sign over a strip of paper */
+.eat-g{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.eat-t{position:relative;display:flex;flex-direction:column;text-align:left;padding:0;border:0;border-radius:10px;overflow:hidden;background:var(--pdp);color:var(--pdi);
+  box-shadow:0 1px 0 var(--pdl),0 10px 22px -16px rgb(19 33 61/.6);min-width:0}
+.eat-sg{display:flex;flex-direction:column;gap:4px;padding:9px 10px 10px;background:var(--sgb);color:var(--sgt);min-height:94px;
+  box-shadow:inset 0 0 0 3px var(--sgb),inset 0 0 0 4px color-mix(in srgb,var(--sgt) 38%,transparent)}
+.eat-sg b{font:400 22px/1.06 var(--anton);text-transform:uppercase;letter-spacing:.01em;overflow-wrap:anywhere;margin-top:auto;
+  display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+.eat-sg small{font:700 10px/1.2 var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--sgs);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.eat-bd{display:flex;align-items:center;gap:4px;min-height:16px}
+.eat-bd i{font:800 9px/1 var(--mono);letter-spacing:.1em;text-transform:uppercase;font-style:normal;padding:3px 5px 2px;border:1px solid currentColor;border-radius:3px;white-space:nowrap}
+.eat-bd em{margin-left:auto;display:inline-flex;align-items:center;gap:2px;font:800 11px/1 var(--mono);font-style:normal}
+.eat-bd em .ic2{width:12px;height:12px;fill:currentColor}
+.k-fine .eat-sg b,.k-fine.eat-nc b{font:800 19px/1.1 var(--serif);text-transform:none;letter-spacing:.01em}
+.k-bar .eat-sg b,.k-bar.eat-nc b{text-shadow:0 0 10px color-mix(in srgb,var(--sgt) 55%,transparent)}
+.eat-pp{display:flex;flex-direction:column;gap:5px;padding:8px 10px 10px;flex:1}
+.eat-dl{font:500 13px/1.28 var(--sans,inherit);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.eat-dl u{text-decoration:none;font-weight:800;white-space:nowrap}
+.eat-mt{display:flex;flex-wrap:wrap;gap:3px 8px;margin-top:auto;font:600 11.5px/1.2 var(--sans,inherit);color:var(--pdm)}
+.eat-st{display:inline-flex;align-items:center;gap:5px}
+.eat-st::before{content:"";width:7px;height:7px;border-radius:50%;background:var(--pdl);flex:none}
+.eat-st.open::before{background:var(--pdok)}
+.eat-st.open{color:var(--pdok)}
+.eat-st.soon::before{background:#d08a00}
+.eat-st.soon{color:var(--pdmb)}
+.eat-st.shut::before{background:var(--pdno)}
+.eat-st.res{color:var(--pdno);font-weight:800}
+.eat-st.res::before{display:none}
+.eat-km{color:var(--pdi);font-weight:700}
+.eat-stamp{position:absolute;top:8px;right:7px;display:grid;place-items:center;width:46px;height:46px;border-radius:50%;border:2.5px solid #d4372c;color:#d4372c;background:rgb(255 255 255/.86);
+  font:400 13px/1 var(--anton);text-transform:uppercase;letter-spacing:.02em;transform:rotate(-14deg);box-shadow:inset 0 0 0 2px rgb(255 255 255/.9),inset 0 0 0 3.5px #d4372c}
+.eat-t.ate .eat-sg{filter:saturate(.75)}
+/* An odd tile at the end of a section takes the whole row: sign on the left, paper on the right */
+.eat-t.wide{grid-column:1/-1;flex-direction:row}
+.eat-t.wide .eat-sg{flex:0 0 calc(50% - 5px)}
+.eat-t.wide .eat-pp{justify-content:center;padding:12px 12px 12px 14px}
+.eat-t.wide .eat-dl{-webkit-line-clamp:3;font-size:14px}
+.eat-t.wide .eat-mt{margin-top:6px}
+.eat-t.wide .eat-stamp{right:auto;left:calc(50% - 58px)}
+.eat-empty{margin:16px 2px;color:var(--pdm);font:500 14px/1.45 var(--sans,inherit)}
+.eat-more{display:flex;flex-direction:column;gap:8px;margin:18px 0 6px;padding:12px;border-radius:10px;border:1.5px dashed var(--pdl);background:color-mix(in srgb,var(--pdp) 70%,transparent)}
+.eat-more>span{display:flex;align-items:center;gap:6px;font:700 12px/1 var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--pdm)}
+.eat-more>span .ic2{width:14px;height:14px}
+.eat-more div{display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;margin:0 -12px;padding:0 12px}
+.eat-more div::-webkit-scrollbar{display:none}
+.eat-more a{flex:none}
+.eat-more a{display:inline-flex;align-items:center;min-height:36px;padding:0 12px;border-radius:999px;background:var(--pdp);border:1px solid var(--pdl);color:var(--pdi);font:600 14px/1 var(--sans,inherit);text-decoration:none}
+.eat-more a::after{content:"↗";margin-left:5px;color:var(--pdm);font-size:12px}
+.eat-fine{margin:10px 2px 4px;font:500 11.5px/1.45 var(--sans,inherit);color:var(--pdm)}
+
+/* The sheet */
+.eat-sh{padding:0 2px 6px}
+.eat-shp{position:relative;margin:0 -2px 12px;border-radius:12px;overflow:hidden;aspect-ratio:16/9;background:#d9d3c4}
+.eat-shp img{width:100%;height:100%;object-fit:cover;display:block}
+.eat-shp small{position:absolute;right:8px;bottom:6px;font:600 10px/1 var(--sans,inherit);color:#fff;text-shadow:0 1px 3px rgb(0 0 0/.7)}
+.eat-sg.big{min-height:0;padding:12px 14px 13px;border-radius:10px;gap:6px;box-shadow:inset 0 0 0 4px var(--sgb),inset 0 0 0 5.5px color-mix(in srgb,var(--sgt) 40%,transparent)}
+.eat-sh .eat-sg.big b.sname{font:400 32px/1.12 var(--anton);text-transform:uppercase;letter-spacing:.01em;color:var(--sgt);padding-top:.1em;-webkit-line-clamp:4;margin:0}
+.eat-sh.k-fine .eat-sg.big b.sname{font:800 28px/1.12 var(--serif);text-transform:none}
+.eat-sg b{padding-top:.08em}
+.eat-sg.big small{font-size:11px;white-space:normal}
+.eat-full{margin:10px 2px 0;font:700 15px/1.3 var(--serif);display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+.eat-why{margin:8px 2px 12px;font:500 15px/1.45 var(--sans,inherit)}
+.eat-ord{margin:0 0 12px;padding:10px 12px;border-radius:10px;background:var(--pdp2);color:var(--pdi)}
+.eat-ord h4,.eat-sh h4{margin:0 0 6px;font:700 11px/1 var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--pdm);display:flex;gap:6px;align-items:baseline}
+.eat-ord h4 span{font:800 15px/1 var(--serif);letter-spacing:0;text-transform:none;color:var(--c)}
+.eat-or{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;padding:7px 0;border-top:1px dashed var(--pdl)}
+.eat-or:first-of-type{border-top:0}
+.eat-or>span{display:flex;flex-wrap:wrap;align-items:center;gap:2px 6px;min-width:0}
+.eat-or b{font:700 16px/1.2 var(--serif)}
+.eat-or small{flex-basis:100%;font:500 13px/1.3 var(--sans,inherit);color:var(--pdm)}
+.eat-or em{flex:none;font:800 13px/1.3 var(--sans,inherit);font-style:normal;text-align:right;max-width:40%}
+.eat-sh .pd-krows{margin:0 0 12px}
+.eat-sh .pd-kr.eat-open b{color:var(--pdok)}
+.eat-sh .pd-kr.eat-soon b{color:var(--pdmb)}
+.eat-sh .pd-kr.eat-shut b{color:var(--pdno)}
+.eat-act{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.eat-act .btn{min-width:0;justify-content:center;padding-left:8px;padding-right:8px;white-space:nowrap}
+.eat-me{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin-top:8px}
+.eat-me button{display:flex;align-items:center;justify-content:center;gap:8px;min-height:48px;border-radius:12px;border:1.5px dashed var(--pdl);background:transparent;color:var(--pdi);font:700 14px/1.15 var(--sans,inherit);padding:0 10px}
+.eat-hb .ic2{width:18px;height:18px;color:#c8312a}
+.eat-hb[aria-pressed="true"]{border:1.5px solid #c8312a;background:color-mix(in srgb,#c8312a 10%,var(--pdp))}
+.eat-hb[aria-pressed="true"] .ic2{fill:#c8312a}
+.eat-ab .eat-stamp.sm{position:static;width:34px;height:34px;font-size:10px;border-width:2px;opacity:.35;transform:rotate(-14deg)}
+.eat-ab[aria-pressed="true"]{border:1.5px solid #d4372c}
+.eat-ab[aria-pressed="true"] .eat-stamp.sm{opacity:1}
+.eat-who{display:flex;align-items:center;gap:6px;margin:10px 2px 0;font:600 13px/1.3 var(--sans,inherit);color:var(--pdm)}
+.eat-who .ic2{width:14px;height:14px;color:#c8312a;fill:#c8312a}
+html[data-theme="dark"] .eat-stamp{background:rgb(22 35 63/.9)}
+html[data-theme="dark"] .eat-t{box-shadow:0 0 0 1px var(--pdl)}
+@media (max-width:374px){ .eat-sg b{font-size:19px} .eat-sg{min-height:86px} .eat-act .btn{font-size:14px} }
+
 </style>
 
 <header class="top"><div class="wrap"><h1 class="brand">Vietnam<span>’26</span></h1><div class="hright"><div class="sub" id="subtitle">Vietnam + India</div><button type="button" class="srchbtn" id="srchbtn" aria-label="Search the app"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><circle cx="10.5" cy="10.5" r="6.5"/><path d="M15.5 15.5 21 21"/></svg></button></div></div></header>
@@ -9178,6 +9330,371 @@ document.addEventListener("click", e => { const l = e.target.closest('a[href^="#
 
 // Test hook for screenshots and checks (?pddbg).
 if (/[?&]pddbg\b/.test(location.search)) window.PDX = { pdDays, pdCells, pdBookings, pdParts, pdLeft, PD, dayOf, nowNext };
+
+// ===== Eat tab (Nov 12): researched places by city, drawn as Vietnamese shop signboards. Styles in eat.css. =====
+// The list lives here, outside the locked trip data (it is public information), and is merged at runtime with the
+// trip's own picks (T.eats) and bars (T.more.bars). Coordinates are approximate, so distances read "≈"; navigation
+// always searches Google Maps by name and address. Hours come from listings and are shown as a guide only.
+// Hearts are shared through the live room (eat/<id>/<name>), "Ate here" stays on the phone and ticks Food Bingo.
+const EATPH = {
+  pho: ["eat/pho.webp", "Markus Winkler"], xeo: ["eat/xeo.webp", "Vincent Yap"],
+  rieu: ["eat/rieu.webp", "Brett Wharton"], cuon: ["eat/cuon.webp", "Alexander Sinn"]
+};
+// k: street | eat (sit-down) | cafe | sweet | bar | fine. t: bib, star, listed (Michelin), famous, hidden, ours (from their list).
+// o: what to order [vi, en, price]. h: open hours [[from, to]] in hours (24 = midnight), or { d: default, 0..6: that weekday }.
+const EATS = [
+  // ---- Sài Gòn ----
+  { id: "pho-minh", c: "hcmc", n: "Phở Minh", s: "Phở Minh", sub: "63/6 Pasteur", k: "street", t: ["bib"], at: [10.7748, 106.7008],
+    o: [["Phở bò", "Beef phở", ""]], h: [[6.5, 10.5]], hn: "Mornings only, about 6:30–10:30 AM",
+    why: "A tiny family phở shop down an alley off Pasteur. Michelin Bib Gourmand.", tip: "Mornings only. Go early.", addr: "63/6 Pasteur, Bến Nghé, Quận 1", bingo: "Pho bo", ph: "u:pho" },
+  { id: "huynh-hoa", c: "hcmc", n: "Bánh Mì Huỳnh Hoa", s: "Bánh Mì Huỳnh Hoa", sub: "26 Lê Thị Riêng", k: "street", t: ["famous"], at: [10.7713, 106.6925],
+    o: [["Bánh mì thập cẩm", "The loaded special", "73k ₫"]], h: [[6, 22]], hn: "Usually 6 AM–10 PM (one listing says afternoons only)",
+    why: "Saigon's most famous bánh mì, thick with pâté and cold cuts. The queue moves fast.", addr: "26 Lê Thị Riêng, Bến Thành, Quận 1", bingo: "Banh mi", ph: "l:Bánh mì" },
+  { id: "bep-me-in", c: "hcmc", n: "Bếp Mẹ Ỉn", s: "Bếp Mẹ Ỉn", sub: "Hẻm 136 Lê Thánh Tôn", k: "eat", t: ["bib", "hidden"], at: [10.7738, 106.6997],
+    o: [["Bánh xèo", "Crispy turmeric crêpe", ""], ["Bánh đập thịt nướng", "Smashed rice cracker, grilled pork", "65k ₫"], ["Ngó sen nướng", "Grilled lotus stems", ""]], h: [[10.5, 22.5]],
+    why: "Saigon home cooking in an alley by Bến Thành market. Michelin Bib Gourmand, about $10 a head.", addr: "136/9 Lê Thánh Tôn, Bến Thành, Quận 1", bingo: "Banh xeo", ph: "u:xeo" },
+  { id: "xoi-ga-1", c: "hcmc", n: "Xôi Gà Number One", s: "Xôi Gà Number One", sub: "15 Nguyễn Trung Trực", k: "street", t: [], at: [10.7728, 106.699],
+    o: [["Xôi gà", "Sticky rice with shredded chicken", "20–55k ₫"], ["Xôi bắp", "Sticky rice with corn", ""]], h: { d: [[6.5, 20.5]], 0: [] }, hn: "6:30 AM–8:30 PM, Mon–Sat (Sundays unconfirmed)",
+    why: "Two dishes only. A cheap, filling breakfast a block from Bến Thành.", addr: "15 Nguyễn Trung Trực, Bến Thành, Quận 1" },
+  { id: "bo-ne", c: "hcmc", n: "Bò Né Bà Nũi", s: "Bò Né Bà Nũi", sub: "94 Nguyễn Thái Bình", k: "street", t: ["famous"], at: [10.7695, 106.7],
+    o: [["Bò né", "Sizzling skillet of beef and egg, with bread", "about $4"]],
+    why: "A viral breakfast: the skillet arrives spitting, you mop it up with bread.", addr: "94 Nguyễn Thái Bình, Quận 1" },
+  { id: "banh-xeo-46a", c: "hcmc", n: "Bánh Xèo 46A", s: "Bánh Xèo 46A", sub: "Đinh Công Tráng", k: "street", t: ["bib"], at: [10.7898, 106.691],
+    o: [["Bánh xèo", "Plate-sized crispy crêpe: wrap in lettuce, dip", "110k ₫"], ["Bánh xèo đặc biệt", "The special", "180k ₫"]], h: [[10, 14], [16, 21]],
+    why: "Crêpes the size of the plate, around the corner from the pink church. Michelin Bib Gourmand.", addr: "46A Đinh Công Tráng, Tân Định, Quận 1", bingo: "Banh xeo", ph: "u:xeo" },
+  { id: "banh-cuon-tay-ho", c: "hcmc", n: "Bánh Cuốn Tây Hồ 127", s: "Bánh Cuốn Tây Hồ", sub: "127 Đinh Tiên Hoàng", k: "street", t: ["bib"], since: 1961, at: [10.7905, 106.6985],
+    o: [["Bánh cuốn", "Steamed rice rolls, made to order", "56k ₫"], ["Bánh cuốn đặc biệt", "The special", "72k ₫"]],
+    why: "Rolls steamed to order since 1961. New Michelin Bib Gourmand for 2026.", addr: "127 Đinh Tiên Hoàng, Đa Kao, Quận 1", bingo: "Banh cuon" },
+  { id: "com-tam-ba-ghien", c: "hcmc", n: "Cơm Tấm Ba Ghiền", s: "Cơm Tấm Ba Ghiền", sub: "84 Đặng Văn Ngữ", k: "street", t: ["bib"], at: [10.7955, 106.6715],
+    o: [["Cơm tấm sườn", "Broken rice, a giant grilled pork chop", "75–145k ₫"]], h: [[8, 20.5]],
+    why: "The pork chop covers the plate. Michelin Bib Gourmand. Long waits at peak times.", addr: "84 Đặng Văn Ngữ, Phú Nhuận", bingo: "Com tam" },
+  { id: "hu-tieu-hong-phat", c: "hcmc", n: "Hủ Tiếu Hồng Phát", s: "Hủ Tiếu Hồng Phát", sub: "389 Võ Văn Tần", k: "street", t: ["bib"], since: 1975, at: [10.7712, 106.6825],
+    o: [["Hủ tiếu Nam Vang", "Phnom Penh-style noodle soup, or dry (khô)", ""]],
+    why: "Hủ tiếu Nam Vang since 1975, with Chaozhou and Khmer roots. Michelin Bib Gourmand.", addr: "389–391 Võ Văn Tần, Quận 3", bingo: "Hu tieu" },
+  { id: "bun-rieu-yen", c: "hcmc", n: "Bún Riêu Yến", s: "Bún Riêu Yến", sub: "Đường Trường Sa", k: "street", t: ["bib"], at: null,
+    o: [["Bún riêu", "Crab and tomato noodle soup", ""]], h: { d: [[6, 18]], 0: [[6, 11]] }, hn: "Mon–Sat 6 AM–6 PM, Sun 6–11 AM",
+    why: "A street-corner stall with plastic stools on the canal road. New Michelin Bib Gourmand for 2026.", addr: "Bún Riêu Yến, Trường Sa, Tân Sơn Hòa", bingo: "Bun rieu", ph: "u:rieu" },
+  { id: "oc-oanh", c: "hcmc", n: "Ốc Oanh", s: "Ốc Oanh", sub: "534 Vĩnh Khánh · Quận 4", k: "street", t: ["bib"], at: [10.7608, 106.7035],
+    o: [["Càng ghẹ rang muối", "Salt-roasted crab claws", ""], ["Sò điệp nướng", "Grilled scallops", ""], ["Ốc", "Snails, many kinds", ""]], h: [[13, 24]], hn: "About 1 PM–midnight",
+    why: "The best-known spot on snail street: plastic stools, chilli and cold beer. Michelin Bib Gourmand.", addr: "534 Vĩnh Khánh, Quận 4" },
+  { id: "workshop-sgn", c: "hcmc", n: "The Workshop Coffee", s: "The Workshop", sub: "27 Ngô Đức Kế · upstairs", k: "cafe", t: ["hidden"], at: [10.7742, 106.705],
+    o: [["Cà phê pha phin", "Specialty filter coffee", ""]], h: [[8, 21]],
+    why: "Serious coffee in a loft upstairs in an old building. The sign is easy to miss.", addr: "27 Ngô Đức Kế, Bến Nghé, Quận 1" },
+  { id: "okkio", c: "hcmc", n: "Okkio Caffe", s: "Okkio Caffe", sub: "120 Lê Lợi", k: "cafe", t: [], at: [10.7737, 106.7],
+    o: [["Cà phê muối", "Salted cream coffee", ""]], h: [[7, 22]],
+    why: "Townhouse café on Lê Lợi for a salted cream coffee.", addr: "120–122 Lê Lợi, Bến Thành, Quận 1", bingo: "Salt coffee" },
+  { id: "cafe-apartment", c: "hcmc", n: "The Cafe Apartment", s: "42 Nguyễn Huệ", sub: "The Cafe Apartment", k: "cafe", t: ["famous"], at: [10.774, 106.7046],
+    o: [["Cà phê muối", "Salt coffee at Po Cafe", ""]], h: [[8, 22]],
+    why: "A whole apartment block of tiny cafés over the walking street. Best after dark.", addr: "42 Nguyễn Huệ, Bến Nghé, Quận 1", ph: "l:Saigon café" },
+  { id: "japanit", c: "hcmc", n: "Japanit Matcha & Coffee", s: "Japanit Matcha", sub: "130 Trần Hưng Đạo", k: "cafe", t: [], at: [10.7665, 106.694],
+    o: [["Matcha latte", "", ""]], h: [[9, 21]], why: "Matcha close to Quận 1.", addr: "130 Trần Hưng Đạo, Quận 1" },
+  { id: "kocha", c: "hcmc", n: "Kocha Matcha Spot", s: "Kocha Matcha", sub: "382 Nguyễn Thị Minh Khai", k: "cafe", t: ["ours"], at: [10.7735, 106.6845],
+    o: [["Matcha", "", ""]], h: [[8.5, 22]], why: "From your list (\"Khocha Matcha\"). Check it's the one you meant.", addr: "382 Nguyễn Thị Minh Khai, Bàn Cờ, Quận 3" },
+  { id: "mien-thao-moc", c: "hcmc", n: "Miền Thảo Mộc", s: "Miền Thảo Mộc", sub: "Minh Phụng · Quận 11", k: "cafe", t: ["ours"], at: [10.759, 106.645],
+    o: [["Trà thảo mộc", "Herbal tea", ""]], why: "From your list. A tiered garden café, 25–30 min by Grab from Quận 1, so a destination.", addr: "554E Minh Phụng, Quận 11" },
+  { id: "oasis", c: "hcmc", n: "Oasis Cafe", s: "Oasis Cafe", sub: "303 Lê Văn Sĩ", k: "cafe", t: ["ours"], at: [10.7905, 106.6765],
+    o: [], why: "From your list. Café around a koi pond.", addr: "303 Lê Văn Sĩ, Phú Nhuận" },
+  { id: "anh-coffee", c: "hcmc", n: "Anh Coffee Roastery", s: "Anh Coffee", sub: "200 Pasteur · Quận 3", k: "cafe", t: ["ours"], at: [10.7795, 106.694],
+    o: [], h: [[7, 22]], why: "From your list. A roastery café.", addr: "200 Pasteur, Quận 3" },
+  { id: "cafe-slow", c: "hcmc", n: "Café Slow", s: "Café Slow", sub: "Thảo Điền", k: "cafe", t: ["ours"], at: [10.8045, 106.7365],
+    o: [], why: "From your list. A garden café down a lane in Thảo Điền, about 20 min by Grab.", addr: "Café Slow, Thảo Điền, Thủ Đức" },
+  { id: "king-koi", c: "hcmc", n: "King Koi Coffee", s: "King Koi Coffee", sub: "Bình Tân", k: "cafe", t: ["ours"], at: null,
+    o: [], why: "From your list. A koi-pond café far out in Bình Tân, 30+ min by Grab.", addr: "King Koi Coffee, Bình Tân" },
+  // ---- Hội An ----
+  { id: "banh-mi-phuong", c: "hoian", n: "Bánh Mì Phượng", s: "Bánh Mì Phượng", sub: "2B Phan Châu Trinh", k: "street", t: ["famous"], at: [15.879, 108.3305],
+    o: [["Bánh mì thập cẩm", "The mixed special", "about 40k ₫"]], h: [[6.5, 21.5]],
+    why: "Anthony Bourdain's Hội An pick. Expect a queue; it moves.", addr: "2B Phan Châu Trinh, Hội An", bingo: "Banh mi Phuong", ph: "l:Bánh mì Phượng" },
+  { id: "madam-khanh", c: "hoian", n: "Bánh Mì Madam Khánh", s: "Madam Khánh", sub: "115 Trần Cao Vân", k: "street", t: ["famous"], at: [15.8815, 108.3245],
+    o: [["Bánh mì thập cẩm", "The mixed special", "25–35k ₫"]], h: [[6.5, 19.5]],
+    why: "Known as the Banh Mi Queen. Usually a 5–10 minute queue.", addr: "115 Trần Cao Vân, Hội An", bingo: "Banh mi", ph: "l:Bánh mì" },
+  { id: "com-ga-ba-buoi", c: "hoian", n: "Cơm Gà Bà Buội", s: "Cơm Gà Bà Buội", sub: "22 Phan Châu Trinh", k: "street", t: [], at: [15.8789, 108.3292],
+    o: [["Cơm gà", "Hội An chicken rice with turmeric", "35–50k ₫"], ["Cháo gà", "Chicken porridge", ""]], h: [[10.5, 14], [17, 20]], hn: "About 10:30 AM–2 PM and 5–8 PM",
+    why: "The town's best-known chicken rice. Shuts between lunch and dinner.", addr: "22 Phan Châu Trinh, Hội An", bingo: "Com ga" },
+  { id: "cao-lau-thanh", c: "hoian", n: "Cao Lầu Thanh", s: "Cao Lầu Thanh", sub: "26 Thái Phiên", k: "street", t: [], at: [15.8805, 108.3255],
+    o: [["Cao lầu", "Chewy noodles, pork, crunchy croutons", "35k small · 50k large"]], h: [[7, 16]], hn: "About 7 AM–4 PM",
+    why: "Where locals go for real Hội An cao lầu.", tip: "Go before 8 AM or after 3 PM to skip the rush.", addr: "26 Thái Phiên, Hội An", bingo: "Cao lau" },
+  { id: "white-rose", c: "hoian", n: "White Rose (Bông Hồng Trắng)", s: "Bông Hồng Trắng", sub: "533 Hai Bà Trưng", k: "eat", t: [], at: [15.888, 108.3248],
+    o: [["Bánh bao bánh vạc", "White rose shrimp dumplings", "about 75k ₫"]], h: [[7.5, 20.5]], hn: "7:30 AM–8:30 PM, or until sold out",
+    why: "The family workshop behind Hội An's white rose dumplings; it is said to supply many restaurants in town.", addr: "533 Hai Bà Trưng, Hội An", bingo: "White rose dumplings" },
+  { id: "bale-well", c: "hoian", n: "Bale Well (Giếng Bá Lễ)", s: "Giếng Bá Lễ", sub: "Hẻm 45 Trần Hưng Đạo", k: "eat", t: ["hidden"], at: [15.88, 108.3285],
+    o: [["Set", "Bánh xèo, grilled pork skewers, spring rolls: roll your own", "100–150k ₫ pp"]], h: [[10, 21]],
+    why: "No menu, just the set, down a back alley by the old well. You smell it before you see it.", addr: "45/51 Trần Hưng Đạo, Hội An", bingo: "Banh xeo", ph: "u:xeo" },
+  { id: "mot", c: "hoian", n: "Mót Hội An", s: "Mót", sub: "150 Trần Phú", k: "sweet", t: ["famous"], at: [15.8774, 108.3297],
+    o: [["Nước mót", "Iced lemongrass, lime and herb tea", "12–25k ₫"]], h: [[8, 22]], hn: "Roughly 8 AM–10 PM (listings vary)",
+    why: "The herbal iced tea everyone photographs in the Old Town.", tip: "Copycats nearby taste different. Look for No. 150.", addr: "150 Trần Phú, Hội An" },
+  { id: "reaching-out", c: "hoian", n: "Reaching Out Teahouse", s: "Reaching Out", sub: "131 Trần Phú · teahouse", k: "cafe", t: [], at: [15.8773, 108.3293],
+    o: [["Trà", "Tea tasting set", ""]], h: [[8, 20]],
+    why: "A silent teahouse in a heritage house, run by staff who are deaf or hard of hearing. You order with word blocks.", addr: "131 Trần Phú, Hội An", bingo: "Vietnamese tea" },
+  { id: "nu-eatery", c: "hoian", n: "Nữ Eatery", s: "Nữ Eatery", sub: "10A Nguyễn Thị Minh Khai", k: "eat", t: [], at: [15.8772, 108.325],
+    o: [], h: { d: [[12, 21]], 0: [] }, hn: "Noon–9 PM, probably closed Sundays",
+    why: "A tiny, much-loved spot just over the Japanese Bridge. Small modern Vietnamese menu.", addr: "10A Nguyễn Thị Minh Khai, Hội An" },
+  // ---- Đà Nẵng ----
+  { id: "ba-duong", c: "danang", n: "Bánh Xèo Bà Dưỡng", s: "Bánh Xèo Bà Dưỡng", sub: "Kiệt 280 Hoàng Diệu", k: "street", t: ["hidden"], at: [16.056, 108.217],
+    o: [["Bánh xèo", "Crispy little crêpes. The dipping sauce is the star", "25–50k ₫"]], h: [[9.5, 21.5]],
+    why: "Small, packed and loved by locals.", tip: "At the end of a lane off Hoàng Diệu; easy to miss.", addr: "K280/23 Hoàng Diệu, Hải Châu, Đà Nẵng", bingo: "Banh xeo", ph: "u:xeo" },
+  { id: "ba-vui", c: "danang", n: "Bà Vui", s: "Bún Gà Bà Vui", sub: "55 Lê Hồng Phong", k: "street", t: ["bib"], at: [16.0645, 108.2215],
+    o: [["Bún gà", "Chicken noodle soup", ""], ["Xôi gà", "Chicken sticky rice", ""]],
+    why: "A family eatery of 40-plus years. New Michelin Bib Gourmand for 2026.", addr: "55 Lê Hồng Phong, Hải Châu, Đà Nẵng" },
+  { id: "banh-beo-banh-dap", c: "danang", n: "Bánh Bèo – Bánh Đập", s: "Bánh Bèo Bánh Đập", sub: "251 Phan Châu Trinh", k: "street", t: ["bib"], at: [16.059, 108.2195],
+    o: [["Bánh bèo", "Little steamed rice cakes with shrimp", ""], ["Bánh đập", "Smashed rice-cracker sandwich", ""]],
+    why: "A 40-year-old stall that makes just these two things. New Michelin Bib Gourmand for 2026.", addr: "251 Phan Châu Trinh, Hải Châu, Đà Nẵng" },
+  { id: "mi-quang-ba-mua", c: "danang", n: "Mì Quảng Bà Mua", s: "Mì Quảng Bà Mua", sub: "19 Trần Bình Trọng", k: "eat", t: [], at: [16.0668, 108.2192],
+    o: [["Mì Quảng", "Turmeric noodles in a little rich broth", "about 45k ₫"]], h: [[6.5, 21.5]], hn: "About 6:30 AM–9:30 PM (listings vary)",
+    why: "The city's best-known mì Quảng; this branch is roomy and air-conditioned.", addr: "19 Trần Bình Trọng, Hải Châu, Đà Nẵng", bingo: "Mi Quang" },
+  { id: "mau", c: "danang", n: "Bánh Tráng Cuốn Thịt Heo Mậu", s: "Quán Mậu", sub: "35 Đỗ Thúc Tịnh", k: "eat", t: [], at: [16.0285, 108.205],
+    o: [["Bánh tráng cuốn thịt heo", "Pork and herbs you roll in rice paper", "about 75k ₫"]], h: [[8, 22]], hn: "About 8 AM–10 PM",
+    why: "The best-known shop for Đà Nẵng's roll-it-yourself pork.", tip: "South of the centre, about 15 min by Grab.", addr: "35 Đỗ Thúc Tịnh, Cẩm Lệ, Đà Nẵng", bingo: "Banh trang cuon thit heo", ph: "u:cuon" },
+  { id: "be-man", c: "danang", n: "Hải Sản Bé Mặn", s: "Hải Sản Bé Mặn", sub: "Võ Nguyên Giáp · beach road", k: "eat", t: [], at: [16.0715, 108.2455],
+    o: [["Hải sản", "Pick live seafood, they cook it your way", "by weight"]], h: [[9, 23]],
+    why: "A big, busy beachfront seafood hall.", tip: "Seafood is priced by weight: ask the price before they cook.", addr: "Lô 8 Võ Nguyên Giáp, Sơn Trà, Đà Nẵng" },
+  { id: "cong-dn", c: "danang", n: "Cộng Cà Phê", s: "Cộng Cà Phê", sub: "96 Bạch Đằng · river", k: "cafe", t: ["famous"], at: [16.0712, 108.2245],
+    o: [["Cà phê cốt dừa", "Coconut coffee", "45–70k ₫"]], h: [[7.5, 23]],
+    why: "Retro army-green café on the river. Coconut coffee is the order.", addr: "96–98 Bạch Đằng, Hải Châu, Đà Nẵng", bingo: "Coconut coffee" },
+  // ---- Hà Nội ----
+  { id: "pho-bat-dan", c: "hanoi", n: "Phở Gia Truyền Bát Đàn", s: "Phở Gia Truyền", sub: "49 Bát Đàn", k: "street", t: ["bib"], at: [21.0337, 105.8462],
+    o: [["Phở bò tái", "Rare beef", "about 55k ₫"], ["Phở chín", "Well-done brisket", ""]], h: [[6, 10], [18, 20.5]],
+    why: "Beef only, made to order at the counter. Michelin Bib Gourmand.", tip: "Queue, pay, then carry your own bowl to a stool.", addr: "49 Bát Đàn, Hoàn Kiếm, Hà Nội", bingo: "Pho bo", ph: "u:pho" },
+  { id: "banh-cuon-thanh-van", c: "hanoi", n: "Bánh Cuốn Gia Truyền Thanh Vân", s: "Bánh Cuốn Thanh Vân", sub: "14 Hàng Gà", k: "street", t: ["bib"], at: [21.0355, 105.8473],
+    o: [["Bánh cuốn", "Steamed rice rolls, pork filling", "45k ₫"], ["Bánh cuốn tôm", "With fresh shrimp", "65k ₫"]],
+    why: "Four generations of rice rolls. New Michelin Bib Gourmand for 2026.", addr: "12–14 Hàng Gà, Hoàn Kiếm, Hà Nội", bingo: "Banh cuon" },
+  { id: "bun-cha-dac-kim", c: "hanoi", n: "Bún Chả Đắc Kim", s: "Bún Chả Đắc Kim", sub: "1 Hàng Mành", k: "street", t: ["listed"], at: [21.0312, 105.849],
+    o: [["Bún chả", "Grilled pork in sweet-sour broth, noodles, herbs", "about 60k ₫"]], h: [[9, 21]],
+    why: "Old Quarter bún chả, in the Michelin Guide.", tip: "Cash. The line moves fast.", addr: "1 Hàng Mành, Hoàn Kiếm, Hà Nội", bingo: "Bun cha", ph: "l:Bún chả set" },
+  { id: "huong-lien", c: "hanoi", n: "Bún Chả Hương Liên", s: "Bún Chả Hương Liên", sub: "24 Lê Văn Hưu", k: "street", t: ["famous", "listed"], at: [21.0177, 105.8536],
+    o: [["Combo Obama", "Bún chả, a seafood spring roll and a beer", ""]],
+    why: "Where Obama and Bourdain had bún chả in 2016. In the Michelin Guide.", addr: "24 Lê Văn Hưu, Hai Bà Trưng, Hà Nội", bingo: "Bun cha", ph: "l:Bún chả set" },
+  { id: "banh-mi-25", c: "hanoi", n: "Bánh Mì 25", s: "Bánh Mì 25", sub: "25 Hàng Cá", k: "street", t: ["famous"], at: [21.0362, 105.8491],
+    o: [["Bánh mì", "Grilled pork or mixed", "40–45k ₫"]], h: [[7, 21]],
+    why: "The Old Quarter's best-known bánh mì counter.", tip: "Benches on the pavement. Cards accepted.", addr: "25 Hàng Cá, Hoàn Kiếm, Hà Nội", bingo: "Banh mi", ph: "l:Bánh mì" },
+  { id: "cha-ca-thang-long", c: "hanoi", n: "Chả Cá Thăng Long", s: "Chả Cá Thăng Long", sub: "21 Đường Thành", k: "eat", t: [], at: [21.0335, 105.8468],
+    o: [["Chả cá", "Turmeric fish with dill, sizzled at your table", "about 250k ₫ pp"]], h: [[10, 21.5]],
+    why: "One dish: you finish the fish yourself in a pan of dill and spring onion.", addr: "21 Đường Thành, Hoàn Kiếm, Hà Nội", bingo: "Cha ca La Vong" },
+  { id: "bun-bo-nam-bo", c: "hanoi", n: "Bún Bò Nam Bộ Bách Phương", s: "Bún Bò Nam Bộ", sub: "67 Hàng Điếu", k: "street", t: [], at: [21.0325, 105.8473],
+    o: [["Bún bò Nam Bộ", "No broth: noodles, beef, peanuts, herbs", ""]], h: [[7.5, 22]],
+    why: "One dish, done for decades.", addr: "67 Hàng Điếu, Hoàn Kiếm, Hà Nội" },
+  { id: "xoi-yen", c: "hanoi", n: "Xôi Yến", s: "Xôi Yến", sub: "35B Nguyễn Hữu Huân", k: "street", t: [], at: [21.0332, 105.8552],
+    o: [["Xôi xéo", "Sticky rice, mung bean, fried shallots", "35–72k ₫"], ["Thêm topping", "Add pork, chả or egg", ""]], h: [[6, 24]], hn: "About 6 AM–midnight",
+    why: "Sticky rice any time of day; pick toppings off the board.", addr: "35B Nguyễn Hữu Huân, Hoàn Kiếm, Hà Nội" },
+  { id: "pho-ga-nguyet", c: "hanoi", n: "Phở Gà Nguyệt", s: "Phở Gà Nguyệt", sub: "5B Phủ Doãn", k: "street", t: ["bib", "famous"], at: [21.0302, 105.8472],
+    o: [["Phở gà", "Chicken phở", "40–60k ₫"], ["Phở trộn", "Dry chicken phở", ""]], h: [[6.5, 23.5]], hn: "Listings vary; some say evenings until 1 AM",
+    why: "Chicken phở that's open late. Michelin Bib Gourmand, and viral on Chinese social media.", addr: "5B Phủ Doãn, Hoàn Kiếm, Hà Nội" },
+  { id: "pho-ha", c: "hanoi", n: "Phở Hà Hàng Hòm", s: "Phở Gà Hà", sub: "Phố Hàng Hòm", k: "street", t: ["bib"], at: [21.0322, 105.8487],
+    o: [["Phở gà", "Chicken phở", ""]],
+    why: "A no-frills chicken phở shop. New Michelin Bib Gourmand for 2026.", addr: "Phở Hà, Hàng Hòm, Hoàn Kiếm, Hà Nội" },
+  { id: "pho-cuon", c: "hanoi", n: "Phở Cuốn Hưng Bền", s: "Phở Cuốn Hưng Bền", sub: "Ngũ Xã · Trúc Bạch", k: "eat", t: [], at: [21.0445, 105.8418],
+    o: [["Phở cuốn", "Fresh phở-noodle rolls with beef and herbs", ""]], h: [[9, 22]],
+    why: "Phở rolled instead of in soup, on the street that invented it.", addr: "Phở cuốn Hưng Bền, Ngũ Xã, Trúc Bạch, Hà Nội", ph: "u:cuon" },
+  { id: "cafe-giang", c: "hanoi", n: "Café Giang", s: "Cà Phê Giảng", sub: "39 Nguyễn Hữu Huân", k: "cafe", t: ["famous"], at: [21.033, 105.854],
+    o: [["Cà phê trứng", "Egg coffee, invented here in 1946", ""]],
+    why: "The original egg coffee. On your Dec 10 plan.", addr: "39 Nguyễn Hữu Huân, Hoàn Kiếm, Hà Nội", bingo: "Egg coffee", ph: "l:Egg coffee" },
+  { id: "cafe-dinh", c: "hanoi", n: "Café Đinh", s: "Cà Phê Đinh", sub: "13 Đinh Tiên Hoàng · upstairs", k: "cafe", t: ["hidden"], at: [21.0313, 105.8528],
+    o: [["Cà phê trứng", "Egg coffee", "30–35k ₫"]], h: [[7, 22]],
+    why: "Up a narrow staircase to a tiny balcony over Hoàn Kiếm Lake. Same family as Café Giang.", tip: "Only six balcony seats; go early on a weekday.", addr: "13 Đinh Tiên Hoàng, Hoàn Kiếm, Hà Nội", bingo: "Egg coffee", ph: "l:Egg coffee" },
+  { id: "note-coffee", c: "hanoi", n: "The Note Coffee", s: "The Note Coffee", sub: "64 Lương Văn Can", k: "cafe", t: ["famous"], at: [21.0322, 105.8505],
+    o: [], h: [[8, 22.5]],
+    why: "Every wall is covered in sticky notes from visitors. Leave one of yours.", addr: "64 Lương Văn Can, Hoàn Kiếm, Hà Nội" },
+  { id: "che-bon-mua", c: "hanoi", n: "Chè Bốn Mùa", s: "Chè Bốn Mùa", sub: "4 Hàng Cân", k: "sweet", t: [], at: [21.0352, 105.8498],
+    o: [["Chè", "Sweet soups: beans, jellies, coconut", "15–25k ₫"]], h: [[10, 22]],
+    why: "A long-running Old Quarter dessert shop. The seasonal chè sell fastest.", addr: "4 Hàng Cân, Hoàn Kiếm, Hà Nội", bingo: "Che" },
+  // ---- Ninh Bình ----
+  { id: "de-nui", c: "ninhbinh", n: "Goat restaurants by the Tràng An pier", s: "Dê Núi · Cơm Cháy", sub: "Tràng An · Tam Cốc", k: "eat", t: [], at: [20.2546, 105.918], q: "nhà hàng dê núi cơm cháy Tràng An",
+    o: [["Dê núi", "Mountain goat: grilled, steamed or rare with lime", ""], ["Cơm cháy", "Crispy rice crust", ""]],
+    why: "Ninh Bình's two specialties. Several goat restaurants sit by the Tràng An pier; sets run about 200k a head.", tip: "Your driver will know one. Ask for \"quán dê\".", addr: "Tràng An, Ninh Bình", bingo: "Mountain goat" }
+];
+const EATCITY = ["hcmc", "hoian", "danang", "hanoi", "ninhbinh"];
+const EATCTR = { hcmc: [10.7725, 106.698], hoian: [15.8771, 108.3262], danang: [16.0612, 108.227], hanoi: [21.0287, 105.8524], ninhbinh: [20.2546, 105.918] };
+const EATMORE = { hcmc: ["cơm tấm", "bánh mì", "cà phê", "ốc"], hoian: ["cao lầu", "bánh mì", "cà phê", "chè"], danang: ["mì quảng", "hải sản", "cà phê", "bánh xèo"],
+  hanoi: ["phở", "bún chả", "cà phê trứng", "bia hơi"], ninhbinh: ["dê núi", "cơm cháy", "cà phê"] };
+const EATF = [["all", "All"], ["street", "Street"], ["mich", "Michelin"], ["famous", "Famous"], ["cafe", "Cafés"], ["sweet", "Sweets"], ["bar", "Bars"], ["fine", "Big nights"], ["ours", "♥ Ours"]];
+const EAT = { city: null, f: "all", near: false };
+if (!ICP2.heart) ICP2.heart = '<path d="M12 20s-7-4.4-9.2-9A4.8 4.8 0 0 1 12 6a4.8 4.8 0 0 1 9.2 5C19 15.6 12 20 12 20z"/>';
+if (!ICP2.cup) ICP2.cup = '<path d="M4 9h13v5a5 5 0 0 1-5 5H9a5 5 0 0 1-5-5z"/><path d="M17 11h1.5a2.5 2.5 0 0 1 0 5H17M8 3c-.6 1 .6 2 0 3M12 3c-.6 1 .6 2 0 3"/>';
+if (!ICP2.nav) ICP2.nav = '<path d="M12 2v3M12 19v3M2 12h3M19 12h3"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="1.5"/>';
+if (!ICP2.search) ICP2.search = '<circle cx="11" cy="11" r="6.5"/><path d="m16 16 5 5"/>';
+
+const eatNorm = s => String(s || "").normalize("NFD").replace(/[̀-ͯ]/g, "").replace(/đ/gi, "d").toLowerCase().replace(/[^a-z0-9]/g, "");
+const eatSlug = s => String(s || "").normalize("NFD").replace(/[̀-ͯ]/g, "").replace(/đ/gi, "d").toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
+// Everything for the Eat tab: the researched list, plus the trip's own picks and bars that aren't already in it.
+function eatAll(){
+  if (eatAll.c && eatAll.t === T) return eatAll.c;
+  const out = EATS.map(e => ({ ...e })), seen = new Set(out.map(e => eatNorm(e.n)));
+  const leadOf = n => { const L = (T.photos || {}).lead || {}; const k = Object.keys(L).find(x => x.startsWith(n)); return k ? "l:" + k : ""; };
+  (T.eats || []).forEach(e => {
+    const c = CITYNAME[e.city], key = eatNorm(e.name); if (!c || seen.has(key)) return;
+    if ([...seen].some(s => s.startsWith(key) || key.startsWith(s))) return; seen.add(key);
+    const C = COORD(e.name), res = (T.reservations || []).find(r => eatNorm(r.what).startsWith(key));
+    out.push({ id: "x-" + eatSlug(e.name), c, n: e.name, s: e.name, sub: e.mich ? ((e.price || "").match(/~?\$[\d,]+(?:[–-]\d+)?\+?/) || [""])[0].replace(/^\$/, "") && ((e.price || "").match(/~?\$[\d,]+(?:[–-]\d+)?\+?/) || [""])[0] + " a head" : VIN(e.city), k: e.mich ? "fine" : "eat", t: e.mich ? ["star"] : [], at: C || null,
+      o: [], why: e.why, price: e.price, res, ph: leadOf(e.name), addr: e.name + ", " + VIN(e.city) });
+  });
+  Object.entries((T.more || {}).bars || {}).forEach(([c, list]) => (list || []).forEach(b => {
+    const key = eatNorm(b.name); if (seen.has(key)) return; seen.add(key);
+    out.push({ id: "b-" + eatSlug(b.name), c, n: b.name, s: b.name, sub: b.badge || b.kind, k: "bar", t: /Asia/.test(b.badge || "") ? ["famous"] : [], at: b.at || null,
+      o: [], why: b.why, tip: b.bookNote || "", hn: b.hours || "", x: b.closed || [], addr: (b.getin || "").split(/\.\s+(?=[A-Z])/)[0] || b.name, ph: leadOf(b.name),
+      res: (T.reservations || []).find(r => eatNorm(r.what).startsWith(key)) });
+  }));
+  eatAll.t = T; return eatAll.c = out;
+}
+const eatById = id => eatAll().find(e => e.id === id);
+// Hours: the ranges for a weekday, display text, and open/closed now (only meaningful in Vietnam).
+function eatRanges(e, dow){ const h = e.h; if (!h) return null; if (Array.isArray(h)) return (e.x || []).includes(dow) ? [] : h; return dow in h ? h[dow] : h.d; }
+function eatHm(x){ const h = Math.floor(x) % 24, m = Math.round((x % 1) * 60), ap = h < 12 ? "AM" : "PM", hh = h % 12 || 12;
+  return x === 24 ? "midnight" : x === 12 ? "noon" : `${hh}${m ? ":" + String(m).padStart(2, "0") : ""} ${ap}`; }
+function eatHoursText(e){
+  if (e.hn) return e.hn; const r = eatRanges(e, 1); if (!r) return "";
+  return r.map(([a, b]) => { const A = eatHm(a), B = eatHm(b), sa = A.slice(-2), sb = B.slice(-2); return `${sa === sb && !/noon|midnight/.test(A + B) ? A.slice(0, -3) : A}–${B}`; }).join(", ");
+}
+const eatInVN = () => { const i = todayIso(); return i >= "2026-12-05" && i <= "2026-12-13"; };
+function eatStatus(e){
+  if (!eatInVN()) return null; const dow = parse(todayIso()).getDay(), r = eatRanges(e, dow); if (!r) return null;
+  const now = nowMin() / 60; if (!r.length) return { st: "shut", t: "Closed today" };
+  const cur = r.find(([a, b]) => now >= a && now < b);
+  if (cur) return cur[1] - now <= .75 ? { st: "soon", t: `Closes ${eatHm(cur[1])}` } : { st: "open", t: `Open · till ${eatHm(cur[1])}` };
+  const nx = r.find(([a]) => a > now); return nx ? { st: "later", t: `Opens ${eatHm(nx[0])}` } : { st: "shut", t: "Closed now" };
+}
+// When: morning-only, evening, or all day, from the first day's hours.
+function eatWhen(e){
+  if (e.k === "cafe" || e.k === "sweet") return "cafe"; if (e.k === "bar") return "bar"; if (e.k === "fine") return "fine";
+  const r = eatRanges(e, 1); if (!r || !r.length) return "day";
+  if (r.every(([, b]) => b <= 14.5)) return "morn"; if (r[0][0] >= 15) return "eve"; return "day";
+}
+const EATWHEN = { morn: ["Sáng", "Morning only"], day: ["Trưa · Tối", "Lunch and dinner"], eve: ["Tối", "Evening and late"], cafe: ["Cà phê · Chè", "Coffee, tea and sweets"], bar: ["Quán bar", "Bars"], fine: ["Bữa lớn", "Big nights"] };
+// Distance from you, when the phone has a fresh fix.
+const eatNearOk = () => NEAR && Date.now() - NEAR.at < 15 * 60e3;
+function eatDist(e){ if (!eatNearOk() || !e.at) return null; return distKm(NEAR.lat, NEAR.lon, e.at[0], e.at[1]); }
+function eatKey(e){ if (!e.at) return 99; const p = eatNearOk() ? [NEAR.lat, NEAR.lon] : EATCTR[e.c]; return p ? distKm(p[0], p[1], e.at[0], e.at[1]) : 99; }
+function eatDistTxt(km){ if (km == null) return ""; const w = Math.round(km * 16.25); return km > 40 ? `${Math.round(km)} km` : w <= 25 ? `≈ ${Math.max(1, w)} min walk` : `≈ ${km.toFixed(1)} km`; }
+const eatMatch = (e, f) => f === "all" || (f === "street" ? e.k === "street" || e.t.includes("hidden") : f === "mich" ? e.t.some(t => /bib|star|listed/.test(t)) : f === "famous" ? e.t.includes("famous")
+  : f === "ours" ? e.t.includes("ours") || eatHearts(e.id).length > 0 : e.k === f);
+// Hearts (shared in the live room when it's on) and "ate here" (this phone only).
+function eatMine(){ try { return JSON.parse(store.get("eat-hearts") || "{}"); } catch(e){ return {}; } }
+function eatAte(){ try { return JSON.parse(store.get("eat-ate") || "{}"); } catch(e){ return {}; } }
+function eatHearts(id){
+  const room = (((typeof LIVE !== "undefined" && LIVE.room) || {}).eat || {})[id] || {}, me = ME() || "You";
+  const names = Object.keys(room).filter(n => room[n] && n !== me);
+  if (eatMine()[id]) names.unshift(me);
+  return names;
+}
+function eatHeartToggle(id){
+  const m = eatMine(), on = !m[id]; if (on) m[id] = Date.now(); else delete m[id]; store.set("eat-hearts", JSON.stringify(m));
+  if (typeof liveBase === "function" && liveBase() && ME() && navigator.onLine)
+    fetch(`${liveBase()}/eat/${encodeURIComponent(id)}/${encodeURIComponent(ME())}.json`, { method: "PUT", body: on ? "1" : "null" }).catch(() => {});
+  return on;
+}
+function eatAteToggle(id){
+  const a = eatAte(), on = !a[id], e = eatById(id); if (on) a[id] = Date.now(); else delete a[id]; store.set("eat-ate", JSON.stringify(a));
+  if (on && e && e.bingo && typeof bingo === "function"){ const b = bingo(); if (!b[e.bingo]){ b[e.bingo] = Date.now(); store.set("bingo", JSON.stringify(b)); toast(`${(T.say || {})[e.bingo] ? T.say[e.bingo][0] : e.bingo} ticked in Food Bingo`); } }
+  return on;
+}
+// Photos: our own dish photos, or one of the app's bundled photos.
+function eatPhoto(key){
+  if (!key) return null;
+  if (key.startsWith("u:")){ const p = EATPH[key.slice(2)]; return p && { src: p[0], by: p[1], lic: "Unsplash" }; }
+  const p = (((T.photos || {}).lead || {})[key.slice(2)]); return p && { src: p.src, by: p.by, lic: p.lic };
+}
+// Default city: today's city on the trip, else the first stop.
+function eatDayCity(){ const d = T.days.find(x => x.date === todayIso()); const c = d && d.city; return EATCITY.includes(c) ? c : todayIso() > "2026-12-13" ? "hanoi" : "hcmc"; }
+
+// ---------- The page ----------
+function eatTile(e, wide){
+  const st = eatStatus(e), km = eatDist(e), hs = eatHearts(e.id), ate = eatAte()[e.id], o = e.o && e.o[0];
+  const badge = e.t.includes("bib") ? "Bib" : e.t.includes("star") ? "Michelin" : e.t.includes("listed") ? "Michelin" : e.t.includes("ours") ? "Your list" : e.t.includes("famous") ? "Famous" : e.t.includes("hidden") ? "Hidden" : e.since ? "Since " + e.since : "";
+  const dish = o ? (o[1] || o[0]) : (e.why || "").replace(/^From your list( \("[^"]*"\))?\.\s*/, "").split(/(?<=[a-z0-9)])[.:]\s/)[0];
+  const price = o && o[2] ? o[2].replace(/\s*₫$/, "") : "";
+  const meta = st ? `<span class="eat-st ${st.st}">${esc(st.t)}</span>` : e.res ? `<span class="eat-st res">${e.res.status === "booked" ? "Booked" : e.res.status === "maybe" ? "Maybe" : "To book"} · ${esc(e.res.when.split(",")[0])}</span>` : `<span class="eat-st">${esc(eatHoursText(e).replace(/\s*\([^)]*\)/g, "") || "Hours: check Maps")}</span>`;
+  return `<button type="button" class="eat-t k-${e.k}${ate ? " ate" : ""}${wide ? " wide" : ""}" data-eat="${esc(e.id)}" aria-label="${esc(`${e.n}. ${dish}. ${st ? st.t : ""}`)}">
+    <span class="eat-sg"><span class="eat-bd">${badge ? `<i>${esc(badge)}</i>` : ""}${hs.length ? `<em>${icon("heart")}${hs.length}</em>` : ""}</span><b lang="vi">${esc(e.s)}</b><small lang="vi">${esc(e.sub || "")}</small></span>
+    <span class="eat-pp"><span class="eat-dl">${esc(dish)}${price ? ` <u>${esc(price)}</u>` : ""}</span><span class="eat-mt">${meta}${km != null ? `<span class="eat-km">${esc(eatDistTxt(km))}</span>` : ""}</span></span>
+    ${ate ? `<span class="eat-stamp" aria-hidden="true">Đã ăn</span>` : ""}</button>`;
+}
+function eatMoreBar(c){
+  const N = eatNearOk(), qs = EATMORE[c] || [], url = q => N ? `https://www.google.com/maps/search/${encodeURIComponent(q)}/@${NEAR.lat},${NEAR.lon},16z` : mapUrl(`${q} ${CITYV[c] || ""}`);
+  return `<div class="eat-more"><span>${icon("search")}More on Google Maps${N ? " near you" : ""}</span><div>${qs.map(q => `<a href="${esc(url(q))}" target="_blank" rel="noopener" lang="vi">${esc(q)}</a>`).join("")}</div></div>`;
+}
+function eatNow(list){
+  // During the trip: what's open right now, nearest first when the phone knows where you are.
+  if (!eatInVN()) return "";
+  const open = list.filter(e => { const s = eatStatus(e); return s && (s.st === "open" || s.st === "soon"); });
+  if (!open.length) return "";
+  const dow = parse(todayIso()).getDay(), now = nowMin() / 60, closeAt = e => ((eatRanges(e, dow) || []).find(([a, b]) => now >= a && now < b) || [0, 30])[1];
+  open.sort((a, b) => eatNearOk() ? eatDist(a) - eatDist(b) : (closeAt(a) - closeAt(b)) || (b.t.length - a.t.length));
+  return `<section class="eat-now"><h3><span lang="vi">Đói chưa?</span> Open right now</h3><div class="eat-nowr">${open.slice(0, 8).map(e => { const s = eatStatus(e), km = eatDist(e);
+    return `<button type="button" class="eat-nc k-${e.k}" data-eat="${esc(e.id)}"><b lang="vi">${esc(e.s)}</b><small>${esc((e.o[0] || [])[1] || e.sub || "")}</small><span class="eat-st ${s.st}">${esc(s.t.replace("Open · ", ""))}${km != null ? " · " + esc(eatDistTxt(km).replace(" walk", "")) : ""}</span></button>`; }).join("")}</div></section>`;
+}
+function eatTables(c){
+  const R = (T.reservations || []).filter(r => r.area === c && /dinner|tasting|bar|course|late/i.test(r.what + r.when));
+  if (!R.length) return "";
+  return `<div class="eat-tb">${R.map(r => { const nm = r.what.split(/,| \(/)[0], e = eatAll().find(x => eatNorm(nm).startsWith(eatNorm(x.n)) || eatNorm(x.n).startsWith(eatNorm(nm)));
+    return `<button type="button" class="eat-tk st-${r.status}"${e ? ` data-eat="${esc(e.id)}"` : ""}><small>${r.status === "booked" ? "Booked" : r.status === "maybe" ? "Maybe" : "To book"}</small><b>${esc(nm)}</b><em>${esc(r.when.replace(/^(\w{3}) /, "$1 "))}</em></button>`; }).join("")}</div>`;
+}
+const eatGrid = L => `<div class="eat-g">${L.map((e, i) => eatTile(e, L.length % 2 === 1 && i === L.length - 1)).join("")}</div>`;
+function eatPage(){
+  const all = eatAll(), dc = eatDayCity();
+  if (!EAT.city || EAT.day !== todayIso()){ EAT.city = store.get("eat-city") || dc; EAT.day = todayIso(); if (!EAT.city || !EATCITY.includes(EAT.city)) EAT.city = dc; }
+  const near = EAT.near && eatNearOk(), c = EAT.city;
+  const base = near ? all.filter(e => e.at && eatDist(e) < 40) : all.filter(e => e.c === c);
+  const list = base.filter(e => eatMatch(e, EAT.f));
+  const mh = Object.keys(eatMine()).length, ma = Object.keys(eatAte()).length;
+  const head = seg("eat").replace("<h2>Eat</h2>", `<h2>Eat</h2>${mh || ma ? `<span class="pd-cnt eat-tally">${mh ? `${icon("heart")}${mh}` : ""}${ma ? `<span>✓ ${ma} eaten</span>` : ""}</span>` : ""}`);
+  const cities = `<div class="eat-cities" role="tablist" aria-label="City">${`<button type="button" role="tab" class="eat-cy near" aria-selected="${near}" data-eatnear>${icon("nav")}Near me</button>`}${EATCITY.map(k => `<button type="button" role="tab" class="eat-cy" style="--c:${pdCol(k)}" aria-selected="${!near && k === c}" data-eatcity="${k}"><b lang="vi">${esc(CITYV[k])}</b><small>${all.filter(e => e.c === k).length}</small></button>`).join("")}</div>`;
+  const chips = `<div class="eat-fs" role="group" aria-label="Filter">${EATF.map(([k, l]) => { const n = base.filter(e => eatMatch(e, k)).length; return k !== "all" && !n ? "" : `<button type="button" class="eat-f" aria-pressed="${EAT.f === k}" data-eatf="${k}">${esc(l)}${k !== "all" ? `<small>${n}</small>` : ""}</button>`; }).join("")}</div>`;
+  let body;
+  if (!list.length) body = `<p class="eat-empty">${EAT.f === "ours" ? "Tap ♥ on any place to save it for the group. Everyone's hearts show up here." : "Nothing here yet."}</p>`;
+  else if (near){ const s = [...list].sort((a, b) => eatDist(a) - eatDist(b)); body = eatGrid(s); }
+  else body = Object.keys(EATWHEN).map(w => { const L = list.filter(e => eatWhen(e) === w); if (!L.length) return "";
+    // With a fix: nearest first. Without: the standouts first, anything far from the centre last.
+    L.sort((a, b) => eatNearOk() ? eatKey(a) - eatKey(b) : ((eatKey(a) > 4) - (eatKey(b) > 4)) || (b.t.length - a.t.length) || eatKey(a) - eatKey(b));
+    return `<h3 class="eat-h"><span lang="vi">${EATWHEN[w][0]}</span>${EATWHEN[w][1]}<small>${L.length}</small></h3>${eatGrid(L)}`; }).join("");
+  const city = near ? (all.filter(e => e.at).sort((a, b) => eatDist(a) - eatDist(b))[0] || {}).c || c : c;
+  return `<div class="pd eat" style="--c:${pdCol(city)}">${head}${cities}${near ? "" : eatTables(c) + eatNow(base)}${chips}${body}${eatMoreBar(city)}
+    <p class="eat-fine">Hours and prices come from recent listings and can change; distances are approximate. Maps always shows today's hours. Dish photos: ${Object.values(EATPH).map(p => esc(p[1])).join(", ")} on Unsplash.</p></div>`;
+}
+function eatSheet(id){
+  const e = eatById(id); if (!e) return; const st = eatStatus(e), km = eatDist(e), hs = eatHearts(e.id), mine = !!eatMine()[e.id], ate = !!eatAte()[e.id], ph = eatPhoto(e.ph);
+  const q = e.q || e.addr || e.n, maps = mapUrl(q), C = e.at;
+  const badges = [e.t.includes("bib") ? "Michelin Bib Gourmand" : "", e.t.includes("star") ? "Michelin" : "", e.t.includes("listed") ? "In the Michelin Guide" : "", e.t.includes("famous") ? "Famous" : "", e.t.includes("hidden") ? "Hidden away" : "", e.t.includes("ours") ? "From your list" : "", e.since ? "Since " + e.since : ""].filter(Boolean);
+  const rows = [];
+  const ht = eatHoursText(e); rows.push(["clock", st ? st.t : ht || "Hours: check Google Maps", st && ht ? ht : !st && ht ? "" : "", st ? st.st : ""]);
+  if (e.addr) rows.push(["pin2", e.addr, km != null ? eatDistTxt(km) + " from you" : ""]);
+  if (e.tip) rows.push(["info", e.tip, ""]);
+  if (e.price) rows.push(["tag", e.price, ""]);
+  if (e.res) rows.push(["bell", `${e.res.status === "booked" ? "Booked" : e.res.status === "maybe" ? "Maybe" : "To book"}: ${e.res.when}`, e.res.note || ""]);
+  const grab = C ? `grab://open?screenType=BOOKING&dropOffLatitude=${C[0]}&dropOffLongitude=${C[1]}&dropOffName=${encodeURIComponent(e.n)}` : "grab://open";
+  openSheet(`<div class="pd eat-sh k-${e.k}" style="--c:${pdCol(e.c)}">
+    ${ph ? `<div class="eat-shp"><img src="${esc(ph.src)}" alt="" loading="lazy"><small>${esc(ph.by || "")}${ph.lic ? " · " + esc(ph.lic.replace(/ Content License| License/, "")) : ""}</small></div>` : ""}
+    <div class="eat-sg big"><span class="eat-bd">${badges.slice(0, 2).map(b => `<i>${esc(b)}</i>`).join("")}</span><b lang="vi" class="sname">${esc(e.s)}</b><small lang="vi">${esc(e.sub || "")}</small></div>
+    ${e.s !== e.n ? `<p class="eat-full">${esc(e.n)}${hasVi(e.n) ? " " + sayBtn(e.n, 1) : ""}</p>` : ""}
+    <p class="eat-why">${esc(e.why || "")}</p>
+    ${e.o && e.o.length ? `<div class="eat-ord"><h4><span lang="vi">Gọi món</span> What to order</h4>${e.o.map(([v, en, p]) => `<div class="eat-or"><span><b lang="vi">${esc(v)}</b>${hasVi(v) ? sayBtn(v, 1) : ""}${en ? `<small>${esc(en)}</small>` : ""}</span>${p ? `<em>${esc(p)}</em>` : ""}</div>`).join("")}</div>` : ""}
+    <div class="pd-krows">${rows.map(([ic, a, b, cl]) => `<div class="pd-kr${cl ? " eat-" + cl : ""}">${icon(ic)}<span><b>${esc(a)}</b>${b ? `<small>${esc(b)}</small>` : ""}</span></div>`).join("")}</div>
+    <div class="eat-act"><a class="btn pd-grab" href="${grab}">${icon("car")}Grab</a><button type="button" class="btn" data-driver="${esc(e.addr || e.n)}" data-driver-sub="${esc(e.n)}">Show driver</button><a class="btn" href="${esc(maps)}" target="_blank" rel="noopener">${icon("map")}Maps ↗</a></div>
+    <div class="eat-me"><button type="button" class="eat-hb" aria-pressed="${mine}" data-eatheart="${esc(e.id)}">${icon("heart")}<span>${mine ? "Saved" : "Want to go"}</span></button><button type="button" class="eat-ab" aria-pressed="${ate}" data-eatate="${esc(e.id)}"><span class="eat-stamp sm">Đã ăn</span><span>${ate ? "Ate here" : "Mark as eaten"}</span></button></div>
+    ${hs.length ? `<p class="eat-who">${icon("heart")}${esc(hs.join(", "))} ${hs.length > 1 ? "want" : "wants"} to go</p>` : ""}
+  </div>`);
+}
+// Route Eat to the new page (the old list stays behind ?pad=0).
+{ const _eat = views.eat; views.eat = function(){ return PDON() ? eatPage() : _eat.apply(this, arguments); }; }
+function eatRerender(){ if (current !== "eat") return; const y = scrollY; render("eat"); scrollTo(0, y); }
+document.addEventListener("click", e => {
+  if (!PDON()) return;
+  const t = e.target.closest("[data-eat]"); if (t && !e.target.closest(".say")){ e.preventDefault(); eatSheet(t.dataset.eat); return; }
+  const cy = e.target.closest("[data-eatcity]"); if (cy){ EAT.city = cy.dataset.eatcity; EAT.near = false; store.set("eat-city", EAT.city); EAT.f = "all"; eatRerender(); return; }
+  const f = e.target.closest("[data-eatf]"); if (f){ EAT.f = f.dataset.eatf; eatRerender(); return; }
+  const nb = e.target.closest("[data-eatnear]"); if (nb){
+    if (EAT.near){ EAT.near = false; eatRerender(); return; }
+    if (eatNearOk()){ EAT.near = true; eatRerender(); return; }
+    if (!navigator.geolocation) return toast("Location isn't available on this phone");
+    nb.classList.add("busy"); nb.lastChild.textContent = "Finding you…";
+    navigator.geolocation.getCurrentPosition(pos => { NEAR = { lat: pos.coords.latitude, lon: pos.coords.longitude, at: Date.now() };
+      const close = eatAll().filter(x => x.at && eatDist(x) < 40).length; if (!close){ toast("Nothing on the list near you yet. Near me works once you're in Vietnam."); EAT.near = false; } else EAT.near = true; eatRerender(); },
+      () => { nb.classList.remove("busy"); nb.lastChild.textContent = "Near me"; toast("Allow location for this app to see what's near you"); }, { enableHighAccuracy: true, timeout: 12000, maximumAge: 60000 });
+    return; }
+  const hb = e.target.closest("[data-eatheart]"); if (hb){ const on = eatHeartToggle(hb.dataset.eatheart); if (navigator.vibrate) try { navigator.vibrate(8); } catch(x){}
+    hb.setAttribute("aria-pressed", on); hb.lastChild.textContent = on ? "Saved" : "Want to go"; eatRerender(); return; }
+  const ab = e.target.closest("[data-eatate]"); if (ab){ const on = eatAteToggle(ab.dataset.eatate); ab.setAttribute("aria-pressed", on); ab.lastChild.textContent = on ? "Ate here" : "Mark as eaten"; eatRerender(); return; }
+});
+// Everyone's hearts arrive through the live room; redraw Eat when they change.
+if (typeof liveApply === "function"){ const _la = liveApply; liveApply = function(path, data){ const b = JSON.stringify(((LIVE.room || {}).eat) || {}); const r = _la.apply(this, arguments);
+  if (JSON.stringify(((LIVE.room || {}).eat) || {}) !== b) eatRerender(); return r; }; }
 
 function launch(){
   if (!ME()) return picker();
