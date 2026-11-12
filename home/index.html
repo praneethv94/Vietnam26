@@ -1,0 +1,399 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="Out the door">
+<meta name="theme-color" content="#f4ede1">
+<link rel="apple-touch-icon" href="icon-180.png">
+<link rel="manifest" href="manifest.webmanifest">
+<title>Out the door</title>
+<style>
+@font-face{font-family:BVP;font-weight:400;src:url(../fonts/be-vietnam-pro-400-latin.woff2) format("woff2");font-display:swap}
+@font-face{font-family:BVP;font-weight:600;src:url(../fonts/be-vietnam-pro-600-latin.woff2) format("woff2");font-display:swap}
+@font-face{font-family:BVP;font-weight:700;src:url(../fonts/be-vietnam-pro-700-latin.woff2) format("woff2");font-display:swap}
+@font-face{font-family:BVP;font-weight:800;src:url(../fonts/be-vietnam-pro-800-latin.woff2) format("woff2");font-display:swap}
+@font-face{font-family:BC;font-weight:800;src:url(../fonts/barlow-condensed-800-latin.woff2) format("woff2");font-display:swap}
+@font-face{font-family:Mono;font-weight:600;src:url(../fonts/ibm-plex-mono-600-latin.woff2) format("woff2");font-display:swap}
+:root{
+  --paper:#f4ede1;--card:#fffaf2;--ink:#2a221b;--soft:#7b6d5f;--line:#e3d8c6;
+  --p:#1f7a74;--p-bg:#d7ece9;--b:#c8553d;--b-bg:#f6ddd5;--both:#6b5ca5;--both-bg:#e4e0f2;
+  --ok:#2f8a4c;--tag:#e9b949;--shadow:0 1px 0 rgba(60,40,20,.06),0 6px 18px -10px rgba(60,40,20,.25);
+}
+@media (prefers-color-scheme:dark){:root{
+  --paper:#1b1814;--card:#25211c;--ink:#f1e9dc;--soft:#a89a8a;--line:#3a332b;
+  --p:#5cc2b9;--p-bg:#1f3a37;--b:#ef8b72;--b-bg:#43271f;--both:#a99be0;--both-bg:#2f2a45;
+  --ok:#5fc27d;--tag:#e9b949;--shadow:0 6px 18px -10px rgba(0,0,0,.6);
+}}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;background:var(--paper);color:var(--ink);font-family:BVP,system-ui,-apple-system,sans-serif;font-size:16px;-webkit-text-size-adjust:100%}
+body{padding:env(safe-area-inset-top) 0 calc(90px + env(safe-area-inset-bottom))}
+button{font:inherit;color:inherit;background:none;border:0;padding:0;cursor:pointer}
+.wrap{max-width:560px;margin:0 auto;padding:0 16px}
+
+/* Header: luggage tag */
+header{padding:12px 0 6px}
+.tag{position:relative;background:var(--tag);color:#2a1d05;border-radius:14px 26px 26px 14px;padding:14px 18px 14px 44px;box-shadow:var(--shadow);overflow:hidden}
+.tag::before{content:"";position:absolute;left:14px;top:50%;width:14px;height:14px;margin-top:-7px;border-radius:50%;background:var(--paper);box-shadow:inset 0 0 0 3px rgba(0,0,0,.18)}
+.tag::after{content:"";position:absolute;right:-30px;top:-30px;width:110px;height:110px;border-radius:50%;border:2px dashed rgba(0,0,0,.18)}
+.tag small{font-family:Mono;font-size:11px;letter-spacing:.12em;text-transform:uppercase;opacity:.75}
+.tag h1{font-family:BC;font-weight:800;font-size:40px;line-height:.95;margin:2px 0 4px;letter-spacing:.01em;text-transform:uppercase}
+.tag .cd{font-family:Mono;font-size:14px;font-weight:600}
+.meter{display:flex;height:8px;border-radius:99px;background:rgba(0,0,0,.14);overflow:hidden;margin-top:10px}
+.meter i{display:block;height:100%;transition:width .5s cubic-bezier(.2,.8,.2,1)}
+.meter .mp{background:#14524e}.meter .mb{background:#8f3220}.meter .mx{background:#463a7a}
+.legend{display:flex;gap:12px;font-size:12px;margin-top:6px;font-weight:600;flex-wrap:wrap}
+.legend span::before{content:"";display:inline-block;width:8px;height:8px;border-radius:2px;margin-right:5px;background:currentColor}
+.top{display:flex;justify-content:space-between;align-items:center;margin:0 2px 10px;font-size:13px;font-weight:700;color:var(--soft)}
+.who{background:var(--card);box-shadow:var(--shadow);border-radius:99px;padding:7px 12px;font-size:13px;font-weight:700}
+
+.sync{font-size:12px;color:var(--soft);display:flex;align-items:center;gap:6px;margin:10px 2px 0}
+.sync b{width:7px;height:7px;border-radius:50%;background:var(--soft);display:inline-block}
+.sync.on b{background:var(--ok)}.sync.off b{background:var(--b)}
+.feed{margin:8px 0 0;font-size:13px;color:var(--soft);min-height:18px}
+.feed em{font-style:normal;font-weight:700}
+.feed .P{color:var(--p)}.feed .B{color:var(--b)}
+
+/* Day tabs */
+nav.days{position:sticky;top:0;z-index:5;background:var(--paper);padding:10px 0 8px;margin-top:6px}
+nav.days .row{display:grid;grid-template-columns:repeat(5,1fr);gap:6px}
+nav.days button{background:var(--card);border-radius:14px;padding:8px 4px 7px;text-align:center;box-shadow:var(--shadow);position:relative;border:2px solid transparent}
+nav.days button.cur{border-color:var(--ink)}
+nav.days .d{font-family:BC;font-size:20px;line-height:1;text-transform:uppercase}
+nav.days .n{font-size:11px;color:var(--soft);font-weight:600}
+nav.days .bar{height:3px;border-radius:3px;background:var(--line);margin:6px 8px 0;overflow:hidden}
+nav.days .bar i{display:block;height:100%;background:var(--ok)}
+nav.days .today::after{content:"today";position:absolute;top:-7px;left:50%;transform:translateX(-50%);background:var(--ink);color:var(--paper);font-size:9px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;border-radius:99px;padding:1px 6px}
+.filters{display:flex;gap:6px;margin-top:10px;overflow-x:auto;scrollbar-width:none}
+.filters button{flex:none;border-radius:99px;padding:6px 12px;font-size:13px;font-weight:700;background:var(--card);box-shadow:var(--shadow);color:var(--soft)}
+.filters button.cur{background:var(--ink);color:var(--paper)}
+
+/* Day note */
+.daynote{margin:14px 0 2px;font-size:14px;color:var(--soft);line-height:1.4}
+.daynote strong{color:var(--ink)}
+
+/* Sections & tasks */
+h2{font-family:Mono;font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--soft);margin:22px 4px 8px;display:flex;justify-content:space-between}
+.list{background:var(--card);border-radius:18px;box-shadow:var(--shadow);overflow:hidden}
+.t{display:grid;grid-template-columns:44px 1fr auto;align-items:start;gap:4px;padding:12px 12px 12px 6px;border-top:1px solid var(--line);position:relative}
+.t:first-child{border-top:0}
+.chk{width:44px;height:44px;display:grid;place-items:center;margin-top:-10px}
+.chk span{width:26px;height:26px;border-radius:9px;border:2.5px solid var(--line);display:grid;place-items:center;transition:all .25s cubic-bezier(.3,1.4,.5,1)}
+.chk svg{width:16px;height:16px;stroke:#fff;stroke-width:3.2;fill:none;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:24;stroke-dashoffset:24;transition:stroke-dashoffset .3s .05s}
+.t.done .chk span{background:var(--ok);border-color:var(--ok);transform:scale(1.05)}
+.t.done .chk svg{stroke-dashoffset:0}
+.t .txt{font-size:15.5px;line-height:1.35;font-weight:600;padding-top:1px}
+.t .note{font-size:13px;color:var(--soft);font-weight:400;margin-top:3px;line-height:1.35}
+.t.done .txt{color:var(--soft);text-decoration:line-through;text-decoration-thickness:1.5px;font-weight:400}
+.t .by{font-size:12px;color:var(--ok);font-weight:700;margin-top:3px;text-decoration:none;display:block}
+.own{min-width:44px;height:30px;border-radius:99px;font-size:12px;font-weight:800;padding:0 10px;display:inline-flex;align-items:center;justify-content:center;gap:4px;white-space:nowrap}
+.own.P{background:var(--p-bg);color:var(--p)}
+.own.B{background:var(--b-bg);color:var(--b)}
+.own.both{background:var(--both-bg);color:var(--both)}
+.own.none{border:1.5px dashed var(--line);color:var(--soft)}
+.x{position:absolute;right:4px;bottom:4px;font-size:11px;color:var(--soft);padding:4px 8px}
+.t.flash{animation:flash .9s}
+@keyframes flash{0%{background:rgba(233,185,73,.35)}100%{background:transparent}}
+
+.add{display:flex;gap:8px;margin:14px 0 0}
+.add input{flex:1;min-width:0;border:0;border-radius:14px;padding:13px 14px;background:var(--card);color:var(--ink);font:inherit;font-size:16px;box-shadow:var(--shadow)}
+.add button{background:var(--ink);color:var(--paper);border-radius:14px;padding:0 16px;font-weight:700}
+
+.donebox{margin-top:18px;text-align:center}
+.donebox button{font-size:13px;color:var(--soft);font-weight:600;padding:8px}
+
+/* Pack toggle */
+.pt{display:grid;grid-template-columns:1fr 1fr;background:var(--card);border-radius:14px;padding:4px;box-shadow:var(--shadow);margin-top:14px}
+.pt button{border-radius:11px;padding:9px;font-weight:700;font-size:14px;color:var(--soft)}
+.pt button.cur.P{background:var(--p-bg);color:var(--p)}
+.pt button.cur.B{background:var(--b-bg);color:var(--b)}
+
+/* Stamp */
+.stamp{position:fixed;left:50%;top:42%;z-index:30;transform:translate(-50%,-50%) rotate(-12deg) scale(2.2);opacity:0;pointer-events:none;font-family:BC;font-size:54px;text-transform:uppercase;color:var(--ok);border:5px solid var(--ok);border-radius:14px;padding:4px 18px;background:color-mix(in srgb,var(--paper) 85%,transparent);transition:none;white-space:nowrap}
+.stamp.go{animation:stamp 1.8s cubic-bezier(.2,.9,.3,1.2) forwards}
+@keyframes stamp{0%{opacity:0;transform:translate(-50%,-50%) rotate(-12deg) scale(2.2)}18%{opacity:1;transform:translate(-50%,-50%) rotate(-12deg) scale(1)}75%{opacity:1}100%{opacity:0;transform:translate(-50%,-50%) rotate(-12deg) scale(1)}}
+
+/* Who sheet */
+.sheet{position:fixed;inset:0;z-index:40;background:rgba(20,14,8,.45);display:none;align-items:flex-end;justify-content:center}
+.sheet.show{display:flex}
+.sheet .in{background:var(--paper);width:100%;max-width:560px;border-radius:24px 24px 0 0;padding:22px 16px calc(22px + env(safe-area-inset-bottom))}
+.sheet h3{font-family:BC;font-size:30px;text-transform:uppercase;margin:0 0 4px}
+.sheet p{margin:0 0 16px;color:var(--soft);font-size:14px}
+.sheet .opts{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.sheet .opts button{border-radius:18px;padding:22px 10px;font-size:20px;font-weight:800}
+.sheet .opts .P{background:var(--p-bg);color:var(--p)}
+.sheet .opts .B{background:var(--b-bg);color:var(--b)}
+
+.toast{position:fixed;left:50%;bottom:calc(24px + env(safe-area-inset-bottom));transform:translateX(-50%) translateY(20px);opacity:0;background:var(--ink);color:var(--paper);padding:10px 16px;border-radius:99px;font-size:14px;font-weight:600;transition:all .25s;z-index:50;max-width:calc(100% - 32px);text-align:center}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+.empty{padding:22px;text-align:center;color:var(--soft);font-size:14px}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="top"><span id="today"></span><button class="who" id="whoBtn"></button></div>
+    <div class="tag">
+      <small>VA → SRQ · Allegiant 6:41 PM Sun</small>
+      <h1>Out the door</h1>
+      <div class="cd" id="cd"></div>
+      <div class="meter" id="meter"><i class="mp"></i><i class="mb"></i><i class="mx"></i></div>
+      <div class="legend" id="legend"></div>
+    </div>
+    <div class="sync" id="sync"><b></b><span>Connecting…</span></div>
+    <div class="feed" id="feed"></div>
+  </header>
+  <nav class="days"><div class="row" id="days"></div>
+    <div class="filters" id="filters"></div>
+  </nav>
+  <main id="main"></main>
+</div>
+<div class="stamp" id="stamp"></div>
+<div class="sheet" id="whoSheet"><div class="in">
+  <h3>Who's this?</h3>
+  <p>So your ticks show your name on the other phone. You can switch later from the top corner.</p>
+  <div class="opts"><button class="P" data-who="P">Praneeth</button><button class="B" data-who="B">Bindu</button></div>
+</div></div>
+<div class="toast" id="toast"></div>
+<script src="tasks.js"></script>
+<script>
+"use strict";
+// Shared state lives in the trip's Firebase Realtime Database, in its own corner (not the trip app's room).
+const DB = "https://vietnam--26-default-rtdb.asia-southeast1.firebasedatabase.app";
+// If the database rules only allow the trip room, fall back to a "home" corner inside it.
+const ROOTS = [DB + "/v26/rpjfxBlgpFkxmuyaEhY6qyu2m-home", DB + "/v26/rpjfxBlgpFkxmuyaEhY6qyu2m/home"];
+let ROOT = ROOTS[+(localStorage.getItem("otd-root")||0)] || ROOTS[0];
+function fallback(){ if (ROOT === ROOTS[1]) return false; ROOT = ROOTS[1]; try{localStorage.setItem("otd-root","1");}catch(e){} listen(); return true; }
+const NAME = {P:"Praneeth", B:"Bindu", both:"Both", "":"Up for grabs"};
+const DAYS = [
+  {k:"thu", d:"Thu", n:"Nov 12", date:"2026-11-12", note:"<strong>Decide, order, call.</strong> Nothing physical yet: get the things with lead time moving."},
+  {k:"fri", d:"Fri", n:"Nov 13", date:"2026-11-13", note:"<strong>One errand loop, then installs.</strong> Lock, sensors, cameras, bathrooms, first pack."},
+  {k:"sat", d:"Sat", n:"Nov 14", date:"2026-11-14", note:"<strong>Done by ~4 PM.</strong> Friendsgiving tonight 🦃 Packing in the morning, kitchen and cars after lunch."},
+  {k:"sun", d:"Sun", n:"Nov 15", date:"2026-11-15", note:"<strong>Relaxed morning.</strong> 1:30 water off · 2:30 heat & power · 3:45 SimpliSafe Away · 4:00 ride to IAD."},
+  {k:"pack", d:"Pack", n:"2 lists", note:"Each of you has your own list. Shared items are split so nothing's packed twice."},
+];
+const LOCK_UP = new Date("2026-11-15T15:45:00-05:00");
+
+let S = {done:{}, own:{}, add:{}, del:{}};
+let who = ls("who") || "";
+let day = ls("day") || todayKey();
+let filt = ls("filt") || "all";
+let packWho = ls("packWho") || who || "P";
+let showDone = false, connected = false;
+const q = JSON.parse(ls("queue") || "[]");
+try { const c = JSON.parse(ls("cache") || "null"); if (c) S = Object.assign(S, c); } catch(e) {}
+
+function ls(k, v){ try { if (v === undefined) return localStorage.getItem("otd-"+k); if (v === null) localStorage.removeItem("otd-"+k); else localStorage.setItem("otd-"+k, v); } catch(e) { return null; } }
+function todayKey(){ const t = new Date().toLocaleDateString("en-CA",{timeZone:"America/New_York"}); const f = DAYS.find(d => d.date === t); return f ? f.k : (t < "2026-11-12" ? "thu" : "sun"); }
+const $ = s => document.querySelector(s);
+const esc = s => String(s).replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+
+// ---------- data ----------
+function allTasks(){
+  const base = TASKS.map(([id,d,sec,text,note,own]) => ({id,day:d,sec,text,note,def:own}));
+  const added = Object.entries(S.add||{}).filter(([,a]) => a && a.text).map(([id,a]) => ({id,day:a.day,sec:a.sec||"Added",text:a.text,note:"",def:a.own||"",added:true,t:a.t||0}));
+  added.sort((a,b) => a.t-b.t);
+  const packs = PACK.map(([id,w,sec,text,note]) => ({id,day:"pack",who:w,sec,text,note,def:w}));
+  return base.concat(added, packs).filter(t => !(S.del||{})[t.id]);
+}
+const ownerOf = t => (S.own && S.own[t.id] !== undefined && S.own[t.id] !== null) ? S.own[t.id] : t.def;
+const doneOf = t => (S.done||{})[t.id];
+
+// ---------- sync ----------
+function setPath(obj, parts, val){
+  if (!parts.length) return val;
+  let o = obj; for (let i=0;i<parts.length-1;i++){ if (typeof o[parts[i]] !== "object" || !o[parts[i]]) o[parts[i]] = {}; o = o[parts[i]]; }
+  if (val === null) delete o[parts[parts.length-1]]; else o[parts[parts.length-1]] = val;
+  return obj;
+}
+function applyEvent(path, data, patch){
+  const parts = path.split("/").filter(Boolean);
+  if (patch){ for (const [k,v] of Object.entries(data||{})) S = setPath(S, parts.concat(k.split("/")), v); }
+  else if (!parts.length) S = Object.assign({done:{},own:{},add:{},del:{}}, data||{});
+  else S = setPath(S, parts, data);
+  for (const k of ["done","own","add","del"]) if (!S[k]) S[k] = {};
+  ls("cache", JSON.stringify(S));
+}
+let es;
+function listen(){
+  try { es && es.close(); } catch(e) {}
+  if (!window.EventSource) return setSync("off","Live sync isn't supported here");
+  es = new EventSource(ROOT + ".json");
+  const on = (ev, patch) => { try { const m = JSON.parse(ev.data); const before = snapshot(); applyEvent(m.path, m.data, patch); notice(before); render(); } catch(e) {} };
+  es.addEventListener("put", e => { connected = true; setSync("on", "Live: ticks show on both phones"); on(e, false); flush(); });
+  es.addEventListener("patch", e => on(e, true));
+  es.addEventListener("cancel", () => { if (!fallback()) setSync("off","Sync refused by the database"); });
+  es.onerror = () => { if (es.readyState === 2 && !connected && navigator.onLine && fallback()) return; connected = false; setSync("off", navigator.onLine ? "Reconnecting…" : "Offline: ticks save here and send later"); };
+}
+function setSync(c, t){ const el = $("#sync"); el.className = "sync " + c; el.querySelector("span").textContent = t + (q.length ? ` · ${q.length} waiting` : ""); }
+function write(path, val){
+  applyEvent(path, val, false); render();
+  q.push([path, val]); ls("queue", JSON.stringify(q)); flush();
+}
+let flushing = false;
+async function flush(){
+  if (flushing || !q.length) return; flushing = true;
+  try {
+    while (q.length){
+      const [path, val] = q[0];
+      const r = await fetch(`${ROOT}/${path}.json`, {method: val === null ? "DELETE" : "PUT", body: val === null ? undefined : JSON.stringify(val)});
+      if ((r.status === 401 || r.status === 403) && fallback()) continue;
+      if (!r.ok) throw new Error(r.status);
+      q.shift(); ls("queue", JSON.stringify(q));
+    }
+    if (connected) setSync("on","Live: ticks show on both phones");
+  } catch(e) { setSync("off", "Saved on this phone; will send when online"); }
+  flushing = false;
+}
+addEventListener("online", () => { flush(); listen(); });
+document.addEventListener("visibilitychange", () => { if (!document.hidden){ flush(); if (!connected) listen(); tick(); render(); } });
+
+// What the other person just did: flash it + a line in the feed.
+function snapshot(){ return JSON.stringify(S.done||{}); }
+let flashIds = new Set();
+function notice(before){
+  try { const b = JSON.parse(before); for (const [id,v] of Object.entries(S.done||{})) if (!b[id] && v && v.by && v.by !== who) flashIds.add(id); } catch(e) {}
+}
+
+// ---------- actions ----------
+function toggle(id){
+  if (!who) return askWho();
+  const cur = (S.done||{})[id];
+  write("done/"+id, cur ? null : {by: who, t: Date.now()});
+  if (!cur) setTimeout(() => celebrate(id), 250);
+}
+function cycleOwner(t){
+  if (!who) return askWho();
+  const order = ["", "P", "B", "both"];
+  const cur = ownerOf(t); const next = order[(order.indexOf(cur)+1) % order.length];
+  write("own/"+t.id, next === t.def ? null : next);
+  toast(next === "" ? "Up for grabs" : next === "both" ? "Both of you" : next === who ? "You've got it" : `Handed to ${NAME[next]}`);
+}
+function addTask(text){
+  text = text.trim(); if (!text) return; if (!who) return askWho();
+  const id = "a" + Date.now().toString(36) + Math.random().toString(36).slice(2,5);
+  const sec = day === "pack" ? "Added" : "Added";
+  write("add/"+id, {day: day === "pack" ? "pack-"+packWho : day, sec, text: text.slice(0,140), own: day === "pack" ? packWho : who, t: Date.now()});
+}
+function removeAdded(id){ write("add/"+id, null); write("done/"+id, null); write("own/"+id, null); }
+
+// ---------- render ----------
+function tasksFor(k){
+  const all = allTasks();
+  if (k === "pack") return all.filter(t => (t.day === "pack" && t.who === packWho) || t.day === "pack-"+packWho);
+  return all.filter(t => t.day === k);
+}
+function dayProgress(k){
+  const ts = k === "pack" ? allTasks().filter(t => t.day === "pack" || String(t.day).startsWith("pack-")) : tasksFor(k);
+  const d = ts.filter(doneOf).length; return {d, n: ts.length};
+}
+function render(){
+  const all = allTasks();
+  // header meter
+  const tot = all.length, by = {P:0,B:0,x:0};
+  all.forEach(t => { const v = doneOf(t); if (v) by[v.by === "P" ? "P" : v.by === "B" ? "B" : "x"]++; });
+  const m = $("#meter").children;
+  m[0].style.width = (by.P/tot*100)+"%"; m[1].style.width = (by.B/tot*100)+"%"; m[2].style.width = (by.x/tot*100)+"%";
+  const left = tot - by.P - by.B - by.x;
+  $("#legend").innerHTML = `<span style="color:#14524e">Praneeth ${by.P}</span><span style="color:#8f3220">Bindu ${by.B}</span><span style="opacity:.8">${left} to go</span>`;
+  $("#whoBtn").textContent = who ? (who === "P" ? "Praneeth ⇄" : "Bindu ⇄") : "Who are you?";
+
+  // feed: last 3 ticks by anyone
+  const recent = all.map(t => ({t, v: doneOf(t)})).filter(x => x.v && x.v.t).sort((a,b) => b.v.t - a.v.t).slice(0,2);
+  $("#feed").innerHTML = recent.length ? recent.map(({t,v}) => `<div><em class="${v.by}">${v.by === who ? "You" : NAME[v.by]||"Someone"}</em> ticked “${esc(t.text.length>46?t.text.slice(0,44)+"…":t.text)}” · ${ago(v.t)}</div>`).join("") : "";
+
+  // day tabs
+  const tk = todayKey();
+  $("#days").innerHTML = DAYS.map(D => { const p = dayProgress(D.k); return `<button class="${D.k===day?"cur":""} ${D.k===tk && D.k!=="pack"?"today":""}" data-day="${D.k}"><div class="d">${D.d}</div><div class="n">${p.d}/${p.n}</div><div class="bar"><i style="width:${p.n?p.d/p.n*100:0}%"></i></div></button>`; }).join("");
+  $("#filters").style.display = day === "pack" ? "none" : "flex";
+  const fl = [["all","All"],["mine", who ? "Mine" : "Mine"],["grabs","Up for grabs"],["left","Not done"]];
+  $("#filters").innerHTML = fl.map(([k,l]) => `<button data-f="${k}" class="${filt===k?"cur":""}">${l}</button>`).join("");
+
+  // main
+  const D = DAYS.find(x => x.k === day);
+  let ts = tasksFor(day);
+  if (day !== "pack"){
+    if (filt === "mine") ts = ts.filter(t => { const o = ownerOf(t); return o === who || o === "both"; });
+    if (filt === "grabs") ts = ts.filter(t => ownerOf(t) === "" && !doneOf(t));
+    if (filt === "left") ts = ts.filter(t => !doneOf(t));
+  }
+  const open = ts.filter(t => !doneOf(t)), done = ts.filter(doneOf);
+  let h = "";
+  if (day === "pack") h += `<div class="pt"><button class="P ${packWho==="P"?"cur":""}" data-pw="P">Praneeth's bag</button><button class="B ${packWho==="B"?"cur":""}" data-pw="B">Bindu's bag</button></div>`;
+  h += `<p class="daynote">${D.note}</p>`;
+  const groups = []; const idx = {};
+  open.forEach(t => { if (!(t.sec in idx)){ idx[t.sec] = groups.length; groups.push([t.sec, []]); } groups[idx[t.sec]][1].push(t); });
+  if (!open.length) h += `<div class="list"><div class="empty">${ts.length ? "All done here ✓" : filt==="grabs" ? "Nothing left up for grabs." : "Nothing here."}</div></div>`;
+  groups.forEach(([sec, items]) => {
+    const secDone = tasksFor(day).filter(t => t.sec === sec && doneOf(t)).length, secAll = tasksFor(day).filter(t => t.sec === sec).length;
+    h += `<h2><span>${esc(sec)}</span><span>${secDone}/${secAll}</span></h2><div class="list">${items.map(row).join("")}</div>`;
+  });
+  h += `<form class="add" id="addForm"><input id="addIn" maxlength="140" placeholder="Add to ${day==="pack" ? NAME[packWho]+"'s bag" : D.d}…" autocomplete="off" enterkeyhint="done"><button>Add</button></form>`;
+  if (done.length){
+    h += `<div class="donebox"><button id="doneBtn">${showDone ? "Hide" : "Show"} ${done.length} done</button></div>`;
+    if (showDone) h += `<div class="list">${done.sort((a,b)=>doneOf(b).t-doneOf(a).t).map(row).join("")}</div>`;
+  }
+  const keep = document.activeElement && document.activeElement.id === "addIn" ? $("#addIn").value : null;
+  $("#main").innerHTML = h;
+  if (keep !== null){ const i = $("#addIn"); i.value = keep; i.focus(); }
+  flashIds.forEach(id => { const el = document.querySelector(`[data-id="${id}"]`); if (el) el.classList.add("flash"); });
+  flashIds.clear();
+}
+function row(t){
+  const v = doneOf(t), o = ownerOf(t);
+  const chip = day === "pack" ? "" : `<button class="own ${o||"none"}" data-own="${t.id}" aria-label="Who's doing this">${o === "" ? "Take it" : o === "both" ? "Both" : (o === who ? "You" : NAME[o])}</button>`;
+  return `<div class="t ${v?"done":""}" data-id="${t.id}">
+    <button class="chk" data-chk="${t.id}" aria-label="Done"><span><svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span></button>
+    <div><div class="txt">${esc(t.text)}</div>${t.note?`<div class="note">${esc(t.note)}</div>`:""}${v?`<span class="by">✓ ${v.by===who?"You":NAME[v.by]||""} · ${clock(v.t)}</span>`:""}</div>
+    <div>${chip}</div>${t.added?`<button class="x" data-del="${t.id}">remove</button>`:""}</div>`;
+}
+function ago(t){ const s = (Date.now()-t)/1000; if (s<60) return "just now"; if (s<3600) return Math.floor(s/60)+"m ago"; if (s<86400) return Math.floor(s/3600)+"h ago"; return clock(t); }
+function clock(t){ return new Date(t).toLocaleString("en-US",{timeZone:"America/New_York",weekday:"short",hour:"numeric",minute:"2-digit"}).replace(",",""); }
+
+function celebrate(id){
+  const t = allTasks().find(x => x.id === id); if (!t) return;
+  const k = t.day === "pack" || String(t.day).startsWith("pack-") ? "pack" : t.day;
+  if (k === "pack"){ const mine = tasksFor("pack"); if (mine.length && mine.every(doneOf)) stamp(NAME[packWho]+" packed"); return; }
+  const ts = tasksFor(k); if (ts.length && ts.every(doneOf)) stamp(k === "sun" ? "Out the door!" : DAYS.find(d=>d.k===k).d + " done");
+}
+function stamp(text){ const s = $("#stamp"); s.textContent = text; s.classList.remove("go"); void s.offsetWidth; s.classList.add("go"); }
+let tt; function toast(m){ const el = $("#toast"); el.textContent = m; el.classList.add("show"); clearTimeout(tt); tt = setTimeout(() => el.classList.remove("show"), 1600); }
+
+function tick(){
+  const ms = LOCK_UP - Date.now();
+  let txt;
+  if (ms <= 0) txt = "Locked up. Enjoy Florida ☀️";
+  else { const h = Math.floor(ms/3600000), m = Math.floor(ms%3600000/60000); const d = Math.floor(h/24);
+    txt = `Lock-up Sun 3:45 PM · ${d ? d+"d " : ""}${h%24}h ${String(m).padStart(2,"0")}m`; }
+  $("#cd").textContent = txt;
+  $("#today").textContent = new Date().toLocaleDateString("en-US",{timeZone:"America/New_York",weekday:"long",month:"short",day:"numeric"});
+}
+function askWho(){ $("#whoSheet").classList.add("show"); }
+
+// ---------- events ----------
+document.addEventListener("click", e => {
+  const b = e.target.closest("button"); if (!b) return;
+  if (b.dataset.chk) return toggle(b.dataset.chk);
+  if (b.dataset.own){ const t = allTasks().find(x => x.id === b.dataset.own); return t && cycleOwner(t); }
+  if (b.dataset.del) return removeAdded(b.dataset.del);
+  if (b.dataset.day){ day = b.dataset.day; ls("day", day); showDone = false; render(); scrollTo({top: 0, behavior: "smooth"}); return; }
+  if (b.dataset.f){ filt = b.dataset.f; ls("filt", filt); return render(); }
+  if (b.dataset.pw){ packWho = b.dataset.pw; ls("packWho", packWho); return render(); }
+  if (b.dataset.who){ who = b.dataset.who; ls("who", who); if (!ls("packWho")) packWho = who; $("#whoSheet").classList.remove("show"); toast(`Hi ${NAME[who]}`); return render(); }
+  if (b.id === "doneBtn"){ showDone = !showDone; return render(); }
+  if (b.id === "whoBtn") return askWho();
+});
+document.addEventListener("submit", e => { if (e.target.id === "addForm"){ e.preventDefault(); const i = $("#addIn"); addTask(i.value); i.value = ""; i.focus(); } });
+
+tick(); setInterval(tick, 30000);
+render();
+if (!who) askWho();
+listen(); flush();
+setInterval(render, 60000);
+</script>
+</body>
+</html>
