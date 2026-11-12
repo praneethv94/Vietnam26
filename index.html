@@ -3761,6 +3761,95 @@ html[data-theme="dark"] .pd-pcf b{color:color-mix(in srgb,var(--c) 50%,#fff)}
 .pd-pcf b{font-size:16px;color:var(--pdi)}
 html[data-theme="dark"] .pd-pcf b{color:var(--pdi)}
 
+/* ===== Round 2 look (Nov 12 pm), as in "Before the trip, and green Grab": the band is the pad's binding ===== */
+html.street.bl.pd-band header.top h1.brand{display:flex;align-items:center;gap:10px;font:700 16px/1 var(--mono);letter-spacing:.12em;text-transform:uppercase}
+html.street.bl.pd-band header.top h1.brand span{margin-left:.35em}
+html.street.bl.pd-band header.top h1.brand::before{content:"";width:11px;height:11px;border-radius:50%;flex:none;background:rgb(0 0 0/.28);box-shadow:inset 0 1px 2px rgb(0 0 0/.45),0 1px 0 rgb(255 255 255/.25)}
+html.street.bl.pd-band.pd-pre header.top h1.brand::before{background:rgb(19 33 61/.25)}
+.pd-lchip{display:inline-flex;align-items:center;min-height:44px;margin:-8px 0;color:inherit;text-decoration:none;-webkit-tap-highlight-color:transparent}
+.pd-lchip>span{display:inline-flex;align-items:center;gap:7px;padding:7px 11px 6px 9px;border-radius:999px;background:rgb(255 255 255/.2);color:#fff;font:700 12px/1 var(--mono);letter-spacing:.03em;white-space:nowrap}
+.pd-lchip i{width:7px;height:7px;flex:none;border-radius:50%;background:#fff;box-shadow:0 0 0 3px rgb(255 255 255/.3);animation:pdBeat 2.4s ease-in-out infinite}
+@keyframes pdBeat{50%{box-shadow:0 0 0 5px rgb(255 255 255/.1)}}
+.pd-lchip.am>span{background:#f2c94c;color:#3d2c00}
+.pd-lchip.am i{background:#3d2c00;box-shadow:0 0 0 3px rgb(61 44 0/.22);animation-name:pdBeatA}
+@keyframes pdBeatA{50%{box-shadow:0 0 0 5px rgb(61 44 0/.08)}}
+html.pd-pre .pd-lchip>span{background:rgb(19 33 61/.1);color:#13213d}
+html.pd-pre .pd-lchip i{background:#c8312a;box-shadow:0 0 0 3px rgb(200 49 42/.25);animation-name:pdBeatR}
+@keyframes pdBeatR{50%{box-shadow:0 0 0 5px rgb(200 49 42/.08)}}
+@media (prefers-reduced-motion:reduce){.pd-lchip i{animation:none}}
+
+/* Pad edge: a stripe for each page still to come, in its colour */
+.pd-pg{box-shadow:var(--edge,0 0 0 0 transparent),0 22px 34px -22px rgb(19 33 61/.55)}
+
+/* Fact: the chip and its topic on one line, a turn-over arrow; a short one-liner when you're running late */
+.pd-fact small{flex-wrap:nowrap;min-width:0}
+.pd-fact small b{flex:none}
+.pd-fact small span{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.pd-turn .ic2,.pd-ff .pd-turn .ic2{width:14px;height:14px;transform:none}
+.pd-fb .pd-turn .ic2{transform:scaleX(-1)}
+.pd-fact.mini .pd-ff{display:grid;grid-template-columns:auto minmax(0,1fr) 24px;align-items:center;gap:10px;padding:9px 8px 9px 12px;cursor:pointer}
+.pd-fact.mini .pd-ff small span,.pd-fact.mini .pd-turn{display:none}
+.pd-fact.mini .pd-ff p{margin:0;font-size:14.5px;line-height:1.3;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.pd-fmore{display:grid;place-items:center;width:24px;height:24px;padding:0;border:0;background:none;color:#6b5a24}
+.pd-fmore .ic2{width:15px;height:15px}
+html[data-theme="dark"] .pd-fmore,.pd-pg.pd-night .pd-fmore{color:#e0cf98}
+
+/* Ticket: buttons sit under the title, like a ticket stub; full width only when the corner sits beside them */
+.pd-tk>.pd-tb{grid-column:2;display:flex;flex-wrap:wrap;gap:8px;margin-top:0;padding-right:0!important}
+.pd-tk>.pd-tb .btn{flex:0 0 auto;padding:0 14px}
+.pd-pg:has(> .pd-tk + .pd-corner) .pd-tk>.pd-tb{grid-column:1/-1;display:grid;grid-template-columns:repeat(auto-fit,minmax(110px,1fr));padding-right:50px!important}
+.pd-tk.late{margin:12px -8px 0;padding:12px 8px}
+.pd-tk.late .pd-tx>b{color:#3d2c00}
+.pd-tk.late .pd-tx>em{color:#5c4400}
+.pd-tk.pd-ftk .pd-lv{color:var(--pdm);font-weight:600}
+
+/* Cover: the first flight is one tap to the boarding pass; Booked sits under the date, in the cover's red */
+.pd-tkb{width:100%;border:0;border-top:1.5px dashed var(--pdl);border-radius:0;background:none;color:inherit;font:inherit;text-align:left;cursor:pointer;-webkit-tap-highlight-color:transparent}
+.pd-tkb .pd-tt,.pd-tkb .pd-tx{display:block}
+.pd-tt i{display:inline-block;margin-top:8px;padding:3px 6px 2px;border-radius:5px;background:#e3f2e8;color:#1f6b3d;font:700 11px/1 var(--mono);letter-spacing:.06em;text-transform:uppercase;font-style:normal}
+.pd-pg.pd-cov .pd-tt b{color:var(--c)}
+html[data-theme="dark"] .pd-pg.pd-cov .pd-tt b{color:#ff8a7a}
+html[data-theme="dark"] .pd-tt i{background:rgb(143 216 171/.16);color:#8fd8ab}
+
+/* No dead space beside the folded corner: strips and notes run the full width and the corner curls over their end */
+.pd-pg .pd-strip:has(+ .pd-corner){width:100%;padding-right:18px}
+.pd-strip>.ic2{width:16px;height:16px}
+.pd-corner::after{background:linear-gradient(135deg,color-mix(in srgb,var(--pdp) 55%,#d9cfb6) 0%,var(--pdp2) 60%,var(--pdp) 100%)}
+.pd-pg.pd-night .pd-corner::after{background:linear-gradient(135deg,#2b3b62,#1d2c4e 60%,#22325a)}
+.pd-hint{margin:14px 0 0;padding:13px 92px 13px 14px;min-height:96px}
+.pd-hint.go{background:#13213d}
+.pd-pg.ritual:has(.pd-hint) ,.pd-pg.pd-go{padding-bottom:16px}
+
+/* Fri 4: the cover at zero, stamped Lên đường (set off) */
+.pd-stamp-go{--pdno:#0f7471;top:168px;left:56%;padding:6px 14px}
+.pd-stamp-go b{font-size:40px;letter-spacing:.04em}
+.pd-pg.pd-go .pd-num b{opacity:.72}
+.pd-tk>.pd-tb.wide{grid-column:1/-1;display:grid;grid-template-columns:repeat(auto-fit,minmax(110px,1fr))}
+.pd-tk>.pd-tb.wide .btn{justify-content:center}
+.pd-fact.mini:has(+ .pd-corner) .pd-ff{padding-right:50px}
+.pd-stamp-go b{font-size:34px;white-space:nowrap}
+.pd-stamp-go{top:184px;left:52%}
+/* Band fits brand, chip, home and search on a 375 phone */
+html.street.bl.pd-band header.top h1.brand{font-size:14px;letter-spacing:.1em;gap:8px}
+html.street.bl.pd-band header.top h1.brand::before{width:10px;height:10px}
+.pd-lchip>span{font-size:11.5px;letter-spacing:0;padding:7px 10px 6px 8px;gap:6px}
+html.street.bl.pd-band header.top h1.brand{font-size:13.5px;letter-spacing:.08em}
+.pd .pd-tb .btn.pri{background:var(--pdi)!important;color:var(--pdp)!important;box-shadow:none!important}
+.pd .pd-pg.pd-night .pd-tb .btn.pri{background:#f1f4fa!important;color:#13213d!important}
+.pd-tt em{white-space:nowrap}
+/* The corner is a real peel: the curled flap, and under it the next page in its own colour */
+.pd-corner::before{background:linear-gradient(135deg,transparent 50%,color-mix(in srgb,var(--nc,var(--c)) 14%,var(--pdp)) 50%)}
+.pd-corner::after{background:linear-gradient(135deg,#ece2c8 0%,#f8f2e3 34%,#fffdf8 45%,#cbbf9f 50%,transparent 50%);clip-path:polygon(0 0,100% 0,0 100%)}
+.pd-pg.pd-night .pd-corner::after,html[data-theme="dark"] .pd-corner::after{background:linear-gradient(135deg,#1c2a4b 0%,#2a3a62 38%,#34477a 46%,#121c33 50%,transparent 50%)}
+.pd-cf{color:var(--nc,var(--c))}
+html[data-theme="dark"] .pd-cf,.pd-pg.pd-night .pd-cf{color:color-mix(in srgb,var(--nc,var(--c)) 50%,#fff)}
+/* Peeking at flight day before the trip: the band takes that page's colour */
+html.street.bl.pd-pk header.top{background:var(--pdpk);--cityhdr:var(--pdpk)}
+html.street.bl.pd-pk header.top :is(h1.brand,.srchbtn,.sub,.uxhome){color:#fff}
+html.street.bl.pd-pk body{background:linear-gradient(var(--pdpk) 0 60px,var(--bg) 60px)}
+.pd-pg .pd-tk:has(+ .pd-corner) .pd-tx>em{padding-right:0}
+.pd-pg .pd-tk:not(:has(.pd-tb)):has(+ .pd-corner) .pd-tx{padding-right:44px}
+
 /* ===== Eat tab (Nov 12): places drawn as Vietnamese shop signboards. Code in eat.js. ===== */
 .eat{--sgb:#c8312a;--sgt:#ffd84a;--sgs:#fff1c2}
 .k-street{--sgb:#c8312a;--sgt:#ffd84a;--sgs:#fff1c2}
@@ -8742,17 +8831,23 @@ function pdLine(d, iso, extra){
 }
 
 // A fact for the page, picked for the day's places, then its city, then the country. The back of the page has more.
-function pdFact(d, iso, back){
-  const F = factsForDay(d, 3), x = F[0]; if (!x) return "";
-  const dec = FX().december[iso], x2 = F[1], sayK = Object.keys(T.say || {}), sk = sayK.length ? sayK[hashStr(iso) % sayK.length] : null, sv = sk ? T.say[sk] : null;
-  return `<div class="pd-fact" data-pdflip><div class="pd-fi">
-    <div class="pd-ff"><small><b>Bạn có biết?</b><span>${esc(x.f[0])} · ${esc(factWhere(x.f[1]))}</span></small><p>${esc(x.f[2])}</p><button type="button" class="pd-turn" aria-label="Turn the page over for more">${icon("play")}Turn the page over</button></div>
+// Facts pinned to a page: travel days get the one that fits the day.
+const PDFACT = { "2026-12-04": ["The date line", "You cross the date line on the way to Tokyo: take off Friday, land Saturday."] };
+const PDFACT0 = ["Lên đường", "Lên đường means “set off”. To wish someone a safe trip, say chúc thượng lộ bình an."];
+if (!ICP2.turn) ICP2.turn = '<path d="M3 12a9 9 0 1 0 2.6-6.4L3 8"/><path d="M3 3v5h5"/>';
+function pdFact(d, iso, back, opt = {}){
+  const F = factsForDay(d, 3), pin = opt.pin || PDFACT[iso], x = pin ? { f: [pin[0], "", pin[1]] } : F[0]; if (!x) return "";
+  const topic = pin ? pin[0] : x.f[1] === "all" ? x.f[0] : factWhere(x.f[1]);
+  const dec = FX().december[iso], x2 = pin ? F[0] : F[1], sayK = Object.keys(T.say || {}), sk = sayK.length ? sayK[hashStr(iso) % sayK.length] : null, sv = sk ? T.say[sk] : null;
+  return `<div class="pd-fact${opt.mini ? " mini" : ""}" data-pdflip><div class="pd-fi">
+    <div class="pd-ff"><small><b>Bạn có biết?</b><span>${esc(topic)}</span></small><p>${esc(x.f[2])}</p>${opt.mini ? `<button type="button" class="pd-fmore" aria-label="Show the whole fact">${icon("chev")}</button>` : ""}<button type="button" class="pd-turn" aria-label="Turn the page over for more">${icon("turn")}Turn the page over</button></div>
     <div class="pd-fb" aria-hidden="true"><small><b>Mặt sau</b><span>The back of the page</span></small>
       ${dec ? `<div class="pd-fbr"><em>This month in history · ${esc(dec[0])}</em><p>${esc(dec[1])}</p></div>` : ""}
       ${x2 ? `<div class="pd-fbr"><em>One more · ${esc(factWhere(x2.f[1]))}</em><p>${esc(x2.f[2])}</p></div>` : ""}
       ${sv ? `<div class="pd-fbr say"><em>Say it today</em><p><b lang="vi">${esc(sv[0])}</b> <span>${esc(sk)} · “${esc(sv[1])}”</span>${typeof sayBtn === "function" ? sayBtn(sv[0], 1) : ""}</p></div>` : ""}
-      <button type="button" class="pd-turn">${icon("play")}Turn it back</button></div></div></div>`;
+      <button type="button" class="pd-turn">${icon("turn")}Turn it back</button></div></div></div>`;
 }
+document.addEventListener("click", e => { const m = e.target.closest(".pd-fact.mini"); if (m && !e.target.closest(".pd-turn")) { m.classList.remove("mini"); const b = m.querySelector(".pd-fmore"); b && b.remove(); haptic && haptic(); return; } });
 document.addEventListener("click", e => { const t = e.target.closest(".pd-fact .pd-turn"); if (!t) return; const f = t.closest(".pd-fact"); f.classList.toggle("flip");
   const fi = f.querySelector(".pd-fi"); fi.style.minHeight = f.classList.contains("flip") ? f.querySelector(".pd-fb").scrollHeight + "px" : "";
   f.querySelector(".pd-ff").setAttribute("aria-hidden", f.classList.contains("flip")); f.querySelector(".pd-fb").setAttribute("aria-hidden", !f.classList.contains("flip")); haptic && haptic(); });
@@ -8764,6 +8859,7 @@ function pdParts(d){
   tl.forEach((x, k) => { const p = partOf(x, k, last); last = p; let g = out[out.length - 1]; if (!g || g.p !== p) { g = { p, items: [] }; out.push(g); } g.items.push(x); });
   return out;
 }
+const pdW = (d, x) => x.i >= 0 && d.items[x.i] ? d.items[x.i][1] : x.w || "";
 const pdPhotoOf = (d, x) => (placesFor(d.items[x.i][1], d.city).find(p => p.photo) || {}).photo || "";
 const PDKPH = { srq: "Sarasota, Florida", tyo: "Tokyo", hcmc: "Ho Chi Minh City", hoian: "Hội An", danang: "Sơn Trà Peninsula", hanoi: "Hoàn Kiếm Lake", ninhbinh: "Tràng An Scenic Landscape Complex" };
 const pdDayPh = d => d.photo || PDKPH[pdKey(d)] || d.place;
@@ -8787,7 +8883,7 @@ function pdPartWhen(d, g, i, all){
 }
 // Which stop starts next and when to leave for it.
 function pdLeave(d, x){
-  if (!x) return null;
+  if (!x || x.i < 0 || !d.items[x.i]) return null;
   const its = timeline(d).filter(y => y.i >= 0).sort((a, b) => a.i - b.i), at = i => placesFor(d.items[i][1], d.city).filter(p => COORD(p.name));
   const to = at(x.i)[0]; if (!to) return null;
   let from = null; for (const y of its.filter(y => y.i < x.i).reverse()) { const pp = at(y.i); if (pp.length) { from = pp[pp.length - 1]; break; } }
@@ -8816,7 +8912,12 @@ function pdNowCard(d, iso, live){
   if (!live) { const prev = T.days.find(y => y.date === pdIsoAdd(d.date, -1)), moving = !prev || prev.city !== d.city, tp = placesFor(d.title, d.city).find(p => p.photo);
     const ph = d.photo || (tp && tp.photo) || (moving ? pdDayPh(d) : pdParts(d).flatMap(g => g.items).map(x => pdPhotoOf(d, x)).find(Boolean)) || pdDayPh(d);
     return `<div class="pd-now"><div class="ph" data-lead="${esc(ph)}"></div><span class="pd-nb">${esc(DOW[parse(iso).getDay()])} ${parse(iso).getDate()}</span><div class="pd-nt"><b>${esc(d.title)}</b><small>${esc(d.place)}</small></div></div>`; }
-  const { cur, nxt } = nowNext(d), x = cur || nxt, ph = (x && x.i >= 0 && pdPhotoOf(d, x)) || pdDayPh(d);
+  const { cur, nxt, now } = nowNext(d), x = cur || nxt, ph = (x && x.i >= 0 && pdPhotoOf(d, x)) || pdDayPh(d);
+  if ((!cur || cur.i < 0) && nxt && nxt.i >= 0) {
+    const w = d.items[nxt.i][1], first = (timeline(d).find(y => y.i >= 0) || {}).i === nxt.i, fl = (T.flights || []).find(f => f.date === d.date && f.bags && PB());
+    if (nxt.exact && nxt.s - now <= 60 && /^leave\b/i.test(w)) return `<div class="pd-now"><div class="ph" data-lead="${esc(pdDayPh(d))}"></div><span class="pd-nb on">Now</span><div class="pd-nt"><b>${first ? "Leave home" : "Leave"} by ${esc(hm(nxt.s / 60))}</b><small>${esc(fl ? fl.bags.replace(/\s*\(.*?\)/g, "") : pdRest(w) || pdHead(w))}</small></div></div>`;
+    if (!nxt.exact) return `<button type="button" class="pd-now" data-pdgo="${nxt.i}"><div class="ph" data-lead="${esc(pdPhotoOf(d, nxt) || pdDayPh(d))}"></div><span class="pd-nb on">Now</span><div class="pd-nt"><b>${esc(pdHead(w))}</b>${pdRest(w) ? `<small>${esc(pdRest(w))}</small>` : ""}</div></button>`;
+  }
   if (!cur || cur.i < 0) return `<div class="pd-now"><div class="ph" data-lead="${esc(pdDayPh(d))}"></div><span class="pd-nb">Today</span><div class="pd-nt"><b>${esc(d.title)}</b><small>${esc(d.place)}</small></div></div>`;
   const k = "Now", t = pdHead(d.items[x.i][1]), s = pdRest(d.items[x.i][1]);
   return `<button type="button" class="pd-now" ${x && x.i >= 0 ? `data-pdgo="${x.i}"` : ""}><div class="ph" data-lead="${esc(ph)}"></div><span class="pd-nb${cur ? " on" : ""}">${k}</span><div class="pd-nt"><b>${esc(t)}</b>${s ? `<small>${esc(s)}</small>` : ""}</div></button>`;
@@ -8825,20 +8926,42 @@ function pdNowCard(d, iso, live){
 function pdNext(d, x, now, opt = {}){
   if (!x) { const i = T.days.indexOf(d), tm = T.days[i + 1], f = tm && timeline(tm).find(y => y.i >= 0);
     return f ? `<div class="pd-tk dim"><div class="pd-tt"><b>${esc(pdBig(f)[0])}</b><small>${esc(pdBig(f)[1] || "")}</small></div><div class="pd-tx"><small>Ngày mai · Tomorrow</small><b>${esc(pdHead(tm.items[f.i][1]))}</b><em>That's today's plan done. Enjoy the evening.</em></div></div>` : ""; }
-  const w = d.items[x.i][1], lv = pdLeave(d, x), fk = bkFlightKey(d.date, w), st = x.st, to = lv && lv.to;
-  const left = lv && lv.at != null ? lv.at - now : x.exact ? x.s - now : null, late = left != null && left <= 5 && x.s - now > -15;
+  const w = pdW(d, x), lv = pdLeave(d, x), fk = bkFlightKey(d.date, w), st = x.st, to = lv && lv.to;
+  const left = lv && lv.at != null ? lv.at - now : x.exact ? x.s - now : null, late = left != null && left <= 10 && x.s - now > -15;
   const [big, ap] = pdBig(x), cd = x.exact ? x.s - now : null;
   const btns = [];
   if (fk) btns.push(`<button type="button" class="btn pri" data-bkopen="${fk}" data-bkleg="${esc(legIn(w))}">${icon("plane")}Boarding pass</button>`);
   if (lv && lv.leg) { if (lv.leg.mode === "walk") { btns.push(`<a class="btn pri" href="${pdWalkUrl(to)}" target="_blank" rel="noopener">${icon("walk")}Walk ${lv.leg.walk} min</a>`); if (lv.leg.walk >= 12) btns.push(pdGrab(to)); }
-    else { btns.push(pdGrab(to, `Grab · ${lv.leg.grab} min`)); btns.push(`<button type="button" class="btn" data-driver="${esc(to.vi || to.name)}" data-driver-sub="${esc(to.addr || "")}">Show driver</button>`); } }
+    else { btns.push(pdGrab(to)); btns.push(`<button type="button" class="btn" data-driver="${esc(to.vi || to.name)}" data-driver-sub="${esc(to.addr || "")}">Show driver</button>`); } }
   else if (to && !fk) { btns.push(pdGrab(to)); btns.push(`<button type="button" class="btn" data-driver="${esc(to.vi || to.name)}" data-driver-sub="${esc(to.addr || "")}">Show driver</button>`); }
   if (st === "todo" && !fk) btns.unshift(`<button type="button" class="btn pd-bk" data-pdbook="${d.date}|${x.i}">Not booked · see how</button>`);
   const lbl = late ? `Leave now${lv && lv.leg ? ` · ${lv.leg.mode === "walk" ? `${lv.leg.walk} min walk` : `Grab ${lv.leg.grab} min`}` : ""}` : lv && lv.at != null && lv.leg ? `Leave by ${hm(lv.at / 60)} · ${lv.leg.mode === "walk" ? `${lv.leg.walk} min walk` : `Grab ${lv.leg.grab} min`}` : "";
   return `<div class="pd-tk${late ? " late" : ""}${st === "todo" ? " todo" : ""}"><div class="pd-tt${/\d/.test(big) ? "" : " w"}"><b>${esc(big)}</b><small>${esc(ap || "")}</small>${cd != null && cd > 0 ? `<em data-pdcd="${x.s}">${pdCd(cd)}</em>` : ""}</div>
-    <div class="pd-tx"><small>${late ? "Đi thôi · Go now" : "Tiếp theo · Next"}${st === "booked" ? `<i class="ok">Booked</i>` : st === "todo" ? `<i class="no">To book</i>` : st === "maybe" ? `<i class="mb">Maybe</i>` : ""}</small><b>${esc(pdHead(w))}</b>${pdRest(w) ? `<em>${esc(pdRest(w))}</em>` : ""}${lbl ? `<span class="pd-lv">${icon(lv.leg && lv.leg.mode === "walk" ? "walk" : "car")}${esc(lbl)}</span>` : ""}
+    <div class="pd-tx"><small>${late ? "Đi ngay · Leave now" : "Tiếp theo · Next"}${st === "booked" ? `<i class="ok">Booked</i>` : st === "todo" ? `<i class="no">To book</i>` : st === "maybe" ? `<i class="mb">Maybe</i>` : ""}</small><b>${esc(pdHead(w))}</b>${pdRest(w) ? `<em>${esc(pdRest(w))}</em>` : ""}${lbl ? `<span class="pd-lv">${icon(lv.leg && lv.leg.mode === "walk" ? "walk" : "car")}${esc(lbl)}</span>` : ""}
     </div>${btns.length ? `<div class="pd-tb">${btns.slice(0, 2).join("")}</div>` : ""}</div>`;
 }
+// A flight on the page is a paper ticket too: next, in the air, or just landed. Boarding pass and Bags on it.
+const pdHmS = iso => t12(iso).replace(/ (AM|PM)$/, "");
+const pdDur = m => m < 60 ? `${m} min` : `${Math.floor(m / 60)}h${m % 60 ? " " + String(m % 60).padStart(2, "0") : ""}`;
+const pdFlRec = l => (T.flights || []).find(f => (f.legs || []).includes(l.no));
+function pdFlightTk(LL){
+  const { l, n, d: dp, a } = LL, air = n >= dp && n < a, landed = n >= a, mins = ms => Math.max(0, Math.round(ms / 6e4));
+  const key = l.mine ? "m:" + l.dir : bkFlightKey(l.dep.slice(0, 10), "", l.no), rec = pdFlRec(l), fi = (T.flights || []).indexOf(rec);
+  const nx = myLegs().find(y => y.dep && Date.parse(y.dep) > a && Date.parse(y.dep) - a < 12 * 36e5);
+  const board = dp - (a - dp > 4 * 36e5 ? 45 : 30) * 6e4, off = (m => m ? (m[1] === "-" ? -1 : 1) * (+m[2] * 60 + +m[3]) * 6e4 : 0)(l.dep.match(/([+-])(\d\d):(\d\d)$/));
+  const [big, ap] = t12(air || landed ? l.arr : l.dep).split(" "), left = mins((air ? a : dp) - n);
+  const lbl = air ? "Đang bay · In the air" : landed ? "Vừa đến · Landed" : "Tiếp theo · Next";
+  const title = landed ? `Welcome to ${l.toName}` : `${l.no} to ${l.toName}`;
+  const em = landed ? (nx ? `Next: ${nx.no} to ${nx.toName} at ${t12(nx.dep)}.` : "") : `Lands ${pdHmS(l.arr)}${nx ? `, then ${nx.no} to ${nx.toName} at ${pdHmS(nx.dep)}` : ""}.${air ? " Everything here works offline." : ""}`;
+  const lv = air || landed ? "" : n < board ? `Boards about ${t12(new Date(board + off).toISOString())}` : "Boarding now";
+  const cd = landed ? "" : `<em data-pdcd="${nowMin() + left}">${air ? "lands " : ""}in ${pdDur(left)}</em>`;
+  const btns = [`<button type="button" class="btn pri" data-bkopen="${esc(key)}" data-bkleg="${esc(l.no)}">${icon("plane")}Boarding pass</button>`];
+  if (rec && rec.bags) btns.push(`<button type="button" class="btn" data-pdbags="${fi}">${icon("bag")}Bags</button>`);
+  return `<div class="pd-tk pd-ftk${air ? " air" : ""}"><div class="pd-tt"><b>${esc(big)}</b><small>${esc(ap || "")}</small>${cd}</div>
+    <div class="pd-tx"><small>${lbl}<i class="ok">Booked</i></small><b>${esc(title)}</b>${em ? `<em>${esc(em)}</em>` : ""}${lv ? `<span class="pd-lv">${icon("clock")}${esc(lv)}</span>` : ""}</div><div class="pd-tb">${btns.join("")}</div></div>`;
+}
+document.addEventListener("click", e => { const b = e.target.closest("[data-pdbags]"); if (!b) return; e.preventDefault(); const f = (T.flights || [])[+b.dataset.pdbags]; if (!f) return;
+  openSheet(`<div class="pd-sheet"><small class="pd-k">${esc(f.when || "")} · ${esc(f.cabin || "")}</small><div class="sname">Bags</div><dl class="pd-fx">${[["Checked", f.bags], ["Carry-on", f.carry], ["Booking", f.ref]].filter(r => r[1]).map(([k, v]) => `<div><dt>${esc(k)}</dt><dd>${esc(v)}</dd></div>`).join("")}</dl></div>`); });
 // The ticket shows the next thing with a real time when the very next line is loose ("Morning", "Lunch").
 function pdTarget(d, nxt, now){ if (!nxt || nxt.exact) return nxt; const e = timeline(d).find(y => y.i >= 0 && y.exact && y.s > now); return e && e.s - now <= 240 ? e : nxt; }
 // Night: the HOME ticket, with Take me home and Grab.
@@ -8853,19 +8976,25 @@ document.addEventListener("click", e => { if (e.target.closest("[data-pdhome]"))
 function pdStrip(d, now, dark){
   if (dark) { const i = T.days.indexOf(d), tm = T.days[i + 1]; if (!tm || tm.date > PD1) return "";
     const f = timeline(tm).find(y => y.i >= 0 && y.exact), L = checklistFor(tm), dn = local.get("check-" + tm.date, {}), n = L.filter(c => dn[c[0]]).length;
-    return `<button type="button" class="pd-strip" data-pdcheck="${tm.date}"><span class="pd-ring" style="--p:${L.length ? n / L.length : 0}">${n}/${L.length}</span><span><small>Trước khi ngủ · Before bed</small><b>${esc(DOW[parse(tm.date).getDay()])} ${parse(tm.date).getDate()}: ${f ? `${esc(pdHead(tm.items[f.i][1]))} at ${esc(hm(f.s / 60))}` : esc(tm.title)}</b><em>${esc(L.filter(c => !dn[c[0]]).slice(0, 2).map(c => c[0]).join(", "))}</em></span>${icon("play")}</button>`; }
+    const rest = L.filter(c => !dn[c[0]]).slice(0, 2).map(c => c[0]);
+    return `<button type="button" class="pd-strip" data-pdcheck="${tm.date}"><span class="pd-ring" style="--p:${L.length ? n / L.length : 0}">${n}/${L.length}</span><span><small>Before bed · for ${esc(DOW[parse(tm.date).getDay()])} ${parse(tm.date).getDate()}</small><b>${f ? `${esc(pdHead(tm.items[f.i][1]))} at ${esc(hm(f.s / 60))}` : esc(tm.title)}</b>${rest.length ? `<em>Pack: ${esc(rest.join(", ").toLowerCase().replace(/^\w/, c => c))}</em>` : ""}</span>${icon("chev")}</button>`; }
   if (now > 720) return "";
-  const L = checklistFor(d), dn = local.get("check-" + d.date, {}), n = L.filter(c => dn[c[0]]).length, nx = L.find(c => !dn[c[0]]);
+  const L = checklistFor(d), dn = local.get("check-" + d.date, {}), n = L.filter(c => dn[c[0]]).length, op = L.filter(c => !dn[c[0]]), nx = op[0];
   if (!L.length || !nx) return "";
-  return `<button type="button" class="pd-strip" data-pdcheck="${d.date}"><span class="pd-ring" style="--p:${n / L.length}">${n}/${L.length}</span><span><small>Trước khi đi · Before you head out</small><b>Next: ${esc(nx[0])}</b><em>${esc(nx[1])}</em></span>${icon("play")}</button>`;
+  return `<button type="button" class="pd-strip" data-pdcheck="${d.date}"><span class="pd-ring" style="--p:${n / L.length}">${n}/${L.length}</span><span><small>${d.date === PD0 ? "Before you leave home" : "Before you head out"}</small><b>Next: ${esc(nx[0].replace(/^\w/, c => c.toLowerCase()))}</b><em>${op[1] ? `Then ${esc(op[1][0].replace(/^\w/, c => c.toLowerCase()))}` : esc(nx[1])}</em></span>${icon("chev")}</button>`;
 }
 document.addEventListener("click", e => { const b = e.target.closest("[data-pdcheck]"); if (!b) return; e.preventDefault(); const d = dayOf(b.dataset.pdcheck); if (!d) return;
   openSheet(`<div class="pd-sheet"><small class="pd-k">${esc(PDOWEN[parse(d.date).getDay()])} ${parse(d.date).getDate()} ${MON[parse(d.date).getMonth()]}</small><div class="sname">Before you head out</div>${checklistHtml(d).replace(/<div class="sub-h">[^<]*<\/div>/, "")}</div>`); });
 document.addEventListener("change", e => { if (e.target.closest("[data-check]") && current === "today") setTimeout(() => { const y = scrollY; pdRe(); scrollTo(0, y); }, 50); });
 
+// The pad's edge under a page: one stripe per page still to come, in each day's colour.
+function pdEdge(iso){
+  const L = pdDays().filter(d => d.date > iso).slice(0, 4); if (!L.length) return "--edge:0 0 0 0 transparent";
+  return "--edge:" + L.map((d, k) => `0 ${3 * k + 1}px 0 -${k + 1}px var(--pdp),0 ${3 * k + 3}px 0 -${k + 1}px ${pdCol(pdKey(d))}`).join(",");
+}
 function pdCorner(iso, label){
-  const n = pdIsoAdd(iso, 1), x = parse(label ? PD0 : n);
-  return `<button type="button" class="pd-corner" data-pdtear aria-label="Tear off this page to peek at ${esc(PDOWEN[x.getDay()])}"><span class="pd-cf"><small>${esc(label || "To " + DOW[x.getDay()])}</small><b>${x.getDate()}</b></span></button>`;
+  const n = pdIsoAdd(iso, 1), x = parse(label ? PD0 : n), nd = dayOf(label ? PD0 : n);
+  return `<button type="button" class="pd-corner" style="--nc:${nd ? pdCol(pdKey(nd)) : "var(--c)"}" data-pdtear aria-label="Tear off this page to peek at ${esc(PDOWEN[x.getDay()])}"><span class="pd-cf"><small>${esc(label || "To " + DOW[x.getDay()])}</small><b>${x.getDate()}</b></span></button>`;
 }
 // One page of the pad. mode: "today" (live), "peek" (a later day, opened early), "plan" (Days tab).
 function pdPage(d, iso, mode){
@@ -8874,16 +9003,15 @@ function pdPage(d, iso, mode){
   const k = pdKey(d), col = pdCol(k), x = parse(iso), LL = live && typeof liveLeg === "function" ? liveLeg() : null;
   const first = !live ? timeline(d).find(y => y.i >= 0) : null;
   let tk = "";
-  if (LL) tk = `<div class="pd-live">${liveFlightHtml(LL)}</div>`;
+  if (LL) tk = pdFlightTk(LL);
   else if (dark && (!nxt || now >= 1260)) tk = pdHome(d) || pdNext(d, nxt, now);
   else if (live) tk = pdNext(d, pdTarget(d, nxt, now), now) || pdHome(d);
   else if (first) tk = pdNext(d, first, -1e4).replace("Tiếp theo · Next", "Đầu tiên · First up").replace(/<em data-pdcd[^<]*<\/em>/, "");
-  return `<section class="pd-pg${dark ? " pd-night" : ""}${mode !== "today" ? " " + mode : ""}" style="--c:${col}" data-iso="${iso}">
+  return `<section class="pd-pg${dark ? " pd-night" : ""}${mode !== "today" ? " " + mode : ""}" style="--c:${col};${pdEdge(iso)}" data-iso="${iso}">
     ${pdHd(d, iso, pdRight(d))}
     <div class="pd-mid"><div class="pd-num" aria-hidden="true"><b>${x.getDate()}</b></div>${pdNowCard(d, iso, live)}</div>
     ${pdLine(d, iso)}
-    ${dark && live ? "" : pdFact(d, iso)}
-    ${tk}
+    ${/^<div class="pd-tk[^"]*\blate\b/.test(tk) ? tk + pdFact(d, iso, 0, { mini: 1 }) : pdFact(d, iso) + tk}
     ${live ? pdStrip(d, now, dark) : ""}
     ${iso < PD1 && mode !== "plan" ? pdCorner(iso) : ""}
   </section>`;
@@ -8960,34 +9088,42 @@ document.addEventListener("click", e => { const b = e.target.closest("[data-pdbo
     <p class="pd-note">Booked it? Send Praneeth the confirmation and this ticket prints in the next update.</p></div>`); });
 
 // ---------- Today: the whole tab ----------
-function pdCover(iso){
-  const x = parse(iso), ml = PB() ? null : personalLegs().find(l => l.dir === "in" && l.dep.slice(0, 10) >= iso), fd = ml ? ml.dep.slice(0, 10) : PD0, n = Math.max(0, pdDiff(iso, fd));
+function pdCover(iso, go){
+  const x = parse(iso), ml = PB() ? null : personalLegs().find(l => l.dir === "in" && l.dep.slice(0, 10) >= iso), fd = ml ? ml.dep.slice(0, 10) : PD0, n = go ? 0 : Math.max(0, pdDiff(iso, fd));
   const d1 = dayOf("2026-12-06"), f0 = myLegs().find(l => l.dep && l.dep.slice(0, 10) >= PD0);
-  const L = (MOg().todo || []).filter(t => t[4] === "all" || PB()), done = local.get("todo-done", {}), open = L.filter(t => !done[t[0]]).sort((a, b) => a[2] < b[2] ? -1 : 1);
-  const left = pdLeft().length;
-  const fl = f0 ? `<div class="pd-tk"><div class="pd-tt"><b>${esc(DOW[parse(f0.dep.slice(0, 10)).getDay()]).toUpperCase()} ${parse(f0.dep.slice(0, 10)).getDate()}</b><small>${esc(t12(f0.dep))}</small></div><div class="pd-tx"><small>Chuyến đầu · First flight<i class="ok">Booked</i></small><b>${esc(f0.fromName || f0.from)} → ${esc(f0.toName || f0.to)}</b><em>${esc(f0.no)}${PB() ? ". Then Tokyo and Sài Gòn, landing 12:15 AM Sunday." : ""}</em>
-    </div><div class="pd-tb"><button type="button" class="btn pri" data-bkopen="${f0.mine ? "m:in" : bkFlightKey(f0.dep.slice(0, 10), "", f0.no)}">${icon("plane")}Boarding pass</button><button type="button" class="btn" data-pdseg="bookings">${icon("tag")}All bookings</button></div></div>` : "";
-  return `<section class="pd-pg pd-cov" style="--c:#c8312a" data-iso="${iso}">
+  const L = (MOg().todo || []).filter(t => t[4] === "all" || PB()), done = local.get("todo-done", {});
+  const stay = t => /stay|airbnb|hotel/i.test(t[0] + " " + t[1]), late = t => t[2] < iso;
+  const open = L.filter(t => !done[t[0]]).sort((a, b) => (late(b) - late(a)) || (late(a) && late(b) ? stay(b) - stay(a) : 0) || (a[2] < b[2] ? -1 : 1));
+  const short = t => t[1].replace(/\s*\(.*?\)/g, "").trim(), left = pdLeft().length, f0d = f0 && parse(f0.dep.slice(0, 10));
+  const fkey = f0 && (f0.mine ? "m:in" : bkFlightKey(f0.dep.slice(0, 10), "", f0.no));
+  const fl = !f0 ? "" : go
+    ? `<button type="button" class="pd-tk pd-tkb" data-bkopen="${esc(fkey)}" data-bkleg="${esc(f0.no)}"><span class="pd-tt"><b>${esc(t12(f0.dep).split(" ")[0])}</b><small>${esc(t12(f0.dep).split(" ")[1])}</small><i class="ok">Booked</i></span><span class="pd-tx"><small>Hôm nay · Today</small><b>${esc(f0.no)} to ${esc(f0.toName || f0.to)}</b><em>${(nl => nl ? `Leave home by ${esc(nl)}.` : "")((dayOf(PD0) || { items: [] }).items.filter(i => /^leave\b/i.test(i[1])).map(i => pdTxt(i[0]))[0])}</em></span></button>`
+    : `<button type="button" class="pd-tk pd-tkb" data-bkopen="${esc(fkey)}" data-bkleg="${esc(f0.no)}"><span class="pd-tt"><b>${esc(DOW[f0d.getDay()]).toUpperCase()} ${f0d.getDate()}</b><i class="ok">Booked</i></span><span class="pd-tx"><small>Chuyến đầu · First flight</small><b>${esc(f0.fromName || f0.from)} → ${esc(f0.toName || f0.to)}, ${esc(t12(f0.dep)).replace(" ", "&nbsp;")}</b><em>${esc(f0.no)}${PB() ? ", then Tokyo and Sài Gòn. Lands 12:15 AM Sunday." : ""}</em></span></button>`;
+  const todo = !go && left ? `<a class="pd-strip pd-stodo" href="#plan" data-pdseg="glance"><span class="pd-ring red">${left}</span><span><small>Still to book${open[0] && late(open[0]) ? " · urgent" : ""}</small><b>${esc(open[0] ? short(open[0]) : "See what's left")}</b>${open[1] ? `<em>Then ${esc(short(open[1]).replace(/^\w/, c => c.toLowerCase()))}</em>` : ""}</span>${icon("chev")}</a>` : "";
+  return `<section class="pd-pg pd-cov${go ? " pd-go" : ""}" style="--c:#c8312a;${pdEdge(go ? pdIsoAdd(PD0, -1) : iso)}" data-iso="${iso}">
     ${pdHd(null, iso, `<small>First stop</small><b>Sài Gòn</b>`)}
     <div class="pd-mid"><div class="pd-num" aria-label="${n} days to go"><b>${n}</b><small>${n === 1 ? "Day to go" : "Days to go"}</small></div>
       <a class="pd-now" href="#plan" data-pdseg="days" data-pdday="2026-12-06"><div class="ph" data-lead="${esc((d1 && d1.photo) || "Ho Chi Minh City")}"></div><span class="pd-nb">Sun 6 Dec</span><div class="pd-nt"><b>Sài Gòn</b><small>${esc(d1 ? d1.title : "")}</small></div></a></div>
-    ${pdLine(null, iso, "Sài Gòn in Dec · dry")}
-    ${pdFact(null, iso)}
+    ${go ? `<div class="pd-xong pd-stamp-go" aria-hidden="true"><b>Lên đường</b><small>Set off · Fri 4 Dec</small></div>` : ""}
+    ${pdLine(null, iso, go ? "" : "Sài Gòn in Dec · dry")}
+    ${pdFact(null, iso, 0, go ? { pin: PDFACT0 } : {})}
     ${fl}
-    ${left ? `<a class="pd-strip pd-stodo" href="#plan" data-pdseg="glance"><span class="pd-ring red">${left}</span><span><small>Còn phải đặt · Still to book</small><b>${esc(open[0] ? open[0][1] : "See what's left")}</b><em>${open[1] ? "Then: " + esc(open[1][1]) : ""}</em></span>${icon("play")}</a>` : ""}
-    ${pdCorner(iso, "Fri")}
+    ${todo}
+    ${go ? `<div class="pd-hint go"><small>Lên đường</small><b>Tear the cover off. The trip starts here.</b><em>This one doesn't come back.</em></div>
+      <button type="button" class="pd-corner big" style="--nc:#1f5f99" data-pdtear aria-label="Tear off the cover to start the trip"><span class="pd-cf"><small>Fri</small><b>4</b></span></button>` : pdCorner(iso, "Fri")}
   </section>`;
 }
 function pdToday(){
   const iso = todayIso(), dk = document.documentElement;
   dk.classList.toggle("pd-pre", iso < PD0 && !PD.peek);
+  dk.classList.toggle("pd-pk", iso < PD0 && !!PD.peek); if (PD.peek) dk.style.setProperty("--pdpk", pdCol(pdKey(dayOf(PD.peek))));
   let h = "";
   if (PD.peek) { const d = dayOf(PD.peek), back = iso < PD0 ? "Countdown" : "Today";
     h = `<div class="pd-peek"><span>${iso < PD0 ? `${esc(DOW[parse(PD.peek).getDay()] === "Fri" && PD.peek === PD0 ? "Flight day" : PDOWEN[parse(PD.peek).getDay()])} is ${pdDiff(iso, PD.peek)} day${pdDiff(iso, PD.peek) === 1 ? "" : "s"} away` : `Peeking at ${esc(PDOWEN[parse(PD.peek).getDay()])}`}</span><button type="button" class="btn" data-pdback>${icon("play")}${back}</button></div>`
       + pdPage(d, PD.peek, "peek") + pdPartsHtml(d, "plan");
   }
   else if (iso < PD0) h = pdCover(iso) + pdSoon(iso);
-  else { const d = dayOf(iso); h = pdPinBar(d) + pdRitual(iso) + pdPage(d, iso, "today") + pdExtrasTop(d) + pdPartsHtml(d, "today") + pdMore(d, iso); }
+  else { const d = dayOf(iso), go = iso === PD0 && (store.get("pd-torn") || "") < PD0; h = pdPinBar(d) + (go ? `<div class="pd-rit" data-pdrit="${PD0}">${pdCover(iso, true)}</div>` : pdRitual(iso)) + pdPage(d, iso, "today") + pdExtrasTop(d) + pdPartsHtml(d, "today") + pdMore(d, iso); }
   return `<div class="pd pd-today">${h}</div>`;
 }
 // Under the countdown: the first days, as small torn-off pages you can tap.
@@ -9010,11 +9146,11 @@ function pdMore(d, iso){
 function pdPinBar(d){
   const { cur, nxt: n0, now } = nowNext(d), nxt = pdTarget(d, n0, now), x = cur || nxt; if (!x) return "";
   const lv = nxt && pdLeave(d, nxt), at = lv && lv.at != null ? lv.at : nxt && nxt.exact ? nxt.s : null, m = at != null ? at - now : null;
-  return `<button type="button" class="pd-pin" style="--c:${pdCol(pdKey(d))}" aria-label="Back to the top of today" hidden><span class="pd-pn">${parse(d.date).getDate()}</span><span class="pd-px"><b>${esc(pdHead(d.items[x.i][1]))}</b>${nxt && nxt !== x ? `<small>Next: ${esc(pdHead(d.items[nxt.i][1]).toLowerCase().replace(/^\w/, c => c))}${nxt.exact ? ` at ${esc(hm(nxt.s / 60))}` : ""}</small>` : ""}</span>${m != null && m > 0 ? `<span class="pd-pcd"><b>${m < 60 ? m + " min" : Math.floor(m / 60) + " h " + (m % 60 ? (m % 60) + "m" : "")}</b><small>${lv && lv.at != null ? `Leave ${esc(hm(lv.at / 60).replace(" ", " "))}` : "To go"}</small></span>` : ""}</button>`;
+  return `<button type="button" class="pd-pin" style="--c:${pdCol(pdKey(d))}" aria-label="Back to the top of today" hidden><span class="pd-pn">${parse(d.date).getDate()}</span><span class="pd-px"><b>${esc(pdHead(pdW(d, x)))}</b>${nxt && nxt !== x ? `<small>Next: ${esc(pdHead(pdW(d, nxt)).toLowerCase().replace(/^\w/, c => c))}${nxt.exact ? ` at ${esc(hm(nxt.s / 60))}` : ""}</small>` : ""}</span>${m != null && m > 0 ? `<span class="pd-pcd"><b>${m < 60 ? m + " min" : Math.floor(m / 60) + " h " + (m % 60 ? (m % 60) + "m" : "")}</b><small>${lv && lv.at != null ? `Leave ${esc(hm(lv.at / 60).replace(" ", " "))}` : "To go"}</small></span>` : ""}</button>`;
 }
 document.addEventListener("click", e => { if (e.target.closest(".pd-pin")) { e.preventDefault(); scrollTo({ top: 0, behavior: "smooth" }); } });
 function pdPinWatch(){
-  const pin = document.querySelector(".pd-pin"), pg = document.querySelector(".pd-today .pd-pg:not(.ritual)"); if (!pin || !pg) return;
+  const pin = document.querySelector(".pd-pin"), pg = document.querySelector(".pd-today .pd-pg:not(.ritual):not(.pd-go)"); if (!pin || !pg) return;
   if (PD.io) PD.io.disconnect();
   PD.io = new IntersectionObserver(([en]) => { pin.hidden = en.isIntersecting || en.boundingClientRect.top > 0; }, { rootMargin: "-120px 0px 0px 0px", threshold: 0 });
   PD.io.observe(pg);
@@ -9028,7 +9164,7 @@ function pdRitual(iso){
   const x = parse(y), t = parse(iso);
   return `<div class="pd-rit" data-pdrit="${iso}"><section class="pd-pg ritual" style="--c:${pdCol(pdKey(d))}">${pdHd(d, y, pdRight(d))}<div class="pd-mid"><div class="pd-num"><b>${x.getDate()}</b></div>${pdNowCard(d, y, false)}</div>${pdLine(d, y)}<div class="pd-xong" aria-hidden="true"><b>Xong</b><small>${DOW[x.getDay()]} ${x.getDate()}</small></div>
     <div class="pd-hint"><small>Chào buổi sáng · Good morning</small><b>Tear ${esc(PDOWEN[x.getDay()])} off to start ${esc(PDOWEN[t.getDay()])}</b><em>Drag the corner up, or tap it.</em></div>
-    <button type="button" class="pd-corner big" data-pdtear aria-label="Tear off ${esc(PDOWEN[x.getDay()])} to start ${esc(PDOWEN[t.getDay()])}"><span class="pd-cf"><small>${DOW[t.getDay()]}</small><b>${t.getDate()}</b></span></button></section></div>`;
+    <button type="button" class="pd-corner big" style="--nc:${pdCol(pdKey(dayOf(iso)))}" data-pdtear aria-label="Tear off ${esc(PDOWEN[x.getDay()])} to start ${esc(PDOWEN[t.getDay()])}"><span class="pd-cf"><small>${DOW[t.getDay()]}</small><b>${t.getDate()}</b></span></button></section></div>`;
 }
 
 // Tearing: drag the folded corner up and the page tears off (or just tap the corner).
@@ -9041,13 +9177,13 @@ function pdTear(pg, then){
 function pdAfterTear(btn){
   const pg = btn.closest(".pd-pg"), iso = todayIso(), rit = btn.closest(".pd-rit");
   let done = false; const go = () => { if (done) return; done = true;
-    if (rit) { store.set("pd-torn", rit.dataset.pdrit); rit.remove(); scrollTo(0, 0); pdPinWatch(); return; }
+    if (rit) { store.set("pd-torn", rit.dataset.pdrit); rit.remove(); scrollTo(0, 0); pdPinWatch(); typeof fillChip === "function" && fillChip(); return; }
     const from = pg.dataset.iso, nx = pdIsoAdd(iso < PD0 ? pdIsoAdd(PD0, -1) : from, 1);
-    PD.peek = nx <= PD1 ? nx : null; pdRe(); scrollTo(0, 0); };
+    PD.peek = nx <= PD1 ? nx : null; pdRe(); scrollTo(0, 0); typeof fillChip === "function" && fillChip(); };
   pdTear(pg, go);
 }
 document.addEventListener("click", e => { const b = e.target.closest("[data-pdtear]"); if (!b || b._dragged) return; e.preventDefault(); pdAfterTear(b); });
-document.addEventListener("click", e => { if (e.target.closest("[data-pdback]")) { e.preventDefault(); PD.peek = null; pdRe(); scrollTo(0, 0); } });
+document.addEventListener("click", e => { if (e.target.closest("[data-pdback]")) { e.preventDefault(); PD.peek = null; pdRe(); scrollTo(0, 0); typeof fillChip === "function" && fillChip(); } });
 // Drag the corner: the page lifts with your finger; past a third of the way it tears.
 document.addEventListener("pointerdown", e => {
   const b = e.target.closest("[data-pdtear]"); if (!b) return; const pg = b.closest(".pd-pg"); if (!pg) return;
@@ -9080,10 +9216,41 @@ render = function(h, target, sub){
   const r = _pdRender.apply(this, arguments); try { pdAfter(h); } catch (e) { console.log("pad", e); } return r; };
 function pdAfter(h){
   if (!PDON()) return;
-  if (h !== "today") document.documentElement.classList.remove("pd-pre");
+  if (h !== "today") document.documentElement.classList.remove("pd-pre", "pd-pk");
   pdTabBtn(); pdTint();
+  document.documentElement.classList.toggle("pd-band", h === "today" && todayIso() <= PD1);
+  if (h === "today" || h === "plan") pdFitBtns();
   if (h === "today") { pdPinWatch(); const d = dayOf(todayIso()); if (d) { const { cur, nxt } = nowNext(d); PD.sig = [cur && cur.i, nxt && nxt.i, document.documentElement.dataset.theme, nowMin() >= 1260].join(); } }
 }
+// Ticket buttons sit under the title; if they'd wrap there, they take the full width instead.
+function pdFitBtns(){ requestAnimationFrame(() => document.querySelectorAll(".pd-tk>.pd-tb").forEach(t => { t.classList.remove("wide"); const b = t.children; if (b.length > 1 && b[b.length - 1].offsetTop > b[0].offsetTop + 4) t.classList.add("wide"); })); }
+addEventListener("resize", () => { if (PDON()) pdFitBtns(); }, { passive: true });
+// The band on Today: the pad's binding, with a live chip that says what matters now (like the mock: 23 days, Leave 4:30, Grab 10:00, Leave now, Tonight's line).
+function pdChip(){
+  const iso = todayIso(), sh = m => hm(m / 60).replace(/ (AM|PM)$/, "");
+  if (PD.peek) return ["Preview", "", "top"];
+  if (iso < PD0) { const n = pdDiff(iso, PD0); return [`${n} day${n === 1 ? "" : "s"}`, "", "top"]; }
+  if (iso === PD0 && (store.get("pd-torn") || "") < PD0) return ["Today", "", "top"];
+  const d = dayOf(iso); if (!d || iso > PD1) return null;
+  const now = nowMin(), LL = typeof liveLeg === "function" ? liveLeg() : null, { cur, nxt: n0 } = nowNext(d), nxt = pdTarget(d, n0, now);
+  if (n0 && n0.i >= 0 && n0.exact && n0.s - now <= 90 && /^leave\b/i.test(d.items[n0.i][1])) return [`Leave ${sh(n0.s)}`, n0.s - now <= 10 ? "am" : "", "tk"];
+  if (LL) { const { l, n, d: dp, a } = LL; return n < dp ? [`${l.no} ${pdHmS(l.dep)}`, "", "tk"] : n < a ? [`Lands ${pdHmS(l.arr)}`, "", "tk"] : ["Landed", "", "tk"]; }
+  if ((now >= 1260 || (document.documentElement.dataset.theme === "dark" && !nxt)) && VN(d.city)) return document.querySelector(".uxline") || now >= 1200 ? ["Tonight's line", "", "line"] : ["Home", "", "tk"];
+  if (!nxt || !nxt.exact) return null;
+  const lv = pdLeave(d, nxt), at = lv && lv.at != null ? lv.at : nxt.s, left = at - now;
+  if (left <= 10 && nxt.s - now > -15) return ["Leave now", "am", "tk"];
+  const w = pdHead(pdW(d, nxt)), vb = (w.match(/^(Grab|Car|Taxi|Train|Boat|Bus|Ferry|Fly|Flight|Walk)\b/i) || [])[1];
+  return at !== nxt.s ? [`Leave ${sh(at)}`, "", "tk"] : [`${vb ? pdCap(vb.toLowerCase()) : "Next"} ${sh(nxt.s)}`, "", "tk"];
+}
+{ const _pdFill = fillChip;
+  fillChip = function(tab){ if (tab) CHIPTAB = tab;
+    const s = document.getElementById("subtitle"), c = s && CHIPTAB === "today" && PDON() ? pdChip() : null;
+    if (!c) { if (s) delete s.dataset.pdc; return _pdFill.apply(this, arguments); }
+    const h = `<a class="pd-lchip${c[1] ? " " + c[1] : ""}" href="#today" data-pdchip="${c[2]}" aria-label="${esc(c[0])}"><span><i></i>${esc(c[0])}</span></a>`;
+    if (s.dataset.pdc !== h || !s.querySelector(".pd-lchip")) { s.innerHTML = h; s.dataset.pdc = h; } s.classList.add("haschip"); }; }
+document.addEventListener("click", e => { const a = e.target.closest("[data-pdchip]"); if (!a || current !== "today") return; e.preventDefault();
+  const t = a.dataset.pdchip === "line" ? document.querySelector(".uxline") : a.dataset.pdchip === "tk" ? document.querySelector(".pd-today .pd-pg:not(.ritual):not(.pd-go) .pd-tk") : null;
+  if (!t) return scrollTo({ top: 0, behavior: "smooth" }); scrollTo({ top: t.getBoundingClientRect().top + scrollY - (parseFloat(getComputedStyle(document.documentElement).getPropertyValue("--hdr")) || 56) - 80, behavior: "smooth" }); haptic && haptic(); });
 // The Today button shows the date (or days to go), in the colour of where you are.
 function pdTabBtn(){
   const a = document.querySelector('#tabs a[data-tab="today"]'); if (!a) return;
