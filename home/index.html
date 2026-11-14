@@ -194,25 +194,10 @@ button{font:inherit;color:inherit;background:none;border:0;padding:0;cursor:poin
 function ls(k, v){ try { if (v === undefined) return localStorage.getItem("otd-"+k); if (v === null) localStorage.removeItem("otd-"+k); else localStorage.setItem("otd-"+k, v); } catch(e) { return null; } }
 // Shared state lives in the trip's Firebase Realtime Database, in its own corner (not the trip app's room).
 const DB = "https://vietnam--26-default-rtdb.asia-southeast1.firebasedatabase.app";
-// If the database rules only allow the trip room, fall back to a "home" corner inside it.
-const ROOTS = [DB + "/v26/rpjfxBlgpFkxmuyaEhY6qyu2m-home", DB + "/v26/rpjfxBlgpFkxmuyaEhY6qyu2m/home"];
-// Both phones must use the same spot, so it's chosen fresh on every open (never remembered per phone).
-let ROOT = ROOTS[0];
-function fallback(){ if (ROOT === ROOTS[1]) return false; ROOT = ROOTS[1]; listen(); return true; }
-async function pickRoot(){
-  ls("root", null);
-  try {
-    const r = await fetch(ROOTS[0] + "/done.json?shallow=true");
-    if (r.status === 401 || r.status === 403){ ROOT = ROOTS[1]; return; }
-    // An earlier version could drift onto the backup spot: fold anything saved there back in, once.
-    const b = await fetch(ROOTS[1] + ".json"); if (!b.ok) return;
-    const old = await b.json(); if (!old || typeof old !== "object") return;
-    const cur = (await (await fetch(ROOTS[0] + ".json")).json()) || {};
-    const patch = {};
-    for (const k of ["done","own","add","del"]) for (const [id, v] of Object.entries(old[k] || {})) if (!(cur[k] && id in cur[k])) patch[k + "/" + id] = v;
-    if (Object.keys(patch).length) await fetch(ROOTS[0] + ".json", {method: "PATCH", body: JSON.stringify(patch)});
-  } catch(e) {}
-}
+// Its own key, unrelated to the trip app's room.
+const ROOT = DB + "/v26/home-3k2bXdCsHzNyEK3k";
+function fallback(){ return false; }
+async function pickRoot(){ ls("root", null); }
 const NAME = {P:"Praneeth", B:"Bindu", both:"Both", "":"Up for grabs"};
 const INIT = {P:"P", B:"B", both:"", "":"+"};
 const DAYS = [
