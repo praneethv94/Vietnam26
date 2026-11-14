@@ -196,8 +196,23 @@ function ls(k, v){ try { if (v === undefined) return localStorage.getItem("otd-"
 const DB = "https://vietnam--26-default-rtdb.asia-southeast1.firebasedatabase.app";
 // If the database rules only allow the trip room, fall back to a "home" corner inside it.
 const ROOTS = [DB + "/v26/rpjfxBlgpFkxmuyaEhY6qyu2m-home", DB + "/v26/rpjfxBlgpFkxmuyaEhY6qyu2m/home"];
-let ROOT = ROOTS[+(ls("root")||0)] || ROOTS[0];
-function fallback(){ if (ROOT === ROOTS[1]) return false; ROOT = ROOTS[1]; ls("root","1"); listen(); return true; }
+// Both phones must use the same spot, so it's chosen fresh on every open (never remembered per phone).
+let ROOT = ROOTS[0];
+function fallback(){ if (ROOT === ROOTS[1]) return false; ROOT = ROOTS[1]; listen(); return true; }
+async function pickRoot(){
+  ls("root", null);
+  try {
+    const r = await fetch(ROOTS[0] + "/done.json?shallow=true");
+    if (r.status === 401 || r.status === 403){ ROOT = ROOTS[1]; return; }
+    // An earlier version could drift onto the backup spot: fold anything saved there back in, once.
+    const b = await fetch(ROOTS[1] + ".json"); if (!b.ok) return;
+    const old = await b.json(); if (!old || typeof old !== "object") return;
+    const cur = (await (await fetch(ROOTS[0] + ".json")).json()) || {};
+    const patch = {};
+    for (const k of ["done","own","add","del"]) for (const [id, v] of Object.entries(old[k] || {})) if (!(cur[k] && id in cur[k])) patch[k + "/" + id] = v;
+    if (Object.keys(patch).length) await fetch(ROOTS[0] + ".json", {method: "PATCH", body: JSON.stringify(patch)});
+  } catch(e) {}
+}
 const NAME = {P:"Praneeth", B:"Bindu", both:"Both", "":"Up for grabs"};
 const INIT = {P:"P", B:"B", both:"", "":"+"};
 const DAYS = [
@@ -249,6 +264,8 @@ function applyEvent(path, data, patch){
   else if (!parts.length) S = Object.assign({done:{},own:{},add:{},del:{}}, data||{});
   else S = setPath(S, parts, data);
   for (const k of ["done","own","add","del"]) if (!S[k]) S[k] = {};
+  // Never let a server snapshot wipe ticks this phone hasn't managed to send yet.
+  if (!patch && !parts.length) for (const [qp, qv] of q) S = setPath(S, qp.split("/"), qv);
   ls("cache", JSON.stringify(S));
 }
 let es, sync = ["", "Connecting…"];
@@ -259,8 +276,8 @@ function listen(){
   const on = (ev, patch) => { try { const m = JSON.parse(ev.data); const before = JSON.stringify(S.done||{}); applyEvent(m.path, m.data, patch); notice(before); render(); } catch(e) {} };
   es.addEventListener("put", e => { connected = true; setSync("on","Live"); on(e, false); flush(); });
   es.addEventListener("patch", e => on(e, true));
-  es.addEventListener("cancel", () => { if (!fallback()) setSync("off","Sync refused"); });
-  es.onerror = () => { if (es.readyState === 2 && !connected && navigator.onLine && fallback()) return; connected = false; setSync("off", navigator.onLine ? "Reconnecting…" : "Offline, saving here"); };
+  es.addEventListener("cancel", () => setSync("off","Sync refused by the database"));
+  es.onerror = () => { connected = false; setSync("off", navigator.onLine ? "Reconnecting…" : "Offline, saving on this phone"); if (es.readyState === 2) setTimeout(() => { if (!connected) listen(); }, 3000); };
 }
 function setSync(c, t){ sync = [c, t]; renderFeed(); }
 function write(path, val){ applyEvent(path, val, false); render(); q.push([path, val]); ls("queue", JSON.stringify(q)); flush(); }
@@ -272,15 +289,15 @@ async function flush(){
       const [path, val] = q[0];
       const r = await fetch(`${ROOT}/${path}.json`, {method: val === null ? "DELETE" : "PUT", body: val === null ? undefined : JSON.stringify(val)});
       if ((r.status === 401 || r.status === 403) && fallback()) continue;
-      if (!r.ok) throw new Error(r.status);
+      if (!r.ok){ let m = ""; try { m = (await r.json()).error || ""; } catch(er) {} throw new Error(`${m || "error"} (${r.status})`); }
       q.shift(); ls("queue", JSON.stringify(q));
     }
     if (connected) setSync("on","Live");
-  } catch(e) { setSync("off","Saved here, sends when online"); }
+  } catch(e) { setSync("off", navigator.onLine && e.message && /\(\d+\)/.test(e.message) ? `Not syncing: ${e.message}. Ticks kept on this phone` : "Saved on this phone, sends when online"); }
   flushing = false;
 }
 addEventListener("online", () => { flush(); listen(); });
-document.addEventListener("visibilitychange", () => { if (!document.hidden){ flush(); if (!connected) listen(); tick(); render(); } });
+document.addEventListener("visibilitychange", () => { if (!document.hidden){ listen(); flush(); tick(); render(); } });
 let flashIds = new Set();
 function notice(before){ try { const b = JSON.parse(before); for (const [id,v] of Object.entries(S.done||{})) if (!b[id] && v && v.by && v.by !== who) flashIds.add(id); } catch(e) {} }
 
@@ -424,7 +441,7 @@ $("#pager").addEventListener("touchend", e => {
 tick(); setInterval(tick, 30000);
 render();
 if (!who) askWho();
-listen(); flush();
+pickRoot().then(() => { listen(); flush(); });
 setInterval(renderFeed, 60000);
 </script>
 </body>
