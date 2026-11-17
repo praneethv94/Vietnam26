@@ -22,6 +22,7 @@ self.addEventListener("message", e => { if (e.data === "save-photos") e.waitUnti
 self.addEventListener("fetch", e => {
   const req = e.request; if (req.method !== "GET") return;
   const url = new URL(req.url);
+  if (url.origin === location.origin && (url.pathname.includes("/home/") || url.pathname.endsWith("/home"))) return; // "Out the door" checklist (Nov 12) is its own page
   if (url.hostname === "tile.openstreetmap.org") {
     e.respondWith(caches.open(TILES).then(async c => (await c.match(req.url)) || fetch(req).then(r => { if (r.ok) c.put(req.url, r.clone()); return r; }).catch(() => new Response("", { status: 504 }))));
     return;
