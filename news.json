@@ -1,6 +1,15 @@
 {
- "updated": "2026-11-05",
+ "updated": "2026-11-25",
  "items": [
+  {
+   "area": "Hoi An & Da Nang",
+   "level": "watch",
+   "date": "2026-11-24",
+   "title": "Two rounds of heavy rain on the central coast, Nov 24–30",
+   "impact": "Forecasters warn of more than 500 mm (20 in) near Huế and Đà Nẵng, with the Thu Bồn river near alert levels 1–2. It should clear before Dec 7, but Hội An's riverside streets can stay wet for a few days. Watch the forecast here from Nov 27.",
+   "source": "Vietnam national weather centre via VietnamNet",
+   "url": "https://vietnamnet.vn/en/central-vietnam-faces-back-to-back-heavy-rains-and-worsening-flood-risks-2578331.html"
+  },
   {
    "area": "Hanoi",
    "level": "info",
